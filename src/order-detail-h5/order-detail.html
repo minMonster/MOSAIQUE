@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>订单详情</title>
+    <style type="text/css">
+    * {
+      margin: 0;
+      border: none;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html  {
+      max-width: 750px;
+      margin: 0 auto;
+    }
+    body {
+      background-color: #F5F5F5;
+    }
+    .k-flex {
+      display: flex;
+      align-items: center;
+    }
+    .k-base-t {
+      margin-top: .15rem;
+    }
+    .k-card {
+      padding: .2rem;
+      background: #FFFFFF;
+    }
+    .k-ellipsis {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+
+    .k-herder {
+      height: 1rem;
+      font-size: .32rem;
+    }
+    .k-herder p {
+      flex: 1;
+    }
+    .k-herder .k-icon-close {
+      height: .3rem;
+      width: .3rem;
+    }
+
+    .k-shop .logo {
+      height: .8rem;
+      padding-right: .2rem;
+    }
+    .k-shop {
+      font-size: .28rem;
+    }
+
+    .k-order-header {
+      height: .8rem;
+      font-size: .26rem;
+      border-bottom: 0.05rem solid #F5F5F5;
+    }
+    .k-order-header .k-order-num {
+      flex: 1;
+    }
+    .k-order-header .k-order-type {
+      font-size: .32rem;
+    }
+    .k-order-logistics img, .k-order-address img {
+      width: .35rem;
+      margin-right: .24rem;
+    }
+    .k-order-logistics p, .k-order-address p {
+      font-size: .26rem;
+    }
+    .k-order-logistics .name{
+      margin-bottom: .1rem;
+    }
+    .k-order-address .info{
+      margin-bottom: .1rem;
+    }
+    .k-order-address .address {
+      color: #0F1826;
+      opacity: .6;
+      font-size: .24rem
+    }
+
+    .k-goods .order-info {
+      margin-top: .24rem;
+      padding-top: .24rem;
+      border-top: 0.05rem solid #F5F5F5;
+    }
+    .k-goods .order-info .cell {
+      display: flex;
+    }
+    .k-goods .order-info .cell {
+      margin-bottom: .24rem;
+    }
+    .k-goods .order-info .cell .l {
+      flex: 1;
+    }
+
+    .k-goods .order-info .cell span {
+      font-size: .26rem;
+    }
+    .k-goods .order-info .cell.num span {
+      font-size: .32rem;
+    }
+
+    .k-goods .good {
+      font-size: .26rem;
+    }
+    .k-goods .good img {
+      width: 1.2rem;
+      height: 1.2rem;
+      border-radius: 0.08rem;
+      margin-right: .24rem;
+    }
+    .k-goods .good {
+      margin-top: .24rem;
+    }
+    .k-goods .good .info {
+      flex: 1;
+      max-width: 4.5rem;
+    }
+    .k-goods .good .info .good-dec {
+      opacity: .6;
+      color: #0F1826;
+      font-size: .24rem;
+    }
+
+    .k-dec .cell {
+      display: flex;
+      font-size: .26rem;
+    }
+    .k-dec .cell {
+      margin-bottom: .24rem;
+    }
+    .k-dec .cell .l {
+      flex: 1;
+      opacity: .6;
+      color: #0F1826;
+    }
+  </style>
+</head>
+<body>
+<div class="k-herder k-card k-flex">
+  <p>{{'订单支付成功' if locale == 'cn' else 'Order payment successful'}}</p>
+<!--  <p>{{'商品已发货' if locale == 'cn' else 'Goods shipped'}}</p>-->
+<!--  <p>{{'订单已关闭' if locale == 'cn' else 'Order closed'}}</p>-->
+  <img class="k-icon-close" src="./guanbi.svg" alt="">
+</div>
+<div class="k-shop k-card k-flex">
+  <img class="logo" src="./logo.png" alt="">
+  <span class="k-ellipsis">店铺名称店铺名称店铺名称店铺名称店铺名称店铺名称店铺名称店铺名称店铺名称店铺名称店铺名称店铺名称店铺名称店铺名称</span>
+</div>
+<div class="k-base-t k-order-header k-card k-flex">
+  <span class="k-order-num">{{'订单号' if locale == 'cn' else 'Order number'}}：39384746756</span>
+  <span class="k-order-type">{{'待发货' if locale == 'cn' else 'To ship'}}</span>
+<!--  <span class="k-order-type">{{'已完成' if locale == 'cn' else 'Completed'}}</span>-->
+<!--  <span class="k-order-type">{{'已取消' if locale == 'cn' else 'Cancelled'}}</span>-->
+</div>
+<div class="k-order-logistics k-card k-flex">
+  <img src="wuliu.svg" alt="">
+  <div>
+    <p class="name">Ninjiavan</p>
+    <p class="logistics-order-no">43643745687999</p>
+  </div>
+</div>
+<div class="k-order-address k-card k-flex">
+  <img src="./dizhi.svg" alt="">
+  <div>
+    <p class="info"><span class="name">张三</span> <sapn class="phone">+65 123456789</sapn></p>
+    <p class="address">马来西亚吉隆坡地址地址地址地址地址地址地址地址地址地址地址地址（邮编：542345）</p>
+  </div>
+</div>
+
+<div class="k-base-t k-card k-goods">
+  <div class="good k-flex">
+    <img src="https://malaysia.demoshop.ksher.net/web/image/product.product/15/image_1024/%5BFS%5DMEN%20Billie%20Eilish%20x%20Takashi%20Murakami%20UT%20%20%28S%29?unique=bb15513" alt="">
+    <div class="info">
+      <div class="good-name k-ellipsis">商品名称商品名称商品…</div>
+      <div class="good-dec">
+        <span>颜色：红色 尺寸：L</span>
+        <span>×2</span>
+      </div>
+    </div>
+    <div class="price">RM 19.33</div>
+  </div>
+  <div class="good k-flex">
+    <img src="https://malaysia.demoshop.ksher.net/web/image/product.product/15/image_1024/%5BFS%5DMEN%20Billie%20Eilish%20x%20Takashi%20Murakami%20UT%20%20%28S%29?unique=bb15513" alt="">
+    <div class="info">
+      <div class="good-name k-ellipsis">商品名称商品名称商品…</div>
+      <div class="good-dec">
+        <span>颜色：红色 尺寸：L</span>
+        <span>×2</span>
+      </div>
+    </div>
+    <div class="price">RM 19.33</div>
+  </div>
+  <div class="order-info">
+    <div class="cell">
+      <span class="l">{{'商品总价' if locale == 'cn' else 'Total price'}}：</span>
+      <span class="r">RM 54.35</span>
+    </div>
+    <div class="cell">
+      <span class="l">{{'税金' if locale == 'cn' else 'Tax'}}：</span>
+      <span class="r">RM 54.35</span>
+    </div>
+    <div class="cell">
+      <span class="l">{{'运费' if locale == 'cn' else 'Shipping Fee'}}：</span>
+      <span class="r">RM 54.35</span>
+    </div>
+    <div class="cell">
+      <span class="l">{{'优惠' if locale == 'cn' else 'Offer'}}：</span>
+      <span class="r">RM 54.35</span>
+    </div>
+    <div class="cell num">
+      <span class="l"></span>
+      <span class="r">{{'总计' if locale == 'cn' else 'Total price'}}：RM 54.35</span>
+    </div>
+  </div>
+</div>
+<div class="k-base-t k-card k-dec">
+  <div class="cell">
+    <span class="l">{{'下单时间' if locale == 'cn' else 'Purchase Date'}}：</span>
+    <span class="r">2020.12.03 14:32:43</span>
+  </div>
+  <div class="cell">
+    <span class="l">{{'支付方式' if locale == 'cn' else 'Payment method'}}：</span>
+    <span class="r">RM 54.35</span>
+  </div>
+  <div class="cell">
+    <span class="l">{{'支付交易号' if locale == 'cn' else 'Payment transaction ID'}}：</span>
+    <span class="r">900054434365347658</span>
+  </div>
+  <div class="cell">
+    <span class="l">{{'支付时间' if locale == 'cn' else 'Payment Date(s)'}}：</span>
+    <span class="r">RM 2020.12.03 14:33:14</span>
+  </div>
+  <div class="cell">
+    <span class="l">{{'退款单号' if locale == 'cn' else 'Refund ID'}}：</span>
+    <span class="r">RM 2020.12.03 14:33:14</span>
+  </div>
+  <div class="cell">
+    <span class="l">{{'退款时间' if locale == 'cn' else 'Refund time'}}：</span>
+    <span class="r">RM 2020.12.03 14:33:14</span>
+  </div>
+</div>
+<script src="rem.js"></script>
+</body>
+</html>
