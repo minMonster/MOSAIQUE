@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div id="anim" style="width: 100px;height: 100px;" />
+    <!--    <div id="anim" style="width: 100px;height: 100px;" />-->
     <section class="section section-1">
       <div class="edition-center">
         <p class="wow slideInUp">
@@ -9,8 +9,8 @@
         <h2 class="wow bounceInDown">Mosaique Protocol</h2>
         <div class="button">Go to Mosaique</div>
         <div class="tabs-button">
-          <div>Email Address</div>
-          <div>Subscribe</div>
+          <div class="email">Email Address</div>
+          <div class="sub">Subscribe</div>
         </div>
         <img class="section-img" src="../access/section-img.png" alt="">
       </div>
@@ -33,7 +33,7 @@
           </div>
         </div>
       </div>
-      <!-- <img class="bg-all" src="../access/bg.png" alt=""> -->
+      <img class="bg-all" src="../access/bg.png" alt="">
     </section>
     <section class="section section-3">
       <div class="edition-center">
@@ -53,7 +53,7 @@
           </div>
         </div>
       </div>
-      <!-- <img class="bg-all" src="../access/bg.png" alt=""> -->
+      <img class="bg-all" src="../access/bg.png" alt="">
     </section>
     <section class="section section-4">
       <div class="edition-center">
@@ -73,7 +73,7 @@
           </div>
         </div>
       </div>
-      <!-- <img class="bg-all" src="../access/bg.png" alt=""> -->
+      <img class="bg-all" src="../access/bg.png" alt="">
     </section>
     <section class="section section-5">
       <div class="edition-center">
@@ -122,7 +122,7 @@
         </div>
         <img src="" class="gif-4" alt="">
       </div>
-      <!-- <img class="bg-all" src="../access/bg.png" alt=""> -->
+      <img class="bg-all" src="../access/bg.png" alt="">
     </section>
   </div>
 </template>
@@ -164,5 +164,71 @@ export default {
     margin-left: -1130px;
   }
 }
+  .section-1 {
+    p {
+      margin-top: 369px;
+      font-size: 26px;
+      font-family: Verdana;
+      font-weight: 400;
+      color: #454953;
+      line-height: 21px;
+    }
+    h2 {
+      margin-top: 28px;
+      font-size: 70px;
+      font-family: Arial Black;
+      font-weight: 400;
+      color: #454953;
+      line-height: 21px;
+    }
+    .button {
+      width: 235px;
+      height: 60px;
+      background: #DA6464;
+      border-radius: 10px;
+      text-align: center;
+      line-height: 60px;
+      font-size: 22px;
+      font-family: Verdana;
+      font-weight: 400;
+      color: #FFFFFF;
+    }
+    .tabs-button {
+      width: 400px;
+      display: flex;
+      align-items: center;
+      border-radius: 10px;
+      margin-top: 44px;
+      .email {
+        flex: 1;
+        box-sizing: border-box;
+        line-height: 60px;
+        height: 60px;
+        border: 2px solid #DA6464;
+        border-radius: 10px;
+        font-size: 22px;
+        font-family: Verdana;
+        font-weight: 400;
+        color: #DA6464;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        padding-left: 37px;
+      }
+      .sub {
+        width: 155px;
+        text-align: center;
+        height: 60px;
+        line-height: 60px;
+        background: #DA6464;
+        border-radius: 10px;
+        font-size: 22px;
+        font-family: Verdana;
+        font-weight: 400;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        color: #FFFFFF;
+      }
+    }
+  }
 }
 </style>
