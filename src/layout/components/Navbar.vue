@@ -2,18 +2,18 @@
   <div class="navbar">
     <div class="edition-center">
       <div
-        @click="$router.push('/')"
         class="logo-box"
+        @click="$router.push('/')"
       >
         <img class="logo" src="../../access/logo.png" alt="">
         <img class="logo-text" src="../../access/logo-text.png" alt="">
       </div>
       <div class="nav-tabs">
         <div class="nav-item">Hero Banner</div>
-        <div class="nav-item">Three Functions</div>
+        <a class="nav-item" href="#Three Functions">Three Functions</a>
         <div class="nav-item" @click="$router.push('/team')">Team</div>
-        <div class="nav-item">Hero Banner</div>
-        <div class="nav-item">Contact Us</div>
+        <div class="nav-item">Partners</div>
+        <a class="nav-item" href="#Contact Us">Contact Us</a>
       </div>
     </div>
   </div>
@@ -61,6 +61,23 @@ export default {
       color: #FFFFFF;
       line-height: 21px;
       .nav-item {
+        text-decoration: none;
+        &:link {
+          color: #FFFFFF;
+          text-decoration: none;
+        }
+        &:visited {
+          color: #FFFFFF;
+          text-decoration: none;
+        }
+        &:hover {
+          color: #FFFFFF;
+          text-decoration: none;
+        }
+        &:active {
+          color: #FFFFFF;
+          text-decoration: none;
+        }
         margin-right: 29px;
         cursor: pointer;
         position: relative;

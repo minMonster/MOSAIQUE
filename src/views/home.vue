@@ -16,6 +16,7 @@
       </div>
     </section>
     <section class="section section-2">
+      <a name="Three Functions" />
       <div class="edition-center">
         <div class="core wow pulse">
           <p class="fun">FUNCTIONS</p>
@@ -91,7 +92,7 @@
             <img src="../access/section-5-icon-2.png" alt="">
             <div class="info-dev">
               <div class="timer  wow bounceInDown">2021.06</div>
-              <p class="wow bounceInRight">mosaique v| testnet launch (w/</p>
+              <p class="wow bounceInRight">mosaique v| testnet launch (w/ <em>imprint</em> & snapshot functions)</p>
             </div>
           </div>
           <div class="line-item">

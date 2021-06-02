@@ -1,5 +1,6 @@
 <template>
   <div class="footer">
+    <a name="Contact Us" />
     <div class="edition-center">
       <div class="footer-left">
         <p>©2021MOSAIQUE</p>
