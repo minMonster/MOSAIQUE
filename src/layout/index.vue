@@ -1,7 +1,7 @@
 <template>
-  <div :class="classObj" class="app-wrapper">
+  <div class="app-wrapper">
     <div class="main-container">
-      <div :class="{'fixed-header':fixedHeader}">
+      <div>
         <navbar />
       </div>
       <app-main />

@@ -2,6 +2,7 @@ import Vue from 'vue'
 
 // css 重置替代方案
 import 'normalize.css/normalize.css'
+import './libs/animate/animate.css'
 
 // 全量引入 ElementUI
 import ElementUI from 'element-ui'

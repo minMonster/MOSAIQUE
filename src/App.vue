@@ -17,3 +17,11 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+
+.edition-center {
+  width: 1200px;
+  margin: 0 auto;
+  height: 100%;
+}
+</style>
