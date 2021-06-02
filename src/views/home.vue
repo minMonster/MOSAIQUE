@@ -3,7 +3,7 @@
     <!--    <div id="anim" style="width: 100px;height: 100px;" />-->
     <section class="section section-1">
       <div class="edition-center">
-        <p class="wow slideInUp">
+        <p class="wow bounceInRight">
           An Interactive Collector-Centered NFT Infrastructure
         </p>
         <h2 class="wow bounceInDown">Mosaique Protocol</h2>
@@ -12,23 +12,25 @@
           <div class="email">Email Address</div>
           <div class="sub">Subscribe</div>
         </div>
-        <img class="section-img" src="../access/section-img.png" alt="">
+        <img class="section-img bounceInRight wow" src="../access/section-img.png" alt="">
       </div>
     </section>
     <section class="section section-2">
       <div class="edition-center">
-        <div class="core">
+        <div class="core wow pulse">
           <p class="fun">FUNCTIONS</p>
           <p class="core-text">Core Values</p>
         </div>
         <div class="dec">
-          <img src="" alt="">
+          <div id="anim" />
           <div class="info">
-            <h2>Imprinting</h2>
-            <h3>Imprinting:</h3>
-            <p>The e-blazon and e-inscription functions visualize and personalizes collecting footprints. This interactive experience engages collectors across fields and facilitates building consensus around NFTs.</p>
-            <p class="red-text">
-              Core Value: Interactive collecting experience.
+            <div class="h2 wow bounceInDown">Imprinting</div>
+            <div class="h3 wow rollIn">Imprinting:</div>
+            <p class="wow bounceInRight">The e-blazon and e-inscription functions visualize and personalizes collecting footprints. This interactive experience engages collectors across fields and facilitates building consensus around NFTs.</p>
+            <p class="red-text wow bounceInRight">
+              Core Value:
+              <br>
+              Interactive collecting experience.
             </p>
           </div>
         </div>
@@ -37,18 +39,16 @@
     </section>
     <section class="section section-3">
       <div class="edition-center">
-        <div class="core">
-          <p class="fun">FUNCTIONS</p>
-          <p class="core-text">Core Values</p>
-        </div>
         <div class="dec">
-          <img src="" alt="">
+          <img class="gif-img" src="../access/04-Values02.gif" alt="">
           <div class="info">
-            <h2>Imprinting</h2>
-            <h3>Imprinting:</h3>
-            <p>The e-blazon and e-inscription functions visualize and personalizes collecting footprints. This interactive experience engages collectors across fields and facilitates building consensus around NFTs.</p>
-            <p class="red-text">
-              Core Value: Interactive collecting experience.
+            <div class="h2 wow bounceInDown">Snapshot</div>
+            <div class="h3 rollIn wow">Snapshot:</div>
+            <p class="wow bounceInRight">Snapshot allows NFTs and NFT-collectors to be active players in the market constantly. It entitles collectors to generate NFT derivatives and promises value realization even when collectors do not want to sell their NFT.</p>
+            <p class="red-text wow bounceInRight">
+              Core Value:
+              <br>
+              Value Realization
             </p>
           </div>
         </div>
@@ -57,18 +57,16 @@
     </section>
     <section class="section section-4">
       <div class="edition-center">
-        <div class="core">
-          <p class="fun">FUNCTIONS</p>
-          <p class="core-text">Core Values</p>
-        </div>
         <div class="dec">
-          <img src="" alt="">
+          <img class="gif-img" src="../access/04-Values03.gif" alt="">
           <div class="info">
-            <h2>Imprinting</h2>
-            <h3>Imprinting:</h3>
-            <p>The e-blazon and e-inscription functions visualize and personalizes collecting footprints. This interactive experience engages collectors across fields and facilitates building consensus around NFTs.</p>
-            <p class="red-text">
-              Core Value: Interactive collecting experience.
+            <div class="h2 wow bounceInDown">MoScan</div>
+            <div class="h3 rollIn wow">MoScan:</div>
+            <p class="wow bounceInRight">MoScan is a cross-platform NFT explorer that records the lifecycle of NFTs and their interactive activities. It provides a visualized data tracker for users, developers, and researchers.</p>
+            <p class="red-text wow bounceInRight">
+              Core Value:
+              <br>
+              NFT Lifecycle Explorer
             </p>
           </div>
         </div>
@@ -77,48 +75,48 @@
     </section>
     <section class="section section-5">
       <div class="edition-center">
-        <div class="core">
+        <div class="core wow pulse">
           <p class="fun">FUNCTIONS</p>
           <p class="core-text">Core Values</p>
         </div>
         <div class="line-dos">
           <div class="line-item">
-            <img src="" alt="">
+            <img src="../access/section-5-icon-1.png" alt="">
             <div class="info-dev">
-              <h2 class="timer">2021.05</h2>
-              <p>front-end UX/UI design；contract interface imprint function v| complete MVP</p>
+              <div class="timer wow bounceInDown">2021.05</div>
+              <p class="wow bounceInRight">front-end UX/UI design；contract interface imprint function v| complete MVP</p>
             </div>
           </div>
           <div class="line-item">
-            <img src="" alt="">
+            <img src="../access/section-5-icon-2.png" alt="">
             <div class="info-dev">
-              <h2 class="timer">2021.05</h2>
-              <p>front-end UX/UI design；contract interface imprint function v| complete MVP</p>
+              <div class="timer  wow bounceInDown">2021.06</div>
+              <p class="wow bounceInRight">mosaique v| testnet launch (w/</p>
             </div>
           </div>
           <div class="line-item">
-            <img src="" alt="">
+            <img src="../access/section-5-icon-3.png" alt="">
             <div class="info-dev">
-              <h2 class="timer">2021.05</h2>
-              <p>front-end UX/UI design；contract interface imprint function v| complete MVP</p>
+              <div class="timer  wow bounceInDown">2021.Q3</div>
+              <p class="wow bounceInRight">explorer v| complete Mainnet Launch Multi-chain Environment</p>
             </div>
           </div>
         </div>
-        <img src="" class="gif-4" alt="">
+        <img src="../access/05-roadmap.png" class="roadmap-img wow bounceInRight" alt="">
       </div>
     </section>
     <section class="section section-6">
       <div class="edition-center">
-        <div class="core">
+        <div class="core wow pulse">
           <p class="fun">FUNCTIONS</p>
           <p class="core-text">Core Values</p>
         </div>
         <div class="items">
-          <img src="" alt="">
-          <img src="" alt="">
-          <img src="" alt="">
-          <img src="" alt="">
-          <img src="" alt="">
+          <img class=" wow bounceInDown" src="../access/06-Partners01.png" alt="">
+          <img class=" wow bounceInDown" src="../access/06-Partners02EthSign.png" alt="">
+          <img class=" wow bounceInDown" src="../access/06-Partners03-reva.png" alt="">
+          <img class=" wow bounceInDown" src="../access/06-Partners04-IncubaAlpha.png" alt="">
+          <img class=" wow bounceInDown" src="../access/06-Partners05-dodo.png" alt="">
         </div>
         <img src="" class="gif-4" alt="">
       </div>
@@ -154,7 +152,6 @@ export default {
   height: 1080px;
   width: 100%;
   position: relative;
-  margin-top: -17px;
   .bg-all {
     position: absolute;
     height: 1080px;
@@ -165,8 +162,10 @@ export default {
   }
 }
   .section-1 {
+    position: relative;
+    box-sizing: border-box;
+    padding-top: 369px;
     p {
-      margin-top: 369px;
       font-size: 26px;
       font-family: Verdana;
       font-weight: 400;
@@ -228,6 +227,157 @@ export default {
         border-bottom-left-radius: 0;
         color: #FFFFFF;
       }
+    }
+    .section-img {
+      position: absolute;
+      top: -280px;
+      right: -347px;
+    }
+  }
+  .section-2, .section-3, .section-4 {
+    .edition-center {
+      padding-top: 406px;
+      .dec {
+        display: flex;
+        .info {
+          width: 633px;
+          font-size: 22px;
+          font-family: Verdana;
+          font-weight: 400;
+          color: #454953;
+          line-height: 36px;
+          .h2 {
+            font-size: 80px;
+            font-family: Arial Black;
+            font-weight: 400;
+            color: #454953;
+            line-height: 80px;
+            position: relative;
+            margin-bottom: 55px;
+            &:after {
+              bottom: -20px;
+              left: 0;
+              position: absolute;
+              content: ' ';
+              width: 96px;
+              height: 2px;
+              background-color: #DA6464;
+            }
+          }
+          .h3 {
+            font-size: 22px;
+          }
+          .red-text {
+            margin-top: 40px;
+            color: #D15F5F;
+          }
+        }
+        .gif-img {
+          width: 384px;
+          height: 384px;
+          margin-right: 150px;
+        }
+        #anim {
+          width: 384px;
+          height: 384px;
+          margin-right: 150px;
+        }
+      }
+    }
+  }
+  .section-5 {
+    .edition-center {
+      display: flex;
+      .line-dos {
+        width: 462px;
+        padding-top: 373px;
+        .line-item {
+          display: flex;
+          font-size: 18px;
+          margin-bottom: 79px;
+          font-family: Verdana;
+          font-weight: 400;
+          color: #454953;
+          .info-dev {
+            flex: 1;
+          }
+          img {
+            width: 53px;
+            height: 53px;
+            margin-right: 25px;
+          }
+          .timer {
+            margin-bottom: 29px;
+            font-size: 40px;
+            font-family: Arial Black;
+            font-weight: 400;
+            color: #454953;
+            position: relative;
+            &:after {
+              bottom: -15px;
+              left: 0;
+              position: absolute;
+              content: ' ';
+              width: 75px;
+              height: 2px;
+              background-color: #DA6464;
+            }
+          }
+        }
+      }
+      .roadmap-img {
+        position: absolute;
+        left: 650px;
+        width: 620px;
+        height: 825px;
+        top: 135px;
+      }
+    }
+  }
+  .section-6 {
+    height: 916px;
+    .edition-center {
+      padding-top: 396px;
+      .items {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        img {
+          margin-right: 45px;
+          width: 204px;
+          height: 202px;
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+    }
+  }
+  .core {
+    position: absolute;
+    left: 91px;
+    top: 53px;
+    &:after {
+      content: ' ';
+      left: -91px;
+      top: 11px;
+      position: absolute;
+      width: 78px;
+      height: 1px;
+      border: 1px solid #454953;
+    }
+    .fun {
+      font-size: 22px;
+      font-family: Verdana;
+      font-weight: 400;
+      color: #454953;
+    }
+    .core-text {
+      font-size: 40px;
+      font-family: Arial Black;
+      font-weight: 400;
+      color: #DA6464;
+      padding-top: 30px;
     }
   }
 }

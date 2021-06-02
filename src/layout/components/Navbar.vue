@@ -2,6 +2,7 @@
   <div class="navbar">
     <div class="edition-center">
       <div
+        @click="$router.push('/')"
         class="logo-box"
       >
         <img class="logo" src="../../access/logo.png" alt="">
@@ -10,7 +11,7 @@
       <div class="nav-tabs">
         <div class="nav-item">Hero Banner</div>
         <div class="nav-item">Three Functions</div>
-        <div class="nav-item">Team</div>
+        <div class="nav-item" @click="$router.push('/team')">Team</div>
         <div class="nav-item">Hero Banner</div>
         <div class="nav-item">Contact Us</div>
       </div>
@@ -30,8 +31,9 @@ export default {
 <style lang="scss" scoped>
 .navbar {
   height: 111px;
-  background: linear-gradient(to right, #DA6464 0%, #DA6464 75%, #454953 75%, #454953 100%);
+  background: linear-gradient(to right, #DA6464 0%, #DA6464 50%, #454953 50%, #454953 100%);
   .edition-center {
+    background: linear-gradient(to right, #DA6464 0%, #DA6464 86%, #454953 86%, #454953 100%);
     position: relative;
     display: flex;
     align-items: center;
@@ -41,6 +43,7 @@ export default {
       margin-right: 77px;
       .logo {
         width: 53px;
+        cursor: pointer;
         height: 53px;
       }
       .logo-text {
@@ -59,6 +62,7 @@ export default {
       line-height: 21px;
       .nav-item {
         margin-right: 29px;
+        cursor: pointer;
         position: relative;
         &:before {
           content: ' ';

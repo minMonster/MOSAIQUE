@@ -18,10 +18,20 @@ export default {
 }
 </script>
 <style lang="scss">
-
+.f-base {
+  width: 100vw;
+  overflow: hidden;
+}
 .edition-center {
   width: 1200px;
   margin: 0 auto;
   height: 100%;
+  position: relative;
+}
+* {
+  box-sizing: border-box;
+}
+p {
+   margin: 0;
 }
 </style>

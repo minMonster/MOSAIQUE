@@ -5,18 +5,22 @@
         <navbar />
       </div>
       <app-main />
+      <div>
+        <Footer />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { Navbar, AppMain } from './components'
+import { Navbar, AppMain, Footer } from './components'
 
 export default {
   name: 'Layout',
   components: {
     Navbar,
-    AppMain
+    AppMain,
+    Footer
   },
   computed: {
 
