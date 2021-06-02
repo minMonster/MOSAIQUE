@@ -138,12 +138,12 @@ export default {
   mounted() {
     // 初始化动画
     new WOW.WOW().init()
-    // lottie.loadAnimation({
-    //   container: document.getElementById('anim'),
-    //   loop: true,
-    //   autoplay: true,
-    //   path: 'https://assets5.lottiefiles.com/packages/lf20_szotb4jl.json'
-    // })
+    lottie.loadAnimation({
+      container: document.getElementById('anim'),
+      loop: true,
+      autoplay: true,
+      path: 'https://assets5.lottiefiles.com/packages/lf20_szotb4jl.json'
+    })
   }
 }
 </script>
