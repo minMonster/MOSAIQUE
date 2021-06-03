@@ -77,8 +77,8 @@
     <section class="section section-5">
       <div class="edition-center">
         <div class="core wow pulse">
-          <p class="fun">FUNCTIONS</p>
-          <p class="core-text">Core Values</p>
+          <p class="fun">ROADMAP</p>
+          <p class="core-text">Tech Roadmap</p>
         </div>
         <div class="line-dos">
           <div class="line-item">
@@ -109,8 +109,8 @@
     <section class="section section-6">
       <div class="edition-center">
         <div class="core wow pulse">
-          <p class="fun">FUNCTIONS</p>
-          <p class="core-text">Core Values</p>
+          <p class="fun">PARTNERS</p>
+          <p class="core-text">Partners</p>
         </div>
         <div class="items">
           <img class=" wow bounceInDown" src="../access/06-Partners01.png" alt="">
@@ -150,8 +150,8 @@ export default {
 <style lang="scss">
 .home {
 .section {
-  height: 1080px;
   width: 100%;
+  overflow: hidden;
   position: relative;
   .bg-all {
     position: absolute;
@@ -163,9 +163,10 @@ export default {
   }
 }
   .section-1 {
+    height: 700px;
     position: relative;
     box-sizing: border-box;
-    padding-top: 369px;
+    padding-top: 149px;
     p {
       font-size: 26px;
       font-family: Verdana;
@@ -179,7 +180,6 @@ export default {
       font-family: Arial Black;
       font-weight: 400;
       color: #454953;
-      line-height: 21px;
     }
     .button {
       width: 235px;
@@ -188,7 +188,7 @@ export default {
       border-radius: 10px;
       text-align: center;
       line-height: 60px;
-      font-size: 22px;
+      font-size: 18px;
       font-family: Verdana;
       font-weight: 400;
       color: #FFFFFF;
@@ -230,16 +230,18 @@ export default {
       }
     }
     .section-img {
+      width: 500px;
       position: absolute;
-      top: -280px;
-      right: -347px;
+      top: -40px;
+      right: 0px;
     }
   }
   .section-2, .section-3, .section-4 {
     .edition-center {
-      padding-top: 406px;
+      padding: 100px 0;
       .dec {
         display: flex;
+        justify-content: center;
         .info {
           width: 633px;
           font-size: 22px;
@@ -248,11 +250,11 @@ export default {
           color: #454953;
           line-height: 36px;
           .h2 {
-            font-size: 80px;
+            font-size: 50px;
             font-family: Arial Black;
             font-weight: 400;
             color: #454953;
-            line-height: 80px;
+            line-height: 50px;
             position: relative;
             margin-bottom: 55px;
             &:after {
@@ -274,24 +276,30 @@ export default {
           }
         }
         .gif-img {
-          width: 384px;
-          height: 384px;
+          width: 284px;
+          height: 284px;
           margin-right: 150px;
         }
         #anim {
-          width: 384px;
-          height: 384px;
+          width: 284px;
+          height: 284px;
           margin-right: 150px;
         }
       }
     }
   }
+  .section-2 {
+    .edition-center {
+      padding-top: 230px;
+    }
+  }
   .section-5 {
     .edition-center {
       display: flex;
+      padding-bottom: 100px;
       .line-dos {
         width: 462px;
-        padding-top: 373px;
+        padding-top: 203px;
         .line-item {
           display: flex;
           font-size: 18px;
@@ -329,24 +337,22 @@ export default {
       .roadmap-img {
         position: absolute;
         left: 650px;
-        width: 620px;
-        height: 825px;
-        top: 135px;
+        width: 520px;
+        top: 100px;
       }
     }
   }
   .section-6 {
-    height: 916px;
     .edition-center {
-      padding-top: 396px;
+      padding-top: 256px;
+      padding-bottom: 140px;
       .items {
         display: flex;
         width: 100%;
         justify-content: center;
         img {
-          margin-right: 45px;
-          width: 204px;
-          height: 202px;
+          margin-right: 65px;
+          width: 154px;
           &:last-child {
             margin-right: 0;
           }
@@ -368,13 +374,13 @@ export default {
       border: 1px solid #454953;
     }
     .fun {
-      font-size: 22px;
+      font-size: 18px;
       font-family: Verdana;
       font-weight: 400;
       color: #454953;
     }
     .core-text {
-      font-size: 40px;
+      font-size: 30px;
       font-family: Arial Black;
       font-weight: 400;
       color: #DA6464;

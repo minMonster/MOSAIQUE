@@ -30,7 +30,7 @@ export default {
 
 <style lang="scss" scoped>
 .footer {
-  height: 225px;
+  height: 105px;
   background: linear-gradient(to right, #DA6464 0%, #DA6464 50%, #454953 50%, #454953 100%);
   .edition-center {
     display: flex;
@@ -38,7 +38,7 @@ export default {
     .footer-left {
       padding-top: 25px;
       width: 76%;
-      font-size: 22px;
+      font-size: 18px;
       font-family: Verdana;
       font-weight: 400;
       color: #FFFFFF;
@@ -53,16 +53,18 @@ export default {
       p {
         position: absolute;
         left: 18px;
-        top: 43px;
+        top: 40px;
         width: 400px;
       }
-      font-size: 30px;
+      font-size: 22px;
       font-family: Arial Black;
       font-weight: 400;
       color: #FFFFFF;
     }
     .item-imgs {
+      padding-top: 10px;
       img {
+        width: 40px;
         margin-right: 25px;
       }
     }

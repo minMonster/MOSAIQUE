@@ -30,7 +30,7 @@ export default {
 
 <style lang="scss" scoped>
 .navbar {
-  height: 111px;
+  height: 80px;
   background: linear-gradient(to right, #DA6464 0%, #DA6464 50%, #454953 50%, #454953 100%);
   .edition-center {
     background: linear-gradient(to right, #DA6464 0%, #DA6464 86%, #454953 86%, #454953 100%);
@@ -42,17 +42,16 @@ export default {
       align-items: center;
       margin-right: 77px;
       .logo {
-        width: 53px;
+        width: 43px;
         cursor: pointer;
-        height: 53px;
       }
       .logo-text {
         margin-left: 22px;
-        width: 179px;
-        height: 28px;
+        width: 139px;
       }
     }
     .nav-tabs {
+      padding-left: 200px;
       flex: 1;
       display: flex;
       font-size: 15px;

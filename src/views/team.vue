@@ -3,8 +3,8 @@
     <section class="section">
       <div class="edition-center">
         <div class="core wow pulse">
-          <p class="fun">FUNCTIONS</p>
-          <p class="core-text">Core Values</p>
+          <p class="fun">ABOUT US</p>
+          <p class="core-text">Team</p>
         </div>
         <div class="user-list">
           <div class="user-item">
@@ -98,13 +98,13 @@ export default {
       border: 1px solid #454953;
     }
     .fun {
-      font-size: 22px;
+      font-size: 18px;
       font-family: Verdana;
       font-weight: 400;
       color: #454953;
     }
     .core-text {
-      font-size: 40px;
+      font-size: 30px;
       font-family: Arial Black;
       font-weight: 400;
       color: #DA6464;
@@ -154,8 +154,9 @@ export default {
         margin-right: 0;
       }
       img {
-        width: 255px;
-        height: 255px;
+        margin-left: 40px;
+        width: 155px;
+        height: 155px;
       }
       .name {
         margin-top: 57px;
@@ -163,30 +164,30 @@ export default {
         &:before {
           content: ' ';
           z-index: -1;
-          width: 56px;
-          height: 57px;
+          width: 46px;
+          height: 47px;
           border-radius: 28px;
           background-color: #D15F5F;
           position: absolute;
           left: -18px;
           top: -18px;
         }
-        font-size: 36px;
+        font-size: 32px;
         font-family: Arial Black;
         font-weight: 400;
-        padding-left: 10px;
+        padding-left: 20px;
         color: #454953;
       }
       .dec {
-        font-size: 36px;
-        padding-left: 10px;
+        font-size: 28px;
+        padding-left: 20px;
         padding-top: 23px;
         font-family: Arial Black;
         font-weight: 400;
         color: #D15F5F;
       }
       .info {
-        font-size: 17px;
+        font-size: 15px;
         padding-top: 41px;
         font-family: Verdana;
         font-weight: 400;
