@@ -107,6 +107,7 @@
       </div>
     </section>
     <section class="section section-6">
+      <a name="Partners" />
       <div class="edition-center">
         <div class="core wow pulse">
           <p class="fun">PARTNERS</p>

@@ -12,7 +12,7 @@
         <div class="nav-item">Hero Banner</div>
         <a class="nav-item" href="#Three Functions">Three Functions</a>
         <div class="nav-item" @click="$router.push('/team')">Team</div>
-        <div class="nav-item">Partners</div>
+        <a class="nav-item" href="#Partners">Partners</a>
         <a class="nav-item" href="#Contact Us">Contact Us</a>
       </div>
     </div>
