@@ -24,6 +24,7 @@ export default {
 }
 .edition-center {
   width: 1200px;
+  padding: 0 90px;
   margin: 0 auto;
   height: 100%;
   position: relative;

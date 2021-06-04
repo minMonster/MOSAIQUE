@@ -86,7 +86,7 @@ export default {
   padding-bottom: 100px;
   .core {
     position: absolute;
-    left: 91px;
+    left: 180px;
     top: 53px;
     &:after {
       content: ' ';
@@ -148,8 +148,8 @@ export default {
     .user-item {
       display: flex;
       flex-direction: column;
-      margin-right: 162px;
-      width: 285px;
+      margin-right: 115px;
+      width: 297px;
       &:last-child {
         margin-right: 0;
       }
@@ -169,7 +169,7 @@ export default {
           border-radius: 28px;
           background-color: #D15F5F;
           position: absolute;
-          left: -18px;
+          left: -8px;
           top: -18px;
         }
         font-size: 32px;
