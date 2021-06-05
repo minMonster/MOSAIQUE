@@ -149,7 +149,6 @@
     </section>
   </div>
 </template>
-
 <script>
 import lottie from 'lottie-web'
 import WOW from 'wowjs'
