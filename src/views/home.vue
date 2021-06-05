@@ -5,16 +5,16 @@
     <!--    <div id="anim" style="width: 100px;height: 100px;" />-->
     <section class="section section-1">
       <div class="edition-center">
-        <p class="wow animate__animated animate__bounceInRight">
+        <p class="wow">
           An Interactive Collector-Centered NFT Infrastructure
         </p>
-        <h2 class="wow animate__animated animate__bounceInDown">Mosaique Protocol</h2>
+        <h2 class="wow">Mosaique Protocol</h2>
         <div class="button">Go to Mosaique</div>
         <div class="tabs-button">
-          <div class="email">Email Address</div>
-          <div class="sub">Subscribe</div>
+          <input v-model="email" :class="{'force': email!==''}" class="email" placeholder="Email Address"></input>
+          <div class="sub" @click="submit">Subscribe</div>
         </div>
-        <img class="section-img  wow animate__animated animate__bounceInRight" src="../access/section-img.png" alt="">
+        <img class="section-img" src="../access/section-img.png" alt="">
       </div>
     </section>
     <section class="section section-2">
@@ -24,7 +24,7 @@
           <p class="core-text">How does MOSAIQUE work?</p>
         </div>
         <div class="dec">
-          <div id="anim" class=" wow animate__animated animate__bounceInLeft" />
+          <div id="anim" />
           <div class="info">
             <div style="-webkit-animation-delay: 0s;" class="h2 wow animate__animated animate__fadeInUp">Imprinting</div>
             <div>
@@ -41,7 +41,7 @@
     <section class="section section-3">
       <div class="edition-center">
         <div class="dec">
-          <img class="gif-img  wow animate__animated animate__bounceInLeft" src="../access/04-Values02.gif" alt="">
+          <img class="gif-img" src="../access/04-Values02.gif" alt="">
           <div class="info">
             <div style="-webkit-animation-delay: 0s;" class="h2 wow animate__animated animate__fadeInUp">Snapshot</div>
             <div>
@@ -57,7 +57,7 @@
     <section class="section section-4">
       <div class="edition-center">
         <div class="dec">
-          <img class="gif-img wow animate__animated animate__bounceInLeft" src="../access/04-Values03.gif" alt="">
+          <img class="gif-img" src="../access/04-Values03.gif" alt="">
           <div class="info">
             <div style="-webkit-animation-delay: 0s;" class="h2 wow animate__animated animate__fadeInUp">MoScan</div>
             <div>
@@ -120,7 +120,7 @@
             </div>
           </div>
         </div>
-        <img src="../access/05-roadmap.png" class="roadmap-img wow animate__animated animate__bounceInRight" alt="">
+        <img src="../access/05-roadmap.png" class="roadmap-img" alt="">
       </div>
     </section>
     <section class="section section-6">
@@ -130,11 +130,11 @@
           <p class="core-text">Partners</p>
         </div>
         <div class="items">
-          <img style="-webkit-animation-delay: 0s;" class="wow animate__animated animate__fadeInUp" src="../access/06-Partners01.png" alt="">
-          <img style="-webkit-animation-delay: 0.2s;" class="wow animate__animated animate__fadeInUp" src="../access/06-Partners02EthSign.png" alt="">
-          <img style="-webkit-animation-delay: 0.4s;" class="wow animate__animated animate__fadeInUp" src="../access/06-Partners03-reva.png" alt="">
-          <img style="-webkit-animation-delay: 0.6s;" class="wow animate__animated animate__fadeInUp" src="../access/06-Partners04-IncubaAlpha.png" alt="">
-          <img style="-webkit-animation-delay: 0.8s;" class="wow animate__animated animate__fadeInUp" src="../access/06-Partners05-dodo.png" alt="">
+          <a href="https://puzzle.ventures/" target="_blank"><img style="-webkit-animation-delay: 0s;" class="wow animate__animated animate__fadeInUp" src="../access/06-Partners01.png" alt=""></a>
+          <a href="https://ethsign.xyz/#/" target="_blank"><img style="-webkit-animation-delay: 0.2s;" class="wow animate__animated animate__fadeInUp" src="../access/06-Partners02EthSign.png" alt=""></a>
+          <a href="https://twitter.com/reva_fyw" target="_blank"><img style="-webkit-animation-delay: 0.4s;" class="wow animate__animated animate__fadeInUp" src="../access/06-Partners03-reva.png" alt=""></a>
+          <a href="https://www.incuba.capital/" target="_blank"><img style="-webkit-animation-delay: 0.6s;" class="wow animate__animated animate__fadeInUp" src="../access/06-Partners04-IncubaAlpha.png" alt=""></a>
+          <a href="https://dodonft.io/" target="_blank"><img style="-webkit-animation-delay: 0.8s;" class="wow animate__animated animate__fadeInUp" src="../access/06-Partners05-dodo.png" alt=""></a>
         </div>
         <img src="" class="gif-4" alt="">
       </div>
@@ -147,9 +147,12 @@ import lottie from 'lottie-web'
 import WOW from 'wowjs'
 export default {
   name: 'Home',
-  created() {
-    console.log('created')
+  data: function() {
+    return {
+      email: ''
+    }
   },
+  created() {},
   mounted() {
     // 初始化动画
     new WOW.WOW().init()
@@ -159,6 +162,19 @@ export default {
       autoplay: true,
       path: 'https://assets5.lottiefiles.com/packages/lf20_szotb4jl.json'
     })
+  },
+  methods: {
+    submit() {
+      const reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
+      if (reg.test(this.email)) {
+
+      } else {
+        this.$message({
+          message: '请输入正确的邮箱地址',
+          type: 'warning'
+        })
+      }
+    }
   }
 }
 </script>
@@ -220,6 +236,17 @@ export default {
       border-radius: 10px;
       margin-top: 34px;
       .email {
+        &::-webkit-input-placeholder {
+          color: #DA6464;
+        }
+        &.force {
+          padding-left: 10px;
+        }
+
+        width: 183px;
+        border: 0;  // 去除未选中状态边框
+        outline: none; // 去除选中状态边框
+        background-color: rgba(0, 0, 0, 0);// 透明背景
         flex: 1;
         box-sizing: border-box;
         line-height: 40px;
@@ -363,11 +390,13 @@ export default {
         display: flex;
         width: 100%;
         justify-content: center;
-        img {
+        a {
           margin-right: 38px;
-          width: 172px;
           &:last-child {
             margin-right: 0;
+          }
+          img {
+            width: 172px;
           }
         }
       }

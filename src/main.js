@@ -6,7 +6,7 @@ import './libs/animate/new.css'
 
 // 全量引入 ElementUI
 import ElementUI from 'element-ui'
-
+import 'element-ui/lib/theme-chalk/index.css'
 import App from './App'
 import store from './store'
 import router from './router'

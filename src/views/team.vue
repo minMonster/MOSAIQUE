@@ -3,7 +3,6 @@
     <section class="section">
       <div class="edition-center">
         <div class="core wow pulse">
-          <p class="fun">ABOUT US</p>
           <p class="core-text">Team</p>
         </div>
         <div class="user-list">
@@ -16,17 +15,17 @@
             </p>
           </div>
           <div class="user-item">
-            <img src="../access/head.png" alt="">
+            <img src="../access/nv.png" alt="">
             <p class="name">Tianshu (Zoe)</p>
             <p class="dec">Co-founder</p>
             <p class="info">
-              Tianshu is an interaction designer. She worked at Yale as a creative technology facilitator on motion capture and MR technology. She graduated from University of Illinois at Urbana-Champaign with a graduate degree in arts and Peking University with an undergraduate degree in science.
+              Zoe is a designer and a developer with an interdisciplinary background in science and art. She previously worked at Yale and startups.
             </p>
           </div>
           <div class="user-item">
             <img src="../access/head.png" alt="">
             <p class="name">Bowen</p>
-            <p class="dec">Co-founder</p>
+            <p class="dec">Tech Lead</p>
             <p class="info">
               Bowen is responsible for the economic model design of the Mosaique. He is a researcher at Puzzle Ventures. He graduated Peking University with double degrees in physics and computer science, and currently a doctoral student at UCLA.
             </p>
@@ -36,20 +35,20 @@
         <div style="padding-top: 0;" class="user-list">
           <div class="user-item">
             <img src="../access/head.png" alt="">
-            <p class="name">Ziqi(Jerry)Zhou</p>
+            <p class="name">Ziqi<span>(Jerry)</span>Zhou</p>
             <p class="info">
               Jerry is the Managing Partner of Puzzle Ventures. He graduated from the Cheriton School of Computer Science, University of Waterloo. He led a series of investments, including DODO, BoringDAO, Kine, Nuts Finance, etc.
             </p>
           </div>
           <div class="user-item">
-            <img src="../access/head.png" alt="">
+            <img src="../access/nv.png" alt="">
             <p class="name">Melody Taira</p>
             <p class="info">
-              Melody is the founder of Incuba Alpha. She is an expert in incubating and investing in early stage bloackchain projects since 2017. Part of the portfolios: Phala Network, Litentry, Serum, Horizon Finance, Naos Finance, Maskbook, Mcdex, DeepDao, DoraFactory
+              Melody is the founder of Incuba Alpha. She is an expert in incubating and investing in early stage bloackchain projects since 2017. Part of the portfolios: Phala Network, Litentry, Serum, Horizon Finance, Naos Finance, Maskbook, Mcdex, DeepDao, DoraFactory.
             </p>
           </div>
           <div class="user-item">
-            <img src="../access/head.png" alt="">
+            <img src="../access/nv.png" alt="">
             <p class="name">Reva</p>
             <p class="info">
               Reva is an algorithmic artist on MakersPlace. She is also an engineer of computer graphics, exploring on topics of generative art, real-time interactive installation and GPU shader programming.
@@ -86,29 +85,13 @@ export default {
   padding-bottom: 100px;
   .core {
     position: absolute;
-    left: 180px;
-    top: 53px;
-    &:after {
-      content: ' ';
-      left: -91px;
-      top: 11px;
-      position: absolute;
-      width: 78px;
-      height: 1px;
-      border: 1px solid #454953;
-    }
-    .fun {
-      font-size: 18px;
-      font-family: Verdana;
-      font-weight: 400;
-      color: #454953;
-    }
+    left: 91px;
+    top: 60px;
     .core-text {
-      font-size: 30px;
+      font-size: 36px;
       font-family: Arial Black;
       font-weight: 400;
       color: #DA6464;
-      padding-top: 30px;
     }
   }
   .dividing-line {
@@ -143,40 +126,41 @@ export default {
     }
   }
   .user-list {
-    padding-top: 303px;
+    padding-top: 253px;
     display: flex;
     .user-item {
       display: flex;
       flex-direction: column;
       margin-right: 115px;
-      width: 297px;
+      width: 270px;
       &:last-child {
         margin-right: 0;
       }
       img {
-        margin-left: 40px;
-        width: 155px;
-        height: 155px;
+        width: 259px;
       }
       .name {
-        margin-top: 57px;
+        margin-top: 62px;
         position: relative;
-        &:before {
-          content: ' ';
-          z-index: -1;
-          width: 46px;
-          height: 47px;
-          border-radius: 28px;
-          background-color: #D15F5F;
-          position: absolute;
-          left: -8px;
-          top: -18px;
-        }
         font-size: 32px;
         font-family: Arial Black;
         font-weight: 400;
         padding-left: 20px;
         color: #454953;
+        span {
+          font-size: 25px;
+        }
+        &:before {
+          content: ' ';
+          z-index: -1;
+          width: 56px;
+          height: 56px;
+          border-radius: 28px;
+          background-color: #D15F5F;
+          position: absolute;
+          left: -8px;
+          top: -23px;
+        }
       }
       .dec {
         font-size: 28px;
