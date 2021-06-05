@@ -11,6 +11,14 @@
         <h2 class="wow">Mosaique Protocol</h2>
         <div class="button">Go to Mosaique</div>
         <div class="tabs-button">
+          <form v-show="false" id="mc-embedded-subscribe-form" action="https://mosaique.us6.list-manage.com/subscribe/post?u=de359772d6f2c446015ab3b07&amp;id=542a378cc8" method="post" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+            <div id="mc_embed_signup_scroll">
+              <input id="mce-EMAIL" v-model="email" type="email" name="EMAIL" class="email" placeholder="email address" required>
+              <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+              <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_de359772d6f2c446015ab3b07_542a378cc8" tabindex="-1" value=""></div>
+              <div class="clear"><input id="mc-embedded-subscribe" ref="mc-embedded-subscribe" type="submit" value="Subscribe" name="subscribe" class="button"></div>
+            </div>
+          </form>
           <input v-model="email" :class="{'force': email!==''}" class="email" placeholder="Email Address"></input>
           <div class="sub" @click="submit">Subscribe</div>
         </div>
@@ -167,10 +175,10 @@ export default {
     submit() {
       const reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
       if (reg.test(this.email)) {
-
+        this.$refs['mc-embedded-subscribe'].click()
       } else {
         this.$message({
-          message: '请输入正确的邮箱地址',
+          message: 'Please enter a valid email address',
           type: 'warning'
         })
       }
