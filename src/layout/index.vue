@@ -25,23 +25,17 @@ export default {
     Footer,
     MFooter, MNavbar
   },
-  computed: {
-    ...mapGetters(['isMobile', 'domWidth']),
-    zoomApp() {
-      if (this.domWidth > 2000) {
-        return 1.8
-      }
-      if (this.domWidth > 1600) {
-        return 1.4
-      }
-      if (this.domWidth > 1400) {
-        return 1.2
-      }
-      return 1
+  data: function() {
+    return {
     }
   },
-  mounted() {
+  watch: {
   },
+  computed: {
+    ...mapGetters(['isMobile', 'domWidth', 'zoomApp'])
+
+  },
+
   methods: {
 
   }

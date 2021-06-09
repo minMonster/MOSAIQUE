@@ -16,6 +16,7 @@ export default {
     }
   },
   mounted() {
+    this.$store.dispatch('app/checkMobile')
     window.addEventListener('resize', () => {
       this.$store.dispatch('app/checkMobile')
     })
