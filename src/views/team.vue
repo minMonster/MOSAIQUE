@@ -82,6 +82,13 @@ export default {
 
 <style lang="scss">
 .team {
+  .edition-center {
+    width: 1200px;
+    padding: 0 90px;
+    margin: 0 auto;
+    height: 100%;
+    position: relative;
+  }
   padding-bottom: 100px;
   .core {
     position: absolute;

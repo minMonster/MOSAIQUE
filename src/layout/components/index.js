@@ -1,3 +1,5 @@
 export { default as Navbar } from './Navbar'
+export { default as MNavbar } from './MNavbar'
 export { default as AppMain } from './AppMain'
 export { default as Footer } from './footer'
+export { default as MFooter } from './MFooter'

@@ -14,6 +14,11 @@ export default {
         token && this.$store.dispatch('currency/init')
       }
     }
+  },
+  mounted() {
+    window.addEventListener('resize', () => {
+      this.$store.dispatch('app/checkMobile')
+    })
   }
 }
 </script>
@@ -21,13 +26,6 @@ export default {
 .f-base {
   width: 100vw;
   overflow: hidden;
-}
-.edition-center {
-  width: 1200px;
-  padding: 0 90px;
-  margin: 0 auto;
-  height: 100%;
-  position: relative;
 }
 * {
   box-sizing: border-box;

@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="m-home">
     <img class="bg-all" src="../access/bg.png" alt="">
     <img class="bg-all bg-all-2" src="../access/bg.png" alt="">
     <!--    <div id="anim" style="width: 100px;height: 100px;" />-->
@@ -32,15 +32,17 @@
           <p class="core-text">How does MOSAIQUE work?</p>
         </div>
         <div class="dec">
-          <div id="anim" />
+          <div style="-webkit-animation-delay: 0s;" class="h2 wow animate__animated animate__fadeInUp">Imprinting</div>
           <div class="info">
-            <div style="-webkit-animation-delay: 0s;" class="h2 wow animate__animated animate__fadeInUp">Imprinting</div>
+            <div id="anim" />
             <div>
-              <div style="-webkit-animation-delay: 0.2s;" class="wow animate__animated animate__fadeInUp">The e-blazon and e-inscription functions<strong>visualize and </strong></div>
-              <div style="-webkit-animation-delay: 0.4s;" class="wow animate__animated animate__fadeInUp"><strong>personalize collecting footprints.</strong>Such interactive</div>
-              <div style="-webkit-animation-delay: 0.6s;" class="wow animate__animated animate__fadeInUp">experience deeply attracts and engages collectors across</div>
-              <div style="-webkit-animation-delay: 0.8s;" class="wow animate__animated animate__fadeInUp">fields. And the collectors add to the value of NFTs by</div>
-              <div style="-webkit-animation-delay: 1s;" class="wow animate__animated animate__fadeInUp">participating in the creation of the life of NFTs.</div>
+              <div style="-webkit-animation-delay: 0.2s;" class="wow animate__animated animate__fadeInUp">The e-blazon and e-inscription functions</div>
+              <div style="-webkit-animation-delay: 0.4s;" class="wow animate__animated animate__fadeInUp"><strong>visualize and personalize collecting </strong></div>
+              <div style="-webkit-animation-delay: 0.6s;" class="wow animate__animated animate__fadeInUp"><strong>footprints.</strong>Such interactive experience</div>
+              <div style="-webkit-animation-delay: 0.8s;" class="wow animate__animated animate__fadeInUp">deeply attracts and engages collectors across </div>
+              <div style="-webkit-animation-delay: 1s;" class="wow animate__animated animate__fadeInUp">fields. And the collectors add to the value of </div>
+              <div style="-webkit-animation-delay: 1.2s;" class="wow animate__animated animate__fadeInUp">NFTs by participating in the creation of the life</div>
+              <div style="-webkit-animation-delay: 1.4s;" class="wow animate__animated animate__fadeInUp">of NFTs.</div>
             </div>
           </div>
         </div>
@@ -49,15 +51,16 @@
     <section class="section section-3">
       <div class="edition-center">
         <div class="dec">
-          <img class="gif-img" src="../access/04-Values02.gif" alt="">
+          <div style="-webkit-animation-delay: 0s;" class="h2 wow animate__animated animate__fadeInUp">Snapshot</div>
           <div class="info">
-            <div style="-webkit-animation-delay: 0s;" class="h2 wow animate__animated animate__fadeInUp">Snapshot</div>
             <div>
-              <div style="-webkit-animation-delay: 0.2s;" class="wow animate__animated animate__fadeInUp">Snapshot allows NFTs and NFT-collectors to be active players</div>
-              <div style="-webkit-animation-delay: 0.4s;" class="wow animate__animated animate__fadeInUp">in the market constantly. It entitles collectors to generate</div>
-              <div style="-webkit-animation-delay: 0.6s;" class="wow animate__animated animate__fadeInUp">NFT derivatives and promises value realization even when</div>
-              <div style="-webkit-animation-delay: 0.8s;" class="wow animate__animated animate__fadeInUp">collectors do not want to sell their NFTs.</div>
+              <div style="-webkit-animation-delay: 0.2s;" class="wow animate__animated animate__fadeInUp"> Snapshot allows NFTs and NFT-collectors to</div>
+              <div style="-webkit-animation-delay: 0.4s;" class="wow animate__animated animate__fadeInUp">be active players in the market constantly. It</div>
+              <div style="-webkit-animation-delay: 0.6s;" class="wow animate__animated animate__fadeInUp">entitles collectors to generate NFT derivatives</div>
+              <div style="-webkit-animation-delay: 0.8s;" class="wow animate__animated animate__fadeInUp">and promises value realization even when</div>
+              <div style="-webkit-animation-delay: 1s;" class="wow animate__animated animate__fadeInUp">collectors do not want to sell their NFTs.</div>
             </div>
+            <img class="gif-img" src="../access/04-Values02.gif" alt="">
           </div>
         </div>
       </div>
@@ -65,14 +68,15 @@
     <section class="section section-4">
       <div class="edition-center">
         <div class="dec">
-          <img class="gif-img" src="../access/04-Values03.gif" alt="">
+          <div style="-webkit-animation-delay: 0s;" class="h2 wow animate__animated animate__fadeInUp">MoScan</div>
           <div class="info">
-            <div style="-webkit-animation-delay: 0s;" class="h2 wow animate__animated animate__fadeInUp">MoScan</div>
+            <img class="gif-img" src="../access/04-Values03.gif" alt="">
             <div>
-              <div style="-webkit-animation-delay: 0.2s;" class="wow animate__animated animate__fadeInUp">MoScan is a cross-platform NFT explorer that records the</div>
-              <div style="-webkit-animation-delay: 0.4s;" class="wow animate__animated animate__fadeInUp">lifecycle of NFTs and their interactive activities. It provides</div>
-              <div style="-webkit-animation-delay: 0.6s;" class="wow animate__animated animate__fadeInUp">a visualized data tracker for users, developers, and</div>
-              <div style="-webkit-animation-delay: 0.8s;" class="wow animate__animated animate__fadeInUp">researchers.</div>
+              <div style="-webkit-animation-delay: 0.2s;" class="wow animate__animated animate__fadeInUp">MoScan is a cross-platform NFT explorer that</div>
+              <div style="-webkit-animation-delay: 0.4s;" class="wow animate__animated animate__fadeInUp">records the lifecycle of NFTs and their</div>
+              <div style="-webkit-animation-delay: 0.6s;" class="wow animate__animated animate__fadeInUp">interactive activities. It provides a visualized</div>
+              <div style="-webkit-animation-delay: 0.8s;" class="wow animate__animated animate__fadeInUp">data tracker for users, developers, and</div>
+              <div style="-webkit-animation-delay: 1s;" class="wow animate__animated animate__fadeInUp">researchers.</div>
             </div>
           </div>
         </div>
@@ -128,7 +132,7 @@
             </div>
           </div>
         </div>
-        <img src="../access/05-roadmap.png" class="roadmap-img" alt="">
+        <img src="../access/logo资源 4@8x 拷贝.png" class="roadmap-img" alt="">
       </div>
     </section>
     <section class="section section-6">
@@ -140,6 +144,8 @@
         <div class="items">
           <a href="https://puzzle.ventures/" target="_blank"><img style="-webkit-animation-delay: 0s;" class="wow animate__animated animate__fadeInUp" src="../access/06-Partners01.png" alt=""></a>
           <a href="https://ethsign.xyz/#/" target="_blank"><img style="-webkit-animation-delay: 0.2s;" class="wow animate__animated animate__fadeInUp" src="../access/06-Partners02EthSign.png" alt=""></a>
+          s        </div>
+        <div class="items" style="padding-top: .74rem;">
           <a href="https://twitter.com/reva_fyw" target="_blank"><img style="-webkit-animation-delay: 0.4s;" class="wow animate__animated animate__fadeInUp" src="../access/06-Partners03-reva.png" alt=""></a>
           <a href="https://www.incuba.capital/" target="_blank"><img style="-webkit-animation-delay: 0.6s;" class="wow animate__animated animate__fadeInUp" src="../access/06-Partners04-IncubaAlpha.png" alt=""></a>
           <a href="https://dodonft.io/" target="_blank"><img style="-webkit-animation-delay: 0.8s;" class="wow animate__animated animate__fadeInUp" src="../access/06-Partners05-dodo.png" alt=""></a>
@@ -187,13 +193,22 @@ export default {
 </script>
 
 <style lang="scss">
-.home {
-  .edition-center {
-    width: 1200px;
-    padding: 0 90px;
-    margin: 0 auto;
-    height: 100%;
+.m-home {
+  .section {
     position: relative;
+  }
+  .core {
+    position: absolute;
+    top: 1.63rem;
+    text-align: center;
+    left: 0;
+    width: 7.5rem;
+    .core-text {
+      font-size: .36rem;
+      font-family: Arial Black;
+      font-weight: 400;
+      color: #DA6464;
+    }
   }
   .bg-all {
     position: fixed;
@@ -206,49 +221,48 @@ export default {
       top: 1080px;
     }
   }
-.section {
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-}
   .section-1 {
-    background-color: #fff;
-    position: relative;
+    height: 12.2rem;
     box-sizing: border-box;
-    padding-top: 292px;
-    padding-bottom: 335px;
+    background-color: #fff;
+    padding-left: .89rem;
     p {
-      font-size: 18px;
+      padding-top: 1.74rem;
+      font-size: .22rem;
       font-family: Verdana;
       font-weight: 400;
       color: #454953;
+      line-height: .21rem;
     }
     h2 {
-      margin-top: 23px;
-      font-size: 51px;
+      font-size: .63rem;
+      padding-top: .26rem;
+      margin: 0;
       font-family: Arial Black;
       font-weight: 400;
       color: #454953;
-      margin-bottom: 51px;
+      margin-left: -.05rem;
     }
     .button {
-      width: 200px;
-      height: 40px;
-      background: #DA6464;
-      border-radius: 10px;
+      margin-top: .38rem;
       text-align: center;
-      line-height: 40px;
-      font-size: 16px;
+      line-height: .4rem;
+      width: 2rem;
+      height: .4rem;
+      background: #DA6464;
+      border-radius: .1rem;
+      font-size: .16rem;
       font-family: Verdana;
       font-weight: 400;
       color: #FFFFFF;
     }
     .tabs-button {
-      width: 305px;
+      width: 2.9rem;
       display: flex;
+      height: .4rem;
       align-items: center;
-      border-radius: 10px;
-      margin-top: 34px;
+      border-radius: .10rem;
+      margin-top: .34rem;
       .email {
         &::-webkit-input-placeholder {
           color: #DA6464;
@@ -257,32 +271,32 @@ export default {
           padding-left: 10px;
         }
 
-        width: 183px;
+        width: 1.83rem;
         border: 0;  // 去除未选中状态边框
         outline: none; // 去除选中状态边框
         background-color: rgba(0, 0, 0, 0);// 透明背景
         flex: 1;
         box-sizing: border-box;
-        line-height: 40px;
-        height: 40px;
-        border: 2px solid #DA6464;
-        border-radius: 10px;
-        font-size: 16px;
+        line-height: .40rem;
+        height: .40rem;
+        border: .02rem solid #DA6464;
+        border-radius: .10rem;
+        font-size: .16rem;
         font-family: Verdana;
         font-weight: 400;
         color: #DA6464;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
-        padding-left: 37px;
+        padding-left: .37rem;
       }
       .sub {
-        width: 120px;
+        width: 1.2rem;
         text-align: center;
-        height: 40px;
-        line-height: 40px;
+        height: .4rem;
+        line-height:.4rem;
         background: #DA6464;
-        border-radius: 10px;
-        font-size: 16px;
+        border-radius: .1rem;
+        font-size: .16rem;
         font-family: Verdana;
         font-weight: 400;
         border-top-left-radius: 0;
@@ -291,140 +305,139 @@ export default {
       }
     }
     .section-img {
-      width: 796px;
+      width: 7.23rem;
+      height: 7.86rem;
       position: absolute;
-      top: -210px;
-      left: 420px;
+      left: 0;
+      bottom: -.51rem;
     }
   }
   .section-2, .section-3, .section-4 {
-    .edition-center {
-      padding-top: 287px;
-      padding-bottom: 273px;
-      .dec {
-        display: flex;
-        justify-content: center;
-        .info {
-          width: 633px;
-          font-size: 18px;
-          font-family: Verdana;
-          font-weight: 400;
-          color: #454953;
-          line-height: 32px;
-          .h2 {
-            font-size: 60px;
-            font-family: Arial Black;
-            font-weight: 400;
-            color: #454953;
-            line-height: 60px;
-            position: relative;
-            margin-bottom: 102px;
-            &:after {
-              bottom: -51px;
-              left: 0;
-              position: absolute;
-              content: ' ';
-              width: 96px;
-              height: 2px;
-              background-color: #DA6464;
-            }
-          }
-        }
-        .gif-img {
-          width: 350px;
-          margin-right: 101px;
-        }
-        #anim {
-          width: 350px;
-          margin-top: -20px;
-          margin-right: 101px;
-        }
+    padding: 0 .4rem;
+    box-sizing: border-box;
+    padding-top: 3.24rem;
+    .h2 {
+      text-align: center;
+      font-size: .48rem;
+      font-family: Arial Black;
+      font-weight: 400;
+      color: #454953;
+      position: relative;
+      margin-bottom: .63rem;
+      &:after {
+        bottom: -.27rem;
+        left: 50%;
+        position: absolute;
+        content: ' ';
+        margin-left: -.48rem;
+        width: .96rem;
+        height: 2px;
+        background-color: #DA6464;
       }
     }
+    .dec {
+      .info {
+        display: flex;
+        font-size: .18rem;
+        font-family: Verdana;
+        font-weight: 400;
+        color: #454953;
+        line-height: .3rem;
+      }
+    }
+    .gif-img {
+      width: 2rem;
+      height: 2rem;
+      margin-right: .42rem;
+    }
+    #anim {
+      width: 2rem;
+      height: 2rem;
+      margin-right: .42rem;
+    }
+  }
+  .section-3 {
+    padding-top: 1.4rem;
+    img.gif-img {
+      margin-left: .42rem;
+      margin-right: 0;
+    }
+  }
+  .section-4 {
+    padding-top: 1.4rem;
+    padding-bottom: 2rem;
   }
   .section-5 {
-    .edition-center {
-      display: flex;
-      padding-top: 184px;
-      padding-bottom: 49px;
-      .line-dos {
-        width: 451px;
-        .line-item {
-          display: flex;
-          font-size: 18px;
-          margin-bottom: 79px;
-          line-height: 25px;
+    height: 11.94rem;
+    background-color: #fff;
+    .roadmap-img {
+      position: absolute;
+      top: .86rem;
+      max-width: 3.68rem;
+      min-width: 3.68rem;
+      max-height: 9.75rem;
+      min-height: 9.75rem;
+      right: -(3.68rem - 2.45rem);
+    }
+    .core {
+      top: .94rem;
+    }
+    .line-dos {
+      padding-top: 2.59rem;
+      .line-item {
+        display: flex;
+        padding-left: .89rem;
+        margin-bottom: .58rem;
+        img {
+          margin-right: .24rem;
+          width: .53rem;
+          height: .53rem;
+        }
+        .info-dev {
+          font-size: .16rem;
           font-family: Verdana;
           font-weight: 400;
           color: #454953;
-          &:last-child {
-            margin-bottom: 0;
-          }
-          .info-dev {
-            flex: 1;
-          }
-          img {
-            width: 53px;
-            height: 53px;
-            margin-right: 24px;
-            margin-top: -5px;
-          }
-          .timer {
-            margin-bottom: 39px;
-            font-size: 30px;
-            font-family: Arial Black;
-            font-weight: 400;
-            color: #454953;
-            position: relative;
-            &:after {
-              bottom: -20px;
-              left: 0;
-              position: absolute;
-              content: ' ';
-              width: 75px;
-              height: 2px;
-              background-color: #DA6464;
-            }
+          line-height: .3rem;
+        }
+        .timer {
+          font-size: .30rem;
+          font-family: Arial Black;
+          font-weight: 400;
+          color: #454953;
+          margin-bottom: .39rem;
+          position: relative;
+          &:after {
+            bottom: -.20rem;
+            left: 0;
+            position: absolute;
+            content: ' ';
+            width: .75rem;
+            height: 2px;
+            background-color: #DA6464;
           }
         }
-      }
-      .roadmap-img {
-        position: absolute;
-        left: 541px;
-        width: 620px;
-        top: 55px;
       }
     }
   }
   .section-6 {
-    .edition-center {
-      padding-top: 297px;
-      padding-bottom: 307px;
-      .items {
-        display: flex;
-        width: 100%;
-        justify-content: center;
-        a {
-          margin-right: 38px;
-          &:last-child {
-            margin-right: 0;
-          }
-          img {
-            width: 172px;
-          }
+    padding-top: 2.1rem;
+    padding-bottom: 1.49rem;
+    .core {
+      top: .52rem;
+    }
+    .items {
+      display: flex;
+      justify-content: center;
+      a {
+        margin-right: .4rem;
+        &:last-child {
+          margin-top: 0;
         }
       }
-    }
-  }
-  .core {
-    position: absolute;
-    left: 91px;
-    top: 60px;
-    .core-text {
-      font-size: 36px;
-      font-family: Arial Black;
-      font-weight: 400;
-      color: #DA6464;
+      img {
+        width: 1.72rem;
+      }
     }
   }
 }

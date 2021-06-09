@@ -10,6 +10,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import App from './App'
 import store from './store'
 import router from './router'
+import '@/libs/rem'
 
 // svg 全局图标组件
 import '@/icons'

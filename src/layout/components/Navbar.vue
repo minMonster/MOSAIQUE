@@ -35,6 +35,13 @@ export default {
 
 <style lang="scss" scoped>
 .navbar {
+  .edition-center {
+    width: 1200px;
+    padding: 0 90px;
+    margin: 0 auto;
+    height: 100%;
+    position: relative;
+  }
   height: 70px;
   position: relative;
   background: linear-gradient(to right, #DA6464 0%, #DA6464 50%, #454953 50%, #454953 100%);

@@ -1,9 +1,8 @@
 <template>
-  <div class="footer">
+  <div class="m-footer">
     <a name="Contact Us" />
     <div class="edition-center">
       <div class="footer-left">
-        <p>©2021MOSAIQUE</p>
         <div class="item-imgs">
           <a href="mailto:zoe@mosaique.pro" target="_blank"><img src="../../access/07-Contact01.png" alt=""></a>
           <a href="https://twitter.com/MOSAIQUE10" target="_blank"> <img src="../../access/07-Contact02.png" alt=""></a>
@@ -11,6 +10,7 @@
           <a href="https://t.me/mosaiquepro" target="_blank"> <img src="../../access/07-Contact04.png" alt=""></a>
           <a target="_blank"> <img src="../../access/07-Contact05.png" alt=""></a>
         </div>
+        <p>©2021MOSAIQUE</p>
       </div>
       <div class="footer-right">
         <p>Contact information</p>
@@ -29,52 +29,47 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.footer {
+.m-footer {
+  background: linear-gradient(to right, #DA6464 0%, #DA6464 77%, #454953  77%, #454953 100%);
+  height: 1.51rem;
+  color: #FFFFFF;
   .edition-center {
-    width: 1200px;
-    padding: 0 90px;
-    margin: 0 auto;
-    height: 100%;
-    position: relative;
-  }
-  height: 96px;
-  background: linear-gradient(to right, #DA6464 0%, #DA6464 50%, #454953 50%, #454953 100%);
-  .edition-center {
+    width: 100vw;
     display: flex;
-    background: linear-gradient(to right, #DA6464 0%, #DA6464 79%, #454953 79%, #454953 100%);
-    .footer-left {
-      line-height: 96px;
-      width: 851px;
-      font-size: 18px;
-      font-family: Verdana;
-      font-weight: 400;
-      color: #FFFFFF;
-      display: flex;
-      justify-content: space-between;
+  }
+  .footer-right{
+    flex: 1;
+    padding-top: .3rem;
+    padding-left: .2rem;
+    font-size: .20rem;
+    font-family: Arial Black;
+    p {
+      width: 1.2rem;
     }
-    .footer-right {
-      position: relative;
-      p {
-        position: absolute;
-        left: 18px;
-        top: 25px;
-        width: 134px;
-      }
-      font-size: 22px;
-      font-family: Arial Black;
+  }
+  .footer-left {
+    display: flex;
+    flex-direction: column;
+    width: 77%;
+    box-sizing: border-box;
+    padding-left: .84rem;
+    p {
+      padding-left: 2.27rem;
+      font-size: .14rem;
+      font-family: Verdana;
       font-weight: 400;
       color: #FFFFFF;
     }
     .item-imgs {
-      display: flex;
+      margin-bottom: .42rem;
       a {
-        height: 100%;
-        margin-right: 20px;
-        display: flex;
-        align-items: center;
+        margin-right: .62rem;
         img {
-          display: inline-block;
-          width: 40px;
+          margin-top: .3rem;
+          width: .4rem;
+        }
+        &:last-child {
+          margin-right: 0;
         }
       }
     }
