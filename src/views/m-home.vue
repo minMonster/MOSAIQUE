@@ -132,7 +132,7 @@
             </div>
           </div>
         </div>
-        <img src="../access/logo资源 4@8x 拷贝.png" class="roadmap-img" alt="">
+        <img src="../access/m-05-roadmap.png" class="roadmap-img" alt="">
       </div>
     </section>
     <section class="section section-6">
