@@ -3,7 +3,7 @@
     <section class="section">
       <div class="edition-center">
         <div class="core wow pulse">
-          <p class="core-text">m-Team</p>
+          <p class="core-text">Team</p>
         </div>
         <div class="user-item">
           <img src="../access/head.png" alt="">

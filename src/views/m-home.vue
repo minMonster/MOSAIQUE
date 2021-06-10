@@ -144,7 +144,7 @@
         <div class="items">
           <a href="https://puzzle.ventures/" target="_blank"><img style="-webkit-animation-delay: 0s;" class="wow animate__animated animate__fadeInUp" src="../access/06-Partners01.png" alt=""></a>
           <a href="https://ethsign.xyz/#/" target="_blank"><img style="-webkit-animation-delay: 0.2s;" class="wow animate__animated animate__fadeInUp" src="../access/06-Partners02EthSign.png" alt=""></a>
-          s        </div>
+        </div>
         <div class="items" style="padding-top: .74rem;">
           <a href="https://twitter.com/reva_fyw" target="_blank"><img style="-webkit-animation-delay: 0.4s;" class="wow animate__animated animate__fadeInUp" src="../access/06-Partners03-reva.png" alt=""></a>
           <a href="https://www.incuba.capital/" target="_blank"><img style="-webkit-animation-delay: 0.6s;" class="wow animate__animated animate__fadeInUp" src="../access/06-Partners04-IncubaAlpha.png" alt=""></a>
