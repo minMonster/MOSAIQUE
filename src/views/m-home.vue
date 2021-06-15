@@ -23,7 +23,7 @@
           <div class="sub" @click="submit">Subscribe</div>
         </div>
         <img class="section-img" src="../access/section-img.png" alt="">
-        <img class="xingxing" src="../access/03-首页星星.gif" alt="">
+        <img class="xingxing" src="../access/xingxing.gif" alt="">
       </div>
     </section>
     <section class="section section-2">
