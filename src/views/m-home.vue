@@ -228,6 +228,7 @@ export default {
     padding-left: .89rem;
     .xingxing {
       position: absolute;
+      width: 1.2rem;
       left: 1.8rem;
       top: 6.7rem;
     }
