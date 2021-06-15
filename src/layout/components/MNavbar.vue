@@ -22,8 +22,8 @@
             <img src="../../access/形状 1 拷贝 4.png" alt="">
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click.native="$router.push('/')">home</el-dropdown-item>
-            <el-dropdown-item @click.native="$router.push('/team')">team</el-dropdown-item>
+            <el-dropdown-item @click.native="$router.push('/')">Home</el-dropdown-item>
+            <el-dropdown-item @click.native="$router.push('/team')">Team</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>

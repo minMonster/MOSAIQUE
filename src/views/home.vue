@@ -23,6 +23,7 @@
           <div class="sub" @click="submit">Subscribe</div>
         </div>
         <img class="section-img" src="../access/section-img.png" alt="">
+        <img class="xingxing" src="../access/03-首页星星.gif" alt="">
       </div>
     </section>
     <section class="section section-2">
@@ -217,6 +218,11 @@ export default {
     box-sizing: border-box;
     padding-top: 292px;
     padding-bottom: 335px;
+    .xingxing {
+      position: absolute;
+      left: 650px;
+      top: -18px;
+    }
     p {
       font-size: 18px;
       font-family: Verdana;

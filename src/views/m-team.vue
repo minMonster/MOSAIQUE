@@ -3,7 +3,7 @@
     <section class="section">
       <div class="edition-center">
         <div class="core wow pulse">
-          <p class="core-text">m-Team</p>
+          <p class="core-text">Team</p>
         </div>
         <div class="user-item">
           <img src="../access/head.png" alt="">
@@ -103,8 +103,7 @@ export default {
     }
   .name{
     font-size: .3rem;
-    font-family: Arial Black;
-    font-weight: 400;
+    font-weight: 700;
     color: #454953;
     position: relative;
     &:before {
@@ -121,8 +120,7 @@ export default {
   }
     .dec {
       font-size: .3rem;
-      font-family: Arial Black;
-      font-weight: 400;
+      font-weight: 700;
       color: #D15F5F;
       margin-top: .12rem;
     }
@@ -143,8 +141,7 @@ export default {
     text-align: center;
     .core-text {
       font-size: .36rem;
-      font-family: Arial Black;
-      font-weight: 400;
+      font-weight: 700;
       color: #DA6464;
     }
   }

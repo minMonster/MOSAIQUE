@@ -24,6 +24,10 @@ export default {
 }
 </script>
 <style lang="scss">
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC","Helvetica Neue",STHeiti,"Microsoft Yahei",Tahoma,Simsun,sans-serif;
+}
+
 .f-base {
   width: 100vw;
   overflow: hidden;

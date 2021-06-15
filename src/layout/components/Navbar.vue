@@ -16,10 +16,10 @@
         <!--        <a class="nav-item" href="#Partners">Partners</a>-->
         <!--        <a class="nav-item" href="#Contact Us">Contact Us</a>-->
       </div>
-      <div class="navbar-right">
-        <div class="box" />
-        <img src="../../access/seach-icon.png" alt="">
-      </div>
+      <!--      <div class="navbar-right">-->
+      <!--        <div class="box" />-->
+      <!--        <img src="../../access/seach-icon.png" alt="">-->
+      <!--      </div>-->
     </div>
   </div>
 </template>

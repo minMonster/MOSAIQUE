@@ -23,6 +23,7 @@
           <div class="sub" @click="submit">Subscribe</div>
         </div>
         <img class="section-img" src="../access/section-img.png" alt="">
+        <img class="xingxing" src="../access/03-首页星星.gif" alt="">
       </div>
     </section>
     <section class="section section-2">
@@ -144,7 +145,7 @@
         <div class="items">
           <a href="https://puzzle.ventures/" target="_blank"><img style="-webkit-animation-delay: 0s;" class="wow animate__animated animate__fadeInUp" src="../access/06-Partners01.png" alt=""></a>
           <a href="https://ethsign.xyz/#/" target="_blank"><img style="-webkit-animation-delay: 0.2s;" class="wow animate__animated animate__fadeInUp" src="../access/06-Partners02EthSign.png" alt=""></a>
-          s        </div>
+        </div>
         <div class="items" style="padding-top: .74rem;">
           <a href="https://twitter.com/reva_fyw" target="_blank"><img style="-webkit-animation-delay: 0.4s;" class="wow animate__animated animate__fadeInUp" src="../access/06-Partners03-reva.png" alt=""></a>
           <a href="https://www.incuba.capital/" target="_blank"><img style="-webkit-animation-delay: 0.6s;" class="wow animate__animated animate__fadeInUp" src="../access/06-Partners04-IncubaAlpha.png" alt=""></a>
@@ -205,8 +206,7 @@ export default {
     width: 7.5rem;
     .core-text {
       font-size: .36rem;
-      font-family: Arial Black;
-      font-weight: 400;
+      font-weight: 700;
       color: #DA6464;
     }
   }
@@ -222,10 +222,15 @@ export default {
     }
   }
   .section-1 {
-    height: 12.2rem;
+    height: 11.2rem;
     box-sizing: border-box;
     background-color: #fff;
     padding-left: .89rem;
+    .xingxing {
+      position: absolute;
+      left: 1.8rem;
+      top: 6.7rem;
+    }
     p {
       padding-top: 1.74rem;
       font-size: .22rem;
@@ -238,8 +243,7 @@ export default {
       font-size: .63rem;
       padding-top: .26rem;
       margin: 0;
-      font-family: Arial Black;
-      font-weight: 400;
+      font-weight: 700;
       color: #454953;
       margin-left: -.05rem;
     }
@@ -306,9 +310,8 @@ export default {
     }
     .section-img {
       width: 7.23rem;
-      height: 7.86rem;
       position: absolute;
-      left: 0;
+      left: -0.3rem;
       bottom: -.51rem;
     }
   }
@@ -319,8 +322,7 @@ export default {
     .h2 {
       text-align: center;
       font-size: .48rem;
-      font-family: Arial Black;
-      font-weight: 400;
+      font-weight: 700;
       color: #454953;
       position: relative;
       margin-bottom: .63rem;
@@ -402,8 +404,7 @@ export default {
         }
         .timer {
           font-size: .30rem;
-          font-family: Arial Black;
-          font-weight: 400;
+          font-weight: 700;
           color: #454953;
           margin-bottom: .39rem;
           position: relative;
