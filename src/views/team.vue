@@ -7,51 +7,87 @@
         </div>
         <div class="user-list">
           <div class="user-item">
-            <img src="../access/head.png" alt="">
+            <el-image
+              :src="require('../access/nico.jpg')"
+              fit="cover"
+            />
             <p class="name">Nico Y.</p>
             <p class="dec">Co-founder</p>
             <p class="info">
-              Nico is a Research Partner at Puzzle Ventures. He studied in the School of Government at Peking University. He is also an experienced art collector and connoisseur, especially in the field of traditional Chinese paintings and Japanese paintings.
+              Nico is a Research Partner at Puzzle Ventures. He studied in the
+              School of Government at Peking University. He is also an
+              experienced art collector and connoisseur, especially in the field
+              of traditional Chinese paintings and Japanese paintings.
             </p>
           </div>
           <div class="user-item">
-            <img src="../access/nv.png" alt="">
+            <el-image
+              :src="require('../access/tianshu.jpg')"
+              fit="cover"
+            />
             <p class="name">Tianshu (Zoe)</p>
             <p class="dec">Co-founder</p>
             <p class="info">
-              Zoe is a designer and a developer with an interdisciplinary background in science and art. She previously worked at Yale and startups.
+              Zoe is a designer and a developer with an interdisciplinary
+              background in science and art. She previously worked at Yale and
+              startups.
             </p>
           </div>
           <div class="user-item">
-            <img src="../access/head.png" alt="">
+            <el-image
+              :src="require('../access/bowen.jpg')"
+              fit="cover"
+            />
             <p class="name">Bowen</p>
             <p class="dec">Tech Lead</p>
             <p class="info">
-              Bowen is responsible for the economic model design of the Mosaique. He is a researcher at Puzzle Ventures. He graduated Peking University with double degrees in physics and computer science, and currently a doctoral student at UCLA.
+              Bowen is responsible for the economic model design of the
+              Mosaique. He is a researcher at Puzzle Ventures. He graduated
+              Peking University with double degrees in physics and computer
+              science, and currently a doctoral student at UCLA.
             </p>
           </div>
         </div>
         <div class="dividing-line">Early Contributors and Advisors</div>
         <div style="padding-top: 0;" class="user-list">
           <div class="user-item">
-            <img src="../access/head.png" alt="">
+            <el-image
+              :src="require('../access/jerry.jpg')"
+              fit="cover"
+            />
             <p class="name">Ziqi<span>(Jerry)</span>Zhou</p>
             <p class="info">
-              Jerry is the Managing Partner of Puzzle Ventures. He graduated from the Cheriton School of Computer Science, University of Waterloo. He led a series of investments, including DODO, BoringDAO, Kine, Nuts Finance, etc.
+              Jerry is the Managing Partner of Puzzle Ventures. He graduated
+              from the Cheriton School of Computer Science, University of
+              Waterloo. He led a series of investments, including DODO,
+              BoringDAO, Kine, Nuts Finance, etc.
             </p>
           </div>
           <div class="user-item">
-            <img src="../access/nv.png" alt="">
+            <el-image
+              :src="require('../access/melody.jpg')"
+              fit="cover"
+            />
             <p class="name">Melody Taira</p>
             <p class="info">
-              Melody is the founder of Incuba Alpha. She is an expert in incubating and investing in early stage bloackchain projects since 2017. Part of the portfolios: Phala Network, Litentry, Serum, Horizon Finance, Naos Finance, Maskbook, Mcdex, DeepDao, DoraFactory.
+              Melody is the founder of Incuba Alpha. She is an expert in
+              incubating and investing in early stage bloackchain projects since
+              2017. Part of the portfolios: Phala Network, Litentry, Serum,
+              Horizon Finance, Naos Finance, Maskbook, Mcdex, DeepDao,
+              DoraFactory.
             </p>
           </div>
           <div class="user-item">
-            <img src="../access/nv.png" alt="">
+            <el-image
+              :src="require('../access/reva.jpg')"
+              fit="cover"
+            />
             <p class="name">Reva</p>
             <p class="info">
-              Reva is an algorithmic artist on MakersPlace. She is also an engineer of computer graphics, exploring on topics of generative art, real-time interactive installation and GPU shader programming.
+              Reva is an algorithmic artist on MakersPlace. She is also an
+              engineer of computer graphics, exploring on topics of generative
+              art, real-time interactive installation and GPU shader
+              programming.
             </p>
           </div>
         </div>
@@ -65,8 +101,7 @@ import lottie from 'lottie-web'
 import WOW from 'wowjs'
 export default {
   name: 'Team',
-  created() {
-  },
+  created() {},
   mounted() {
     // 初始化动画
     new WOW.WOW().init()
@@ -98,7 +133,7 @@ export default {
       font-size: 36px;
       font-family: Arial Black;
       font-weight: 400;
-      color: #DA6464;
+      color: #da6464;
     }
   }
   .dividing-line {
@@ -106,30 +141,30 @@ export default {
     font-size: 27px;
     font-family: Verdana;
     font-weight: 400;
-    color: #D15F5F;
+    color: #d15f5f;
     margin-top: 128px;
     margin-bottom: 92px;
     text-align: center;
     position: relative;
-    &:before{
-      content: ' ';
+    &:before {
+      content: " ";
       left: 50%;
       top: 15px;
       position: absolute;
       width: 300px;
       margin-left: 256px;
       height: 1px;
-      border: 1px solid #D15F5F;
+      border: 1px solid #d15f5f;
     }
-    &:after{
-      content: ' ';
+    &:after {
+      content: " ";
       left: 50%;
       top: 15px;
       position: absolute;
       width: 300px;
       margin-left: -558px;
       height: 1px;
-      border: 1px solid #D15F5F;
+      border: 1px solid #d15f5f;
     }
   }
   .user-list {
@@ -144,7 +179,9 @@ export default {
         margin-right: 0;
       }
       img {
-        width: 259px;
+        width: 260px;
+        height: 260px;
+        border-radius: 130px;
       }
       .name {
         margin-top: 62px;
@@ -158,12 +195,12 @@ export default {
           font-size: 25px;
         }
         &:before {
-          content: ' ';
+          content: " ";
           z-index: -1;
           width: 56px;
           height: 56px;
           border-radius: 28px;
-          background-color: #D15F5F;
+          background-color: #d15f5f;
           position: absolute;
           left: -8px;
           top: -23px;
@@ -175,7 +212,7 @@ export default {
         padding-top: 23px;
         font-family: Arial Black;
         font-weight: 400;
-        color: #D15F5F;
+        color: #d15f5f;
       }
       .info {
         font-size: 15px;

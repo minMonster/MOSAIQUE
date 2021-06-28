@@ -24,6 +24,7 @@
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item @click.native="$router.push('/')">Home</el-dropdown-item>
             <el-dropdown-item @click.native="$router.push('/team')">Team</el-dropdown-item>
+            <el-dropdown-item @click.native="$router.push('/writing')">Writing</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>

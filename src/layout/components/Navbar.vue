@@ -11,6 +11,7 @@
       <div class="nav-tabs">
         <div class="nav-item" @click="$router.push('/')">Home</div>
         <div class="nav-item" @click="$router.push('/team')">Team</div>
+        <div class="nav-item" @click="$router.push('/writing')">Writing</div>
         <!--        <a class="nav-item" href="#Three Functions">Three Functions</a>-->
         <!--        <div class="nav-item" @click="$router.push('/team')">Team</div>-->
         <!--        <a class="nav-item" href="#Partners">Partners</a>-->
