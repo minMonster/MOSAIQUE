@@ -11,7 +11,7 @@ import App from './App'
 import store from './store'
 import router from './router'
 import '@/libs/rem'
-
+console.log('etst')
 // svg 全局图标组件
 import '@/icons'
 
