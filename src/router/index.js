@@ -40,6 +40,22 @@ const createRouter = () => new Router({
             title: 'writing'
           },
           component: () => import(/* webpackChunkName: "writing" */ '@/views/writing.vue')
+        },
+        {
+          path: '/blazon',
+          name: 'blazon',
+          meta: {
+            title: 'blazon'
+          },
+          component: () => import(/* webpackChunkName: "writing" */ '@/views/blazon.vue')
+        },
+        {
+          path: '/test',
+          name: 'test',
+          meta: {
+            title: 'test'
+          },
+          component: () => import(/* webpackChunkName: "writing" */ '@/views/test.vue')
         }
       ]
     }

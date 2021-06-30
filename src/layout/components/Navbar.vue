@@ -2,8 +2,8 @@
   <div class="navbar">
     <div class="edition-center">
       <div class="logo-box" @click="$router.push('/')">
-        <img class="logo" src="../../access/logo.png" alt="" />
-        <img class="logo-text" src="../../access/logo-text.png" alt="" />
+        <img class="logo" src="../../access/logo.png" alt="">
+        <img class="logo-text" src="../../access/logo-text.png" alt="">
       </div>
       <div class="nav-tabs">
         <div class="nav-item" @click="$router.push('/Imprint')">Imprint</div>
@@ -12,10 +12,10 @@
         <div class="nav-item" @click="$router.push('/MoScan')">MoScan</div>
       </div>
       <div class="navbar-right">
-        <p class='com-iconBg'>
+        <p class="com-iconBg">
           <img src="../../icons/user.png" alt="">
         </p>
-        <p class='com-iconBg'>
+        <p class="com-iconBg">
           <img src="../../icons/wallet.png" alt="">
         </p>
       </div>
@@ -149,7 +149,7 @@ export default {
         }
       }
     }
-    
+
   }
 }
 </style>
