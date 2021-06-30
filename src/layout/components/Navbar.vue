@@ -1,26 +1,24 @@
 <template>
   <div class="navbar">
     <div class="edition-center">
-      <div
-        class="logo-box"
-        @click="$router.push('/')"
-      >
-        <img class="logo" src="../../access/logo.png" alt="">
-        <img class="logo-text" src="../../access/logo-text.png" alt="">
+      <div class="logo-box" @click="$router.push('/')">
+        <img class="logo" src="../../access/logo.png" alt="" />
+        <img class="logo-text" src="../../access/logo-text.png" alt="" />
       </div>
       <div class="nav-tabs">
-        <div class="nav-item" @click="$router.push('/')">Home</div>
-        <div class="nav-item" @click="$router.push('/team')">Team</div>
-        <div class="nav-item" @click="$router.push('/writing')">Writing</div>
-        <!--        <a class="nav-item" href="#Three Functions">Three Functions</a>-->
-        <!--        <div class="nav-item" @click="$router.push('/team')">Team</div>-->
-        <!--        <a class="nav-item" href="#Partners">Partners</a>-->
-        <!--        <a class="nav-item" href="#Contact Us">Contact Us</a>-->
+        <div class="nav-item" @click="$router.push('/Imprint')">Imprint</div>
+        <div class="nav-item" @click="$router.push('/Snapshot')">Snapshot</div>
+        <div class="nav-item" @click="$router.push('/Drops')">Drops</div>
+        <div class="nav-item" @click="$router.push('/MoScan')">MoScan</div>
       </div>
-      <!--      <div class="navbar-right">-->
-      <!--        <div class="box" />-->
-      <!--        <img src="../../access/seach-icon.png" alt="">-->
-      <!--      </div>-->
+      <div class="navbar-right">
+        <p class='com-iconBg'>
+          <img src="../../icons/user.png" alt="">
+        </p>
+        <p class='com-iconBg'>
+          <img src="../../icons/wallet.png" alt="">
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -45,9 +43,9 @@ export default {
   }
   height: 70px;
   position: relative;
-  background: linear-gradient(to right, #DA6464 0%, #DA6464 50%, #454953 50%, #454953 100%);
+  background: linear-gradient(to right, #da6464 0%, #da6464 50%, #454953 50%, #454953 100%);
   .edition-center {
-    background: linear-gradient(to right, #DA6464 0%, #DA6464 79%, #454953 79%, #454953 100%);
+    background: linear-gradient(to right, #da6464 0%, #da6464 79%, #454953 79%, #454953 100%);
     position: relative;
     display: flex;
     align-items: center;
@@ -55,22 +53,23 @@ export default {
       display: flex;
       position: absolute;
       right: 100px;
-      img {
-        width: 20px;
-      }
-      .box {
-        width: 117px;
-        height: 21px;
-        top: 27px;
-        background-color: #DA6464;
-        opacity: 0.5;
-        margin-right: 5px;
+      .com-iconBg{
+        width: 35px;
+        height: 35px;
+        background-color: #ffffff;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 45px;
+        margin-left: 42px;
+        img {
+          width: 20px;
+        }
       }
     }
     .logo-box {
       display: flex;
       align-items: center;
-      margin-right: 102px;
+      margin-right: 95px;
 
       .logo {
         width: 47px;
@@ -89,7 +88,7 @@ export default {
       font-size: 14px;
       font-family: Verdana;
       font-weight: 400;
-      color: #FFFFFF;
+      color: #ffffff;
       line-height: 21px;
 
       .nav-item {
@@ -98,22 +97,22 @@ export default {
         text-decoration: none;
 
         &:link {
-          color: #FFFFFF;
+          color: #ffffff;
           text-decoration: none;
         }
 
         &:visited {
-          color: #FFFFFF;
+          color: #ffffff;
           text-decoration: none;
         }
 
         &:hover {
-          color: #FFFFFF;
+          color: #ffffff;
           text-decoration: none;
         }
 
         &:active {
-          color: #FFFFFF;
+          color: #ffffff;
           text-decoration: none;
         }
 
@@ -132,20 +131,25 @@ export default {
         }
 
         &:first-child {
-          &:after {
-            content: ' ';
-            height: 34px;
-            background-color: #454953;
-            position: absolute;
-            width: 1px;
-            left: 0;
-            top: 50%;
-            margin-top: -17px;
+          // &:after {
+          //   content: ' ';
+          //   height: 34px;
+          //   background-color: #454953;
+          //   position: absolute;
+          //   width: 1px;
+          //   left: 0;
+          //   top: 50%;
+          //   margin-top: -17px;
+          // }
+        }
+        &:last-child {
+          &:before {
+            width: 0;
           }
         }
       }
     }
+    
   }
-
 }
 </style>

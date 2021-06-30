@@ -29,15 +29,12 @@ export default {
     return {
     }
   },
-  watch: {
-  },
   computed: {
     ...mapGetters(['isMobile', 'domWidth', 'zoomApp'])
-
   },
-
+  watch: {
+  },
   methods: {
-
   }
 }
 </script>
