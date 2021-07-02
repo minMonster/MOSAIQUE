@@ -1,5 +1,6 @@
 <template>
-  <div class="app-wrapper" :style="{zoom: zoomApp}">
+  <div class="app-wrapper">
+    <!-- :style="{zoom: zoomApp}" -->
     <div class="main-container">
       <div>
         <m-navbar v-if="isMobile" />

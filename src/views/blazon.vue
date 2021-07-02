@@ -12,6 +12,7 @@
               <el-image
                 class="close"
                 :src="require('../access/close-icon.png')"
+                @click="detele('M')"
               />
               <div class="dec">
                 <p class="name">Collection name</p>
@@ -26,6 +27,7 @@
               <el-image
                 class="close"
                 :src="require('../access/close-icon.png')"
+                @click="detele('B')"
               />
               <div class="dec">
                 <p class="name">Collection name</p>
@@ -53,7 +55,12 @@
                 <p class="type">Artwork</p>
               </div>
               <div class="hover-mark">
-                <img class="enlarge-icon" src="../icons/enlarge.png" alt="" @click="enlargeProduct(item)">
+                <img
+                  class="enlarge-icon"
+                  src="../icons/enlarge.png"
+                  alt=""
+                  @click="enlargeProduct(item)"
+                >
                 <!-- <el-image class="show-image-btn" /> -->
                 <div class="select-item">
                   <div>Master</div>
@@ -123,6 +130,15 @@ export default {
           this.blazonData.img = item.img
       }
     },
+    detele(type) {
+      switch (type) {
+        case 'M':
+          this.masterData.img = ''
+          break
+        default:
+          this.blazonData.img = ''
+      }
+    },
     enlargeProduct(item) {
       this.isShowEnlarge = true
       this.enlargeData = item
@@ -173,6 +189,7 @@ export default {
           height: 207px;
         }
         .close {
+          cursor: pointer;
           position: absolute;
           right: 10px;
           width: 26px;
@@ -230,7 +247,7 @@ export default {
             font-size: 12px;
             color: #f5f5f5;
             position: absolute;
-            bottom: 0;
+            bottom: 20px;
             .name {
               margin-bottom: 10px;
             }
@@ -246,25 +263,25 @@ export default {
             left: 0;
             right: 0;
             border-radius: 10px;
-            .enlarge-icon{
+            .enlarge-icon {
               width: 20px;
               height: 20px;
               position: absolute;
               right: 10px;
-              top: 20px
+              top: 20px;
             }
             .select-item {
-              margin-top: 350px;
+              margin-top: 270px;
               display: flex;
               justify-content: space-around;
-              div{
+              div {
                 width: 130px;
                 height: 80px;
                 line-height: 80px;
                 text-align: center;
                 border-radius: 10px;
                 background-color: rgba(187, 182, 182, 0.5);
-                color: #FFFEFE;
+                color: #fffefe;
                 font-size: 14px;
                 font-weight: bold;
               }
