@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="edition-center">
-      <div class="Blazon same" @click="goRouter('blazon')">
+      <div class="Blazon same" @click="goRouter('select-blazon')">
         <p class="title">Blazon</p>
         <p>Suggest to add text description</p>
       </div>

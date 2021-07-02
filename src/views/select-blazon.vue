@@ -5,9 +5,17 @@
         <div class="left-box">
           <div class="title">Recently Used</div>
           <div class="master-box" :class="{ active: true }">
-            <template v-if="masterData">
-              <el-image fit="cover" class="data-img" :src="masterData.img" />
-              <el-image class="close" :src="require('../access/close-icon.png')" @click="detele('M')" />
+            <template v-if="masterIndex !== -1">
+              <el-image
+                fit="cover"
+                class="data-img"
+                :src="imagList[masterIndex].img"
+              />
+              <el-image
+                class="close"
+                :src="require('../access/close-icon.png')"
+                @click="detele('M')"
+              />
               <div class="dec">
                 <p class="name">Collection name</p>
                 <p class="type">Artwork</p>
@@ -16,9 +24,17 @@
           </div>
           <div class="master-title">Master</div>
           <div class="blazon-box">
-            <template v-if="blazon">
-              <el-image fit="cover" class="data-img" :src="blazonData.img" />
-              <el-image class="close" :src="require('../access/close-icon.png')" @click="detele('B')" />
+            <template v-if="blazonIndex !== -1">
+              <el-image
+                fit="cover"
+                class="data-img"
+                :src="imagList[blazonIndex].img"
+              />
+              <el-image
+                class="close"
+                :src="require('../access/close-icon.png')"
+                @click="detele('B')"
+              />
               <div class="dec">
                 <p class="name">Collection name</p>
                 <p class="type">Artwork</p>
@@ -31,7 +47,15 @@
         <div class="right-box">
           <div class="title">Select a Master & Blazon</div>
           <div class="image-list">
-            <div v-for="item in imagList" :key="item" class="image-item" :class="{ selectMaster: true, selectBlazon: true }">
+            <div
+              v-for="(item, index) in imagList"
+              :key="index"
+              class="image-item"
+              :class="{
+                selectMaster: masterIndex === index,
+                selectBlazon: blazonIndex === index
+              }"
+            >
               <!-- <img :src="item.img" alt="" class="img"> -->
               <el-image :src="item.img" class="img" />
               <div class="dec">
@@ -39,11 +63,16 @@
                 <p class="type">Artwork</p>
               </div>
               <div class="hover-mark">
-                <img class="enlarge-icon" src="../icons/enlarge.png" alt="" @click="enlargeProduct(item)">
+                <img
+                  class="enlarge-icon"
+                  src="../icons/enlarge.png"
+                  alt=""
+                  @click="enlargeProduct(item)"
+                >
                 <!-- <el-image class="show-image-btn" /> -->
                 <div class="select-item">
-                  <div @click="setDataStatus(item.img, 'M')">Master</div>
-                  <div @click="setDataStatus(item.img, 'B')">Blazon</div>
+                  <div @click="setDataStatus(index, 'M')">Master</div>
+                  <div @click="setDataStatus(index, 'B')">Blazon</div>
                 </div>
                 <!-- <div class="mask" /> -->
               </div>
@@ -53,7 +82,7 @@
       </div>
     </section>
     <enlarge-product v-if="isShowEnlarge" :enlarge-data="enlargeData" />
-    <guide-page v-if="isShowGuidPage" />
+    <guide-page v-if="isShowGuidPage" @skip="setMaster" />
   </div>
 </template>
 <script>
@@ -69,16 +98,10 @@ export default {
     return {
       isShowEnlarge: false,
       isShowGuidPage: false,
+      curIndex: -1,
       enlargeData: {},
-      masterData: {
-        img: ''
-      },
-      blazonData: {
-        img: ''
-      },
-      blazon: {
-        img: require('../access/img-1@2x.png')
-      },
+      masterIndex: -1,
+      blazonIndex: -1,
       imagList: [
         {
           img: require('../access/img-1@2x.png')
@@ -105,22 +128,27 @@ export default {
     next() {
       this.isShowGuidPage = true
     },
-    setDataStatus(item, type) {
+    setMaster() {
+      this.isShowGuidPage = false
+      this.masterIndex = this.curIndex
+    },
+    setDataStatus(index, type) {
       switch (type) {
         case 'M':
-          this.masterData.img = item
+          this.curIndex = index
+          this.isShowGuidPage = true
           break
         default:
-          this.blazonData.img = item
+          this.blazonIndex = index
       }
     },
     detele(type) {
       switch (type) {
         case 'M':
-          this.masterData.img = ''
+          this.masterIndex = -1
           break
         default:
-          this.blazonData.img = ''
+          this.blazonIndex = -1
       }
     },
     enlargeProduct(item) {
@@ -228,22 +256,66 @@ export default {
         flex-wrap: wrap;
         .image-item {
           cursor: pointer;
-          margin-bottom: 50px;
-          width: 280px;
-          height: 374px;
           position: relative;
+          margin-bottom: 50px;
+          width: 285px;
+          height: 375px;
+          position: relative;
+          &.selectMaster,
+          &.selectBlazon {
+            &::before {
+              position: absolute;
+              content: " ";
+              width: 295px;
+              left: -9.5px;
+              top: -8.5px;
+              height: 385px;
+              border: 4px solid #da6464;
+              border-radius: 15px;
+            }
+            .select-item {
+              display: none !important;
+            }
+          }
+          &.selectBlazon {
+            &::before {
+              border: 4px solid #464952;
+            }
+          }
+          .el-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+          }
           img {
             width: 100%;
             height: 100%;
           }
           .dec {
-            display: block;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 90px;
             width: 100%;
             text-align: center;
             font-size: 12px;
             color: #f5f5f5;
             position: absolute;
-            bottom: 20px;
+            bottom: 0;
+            &::before {
+              content: " ";
+              filter: blur(10px);
+              position: absolute;
+              z-index: -1;
+              left: 0;
+              right: 0;
+              filter: blur(10px);
+              height: 100%;
+              width: 100%;
+            }
+            p {
+              padding: 0;
+            }
             .name {
               margin-bottom: 10px;
             }
@@ -252,8 +324,8 @@ export default {
             display: none;
             position: absolute;
             background-color: rgba(0, 0, 0, 0.5);
-            width: 100%;
-            height: auto;
+            width: 285px;
+            height: 377px;
             bottom: 0;
             top: 0;
             left: 0;

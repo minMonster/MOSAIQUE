@@ -19,7 +19,7 @@
         </p>
         <div class="handle-box">
           <p class="make-btn">Make Program</p>
-          <p>Skip</p>
+          <p @click="$emit('skip')">Skip</p>
         </div>
       </div>
     </div>
