@@ -3,17 +3,11 @@
     <section class="section-1">
       <div class="edition-center">
         <div class="left-box">
-          <div class="title">
-            Recently Used
-          </div>
+          <div class="title">Recently Used</div>
           <div class="master-box" :class="{ active: true }">
             <template v-if="masterData">
               <el-image fit="cover" class="data-img" :src="masterData.img" />
-              <el-image
-                class="close"
-                :src="require('../access/close-icon.png')"
-                @click="detele('M')"
-              />
+              <el-image class="close" :src="require('../access/close-icon.png')" @click="detele('M')" />
               <div class="dec">
                 <p class="name">Collection name</p>
                 <p class="type">Artwork</p>
@@ -24,11 +18,7 @@
           <div class="blazon-box">
             <template v-if="blazon">
               <el-image fit="cover" class="data-img" :src="blazonData.img" />
-              <el-image
-                class="close"
-                :src="require('../access/close-icon.png')"
-                @click="detele('B')"
-              />
+              <el-image class="close" :src="require('../access/close-icon.png')" @click="detele('B')" />
               <div class="dec">
                 <p class="name">Collection name</p>
                 <p class="type">Artwork</p>
@@ -36,18 +26,12 @@
             </template>
           </div>
           <div class="master-title">Blazon</div>
-          <div class="button-next">Next</div>
+          <div class="button-next" @click="next">Next</div>
         </div>
         <div class="right-box">
           <div class="title">Select a Master & Blazon</div>
           <div class="image-list">
-            <div
-              v-for="item in imagList"
-              :key="item"
-              class="image-item"
-              :class="{ selectMaster: true, selectBlazon: true }"
-              @click="selectData(item)"
-            >
+            <div v-for="item in imagList" :key="item" class="image-item" :class="{ selectMaster: true, selectBlazon: true }">
               <!-- <img :src="item.img" alt="" class="img"> -->
               <el-image :src="item.img" class="img" />
               <div class="dec">
@@ -55,16 +39,11 @@
                 <p class="type">Artwork</p>
               </div>
               <div class="hover-mark">
-                <img
-                  class="enlarge-icon"
-                  src="../icons/enlarge.png"
-                  alt=""
-                  @click="enlargeProduct(item)"
-                >
+                <img class="enlarge-icon" src="../icons/enlarge.png" alt="" @click="enlargeProduct(item)">
                 <!-- <el-image class="show-image-btn" /> -->
                 <div class="select-item">
-                  <div>Master</div>
-                  <div>Blazon</div>
+                  <div @click="setDataStatus(item.img, 'M')">Master</div>
+                  <div @click="setDataStatus(item.img, 'B')">Blazon</div>
                 </div>
                 <!-- <div class="mask" /> -->
               </div>
@@ -74,18 +53,22 @@
       </div>
     </section>
     <enlarge-product v-if="isShowEnlarge" :enlarge-data="enlargeData" />
+    <guide-page v-if="isShowGuidPage" />
   </div>
 </template>
 <script>
 import enlargeProduct from './components/enlarge.vue'
+import GuidePage from './components/guide-page.vue'
 export default {
   name: 'Blazon',
   components: {
-    enlargeProduct
+    enlargeProduct,
+    GuidePage
   },
   data: function() {
     return {
       isShowEnlarge: false,
+      isShowGuidPage: false,
       enlargeData: {},
       masterData: {
         img: ''
@@ -98,12 +81,10 @@ export default {
       },
       imagList: [
         {
-          img: require('../access/img-1@2x.png'),
-          type: 'M'
+          img: require('../access/img-1@2x.png')
         },
         {
-          img: require('../access/img-2@2x.png'),
-          type: 'B'
+          img: require('../access/img-2@2x.png')
         },
         {
           img: require('../access/img-3@2x.png')
@@ -121,13 +102,16 @@ export default {
     }
   },
   methods: {
-    selectData(item) {
-      switch (item.type) {
+    next() {
+      this.isShowGuidPage = true
+    },
+    setDataStatus(item, type) {
+      switch (type) {
         case 'M':
-          this.masterData.img = item.img
+          this.masterData.img = item
           break
         default:
-          this.blazonData.img = item.img
+          this.blazonData.img = item
       }
     },
     detele(type) {
@@ -214,6 +198,18 @@ export default {
         line-height: 21px;
         margin-top: 13px;
         margin-bottom: 61px;
+      }
+      .button-next {
+        cursor: pointer;
+        text-align: center;
+        color: #ffffff;
+        line-height: 43px;
+        font-size: 20px;
+        font-weight: bold;
+        width: 202px;
+        height: 43px;
+        background: #da6464;
+        border-radius: 22px;
       }
     }
     .right-box {
