@@ -50,6 +50,14 @@ const createRouter = () => new Router({
           component: () => import(/* webpackChunkName: "writing" */ '@/views/blazon.vue')
         },
         {
+          path: '/edit-blazon',
+          name: 'EditBlazon',
+          meta: {
+            title: 'EditBlazon'
+          },
+          component: () => import(/* webpackChunkName: "writing" */ '@/views/edit-blazon.vue')
+        },
+        {
           path: '/test',
           name: 'test',
           meta: {
