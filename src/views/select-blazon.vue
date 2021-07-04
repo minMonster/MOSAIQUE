@@ -126,7 +126,17 @@ export default {
   },
   methods: {
     next() {
-      this.isShowGuidPage = true
+      if (this.masterIndex === -1 || this.blazonIndex === -1) {
+        this.$message({
+          message: 'Please complete the form',
+          type: 'warning'
+        })
+        return
+      }
+      this.$router.push({ name: 'EditBlazon', query: {
+        masterIndex: this.masterIndex,
+        blazonIndex: this.blazonIndex
+      }})
     },
     setMaster() {
       this.isShowGuidPage = false
