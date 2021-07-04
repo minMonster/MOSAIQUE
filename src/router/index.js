@@ -58,6 +58,14 @@ const createRouter = () => new Router({
           component: () => import(/* webpackChunkName: "writing" */ '@/views/edit-blazon.vue')
         },
         {
+          path: '/snapshotable',
+          name: 'Snapshotable',
+          meta: {
+            title: 'Snapshotable'
+          },
+          component: () => import(/* webpackChunkName: "snapshotable" */ '@/views/snapshotable.vue')
+        },
+        {
           path: '/test',
           name: 'test',
           meta: {
