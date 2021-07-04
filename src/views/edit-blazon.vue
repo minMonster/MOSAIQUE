@@ -6,8 +6,9 @@
           <vue-cropper
             ref="cropper"
             class="ccccc"
+            :style="{background: 'url(' + masterSrc + ')'}"
             style="width: 431px; height: 431px"
-            :src="imgSrc"
+            :src="blazonSrc"
             rotatable
             :background="false"
             drag-mode="move"
@@ -32,7 +33,7 @@
         </div>
       </div>
       <div class="right">
-        <p class="return-icon">
+        <p class="return-icon" @click="$route.go(-1)">
           <img src="../icons/return.png" alt="">
         </p>
         <div class="set-message">
@@ -44,19 +45,19 @@
           <p class="label">Coordinate</p>
           <div class="coordinate-mess">
             <div class="itme">
-              <span>X</span> <el-input v-model="parameter.left" size="small" />
+              <span>X</span> <el-input v-model="parameter.left" disabled size="small" />
             </div>
             <div class="itme">
-              <span>Y</span> <el-input v-model="parameter.top" size="small" />
+              <span>Y</span> <el-input v-model="parameter.top" disabled size="small" />
             </div>
           </div>
           <p class="label">Size</p>
           <div class="coordinate-mes size-itme">
             <div class="itme">
-              <span>width</span> <el-input v-model="parameter.width" size="small" />
+              <span>width</span> <el-input v-model="parameter.width" disabled size="small" />
             </div>
             <div class="itme">
-              <span>height</span> <el-input v-model="parameter.height" size="small" />
+              <span>height</span> <el-input v-model="parameter.height" disabled size="small" />
             </div>
           </div>
           <!-- <p class="label">Scale</p>
@@ -71,7 +72,7 @@
 
           <p class="label" style="margin-top: 20px;">Rotate</p>
           <div class="rotate-itme">
-            <el-input v-model="parameter.rotate" style="width: 90px; display: inline-block" size="small" /><span>°</span>
+            <el-input v-model="parameter.rotate" disabled style="width: 90px; display: inline-block" size="small" /><span>°</span>
           </div>
           <div class="icon-box">
             <img src="../icons/icon-3.png" alt="">
@@ -94,7 +95,8 @@ export default ({
   components: { VueCropper },
   data() {
     return {
-      imgSrc: require('../access/tianshu.jpg'),
+      masterSrc: require('../access/tianshu.jpg'),
+      blazonSrc: require('../access/img-1@2x.png'),
       parameter: {
         left: 0,
         top: 0,
@@ -102,8 +104,37 @@ export default ({
         width: 0,
         height: 0
       },
+      imagList: [
+        {
+          img: require('../access/img-1@2x.png')
+        },
+        {
+          img: require('../access/img-2@2x.png')
+        },
+        {
+          img: require('../access/img-3@2x.png')
+        },
+        {
+          img: require('../access/img-4@2x.png')
+        },
+        {
+          img: require('../access/img-5@2x.png')
+        },
+        {
+          img: require('../access/img-6@2x.png')
+        }
+      ],
+      masterIndex: 0,
+      blazonIndex: 0,
       cropperDom: null
     }
+  },
+  created() {
+    const { masterIndex, blazonIndex } = this.$route.query
+    // this.masterIndex = Number(masterIndex)
+    // this.blazonIndex = Number(blazonIndex)
+    this.masterSrc = this.imagList[Number(masterIndex)].img
+    this.blazonSrc = this.imagList[Number(blazonIndex)].img
   },
   mounted() {
     this.cropperDom = this.$refs.cropper
@@ -132,10 +163,10 @@ export default ({
           this.cropperDom.move(0, -10)
           break
         case 'refresh-right':
-          this.cropperDom.rotate(-45)
+          this.cropperDom.rotate(45)
           break
         case 'refresh-left':
-          this.cropperDom.rotate(45)
+          this.cropperDom.rotate(-45)
           break
       }
       const { left, top } = this.cropperDom.getCanvasData()
