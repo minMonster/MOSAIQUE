@@ -6,16 +6,8 @@
           <div class="title">Recently Used</div>
           <div class="master-box" :class="{ active: true }">
             <template v-if="masterIndex !== -1">
-              <el-image
-                fit="cover"
-                class="data-img"
-                :src="imagList[masterIndex].img"
-              />
-              <el-image
-                class="close"
-                :src="require('../access/close-icon.png')"
-                @click="detele('M')"
-              />
+              <el-image fit="cover" class="data-img" :src="imagList[masterIndex].img" />
+              <el-image class="close" :src="require('../access/close-icon.png')" @click="detele('M')" />
               <div class="dec">
                 <p class="name">Collection name</p>
                 <p class="type">Artwork</p>
@@ -25,16 +17,8 @@
           <div class="master-title">Master</div>
           <div class="blazon-box">
             <template v-if="blazonIndex !== -1">
-              <el-image
-                fit="cover"
-                class="data-img"
-                :src="imagList[blazonIndex].img"
-              />
-              <el-image
-                class="close"
-                :src="require('../access/close-icon.png')"
-                @click="detele('B')"
-              />
+              <el-image fit="cover" class="data-img" :src="imagList[blazonIndex].img" />
+              <el-image class="close" :src="require('../access/close-icon.png')" @click="detele('B')" />
               <div class="dec">
                 <p class="name">Collection name</p>
                 <p class="type">Artwork</p>
@@ -53,7 +37,7 @@
               class="image-item"
               :class="{
                 selectMaster: masterIndex === index,
-                selectBlazon: blazonIndex === index
+                selectBlazon: blazonIndex === index,
               }"
             >
               <!-- <img :src="item.img" alt="" class="img"> -->
@@ -63,12 +47,7 @@
                 <p class="type">Artwork</p>
               </div>
               <div class="hover-mark">
-                <img
-                  class="enlarge-icon"
-                  src="../icons/enlarge.png"
-                  alt=""
-                  @click="enlargeProduct(item)"
-                >
+                <img class="enlarge-icon" src="../icons/enlarge.png" alt="" @click="enlargeProduct(item)">
                 <!-- <el-image class="show-image-btn" /> -->
                 <div class="select-item">
                   <div @click="setDataStatus(index, 'M')">Master</div>
@@ -104,22 +83,22 @@ export default {
       blazonIndex: -1,
       imagList: [
         {
-          img: require('../access/img-1@2x.png')
+          img: require('../access/img/beeple-03-29-18.jpg')
         },
         {
-          img: require('../access/img-2@2x.png')
+          img: require('../access/img/beeple-07-12-20.jpg')
         },
         {
-          img: require('../access/img-3@2x.png')
+          img: require('../access/img/beeple-07-25-20.jpg')
         },
         {
-          img: require('../access/img-4@2x.png')
+          img: require('../access/img/beeple-07-26-20.jpg')
         },
         {
-          img: require('../access/img-5@2x.png')
+          img: require('../access/img/beeple-07-30-20.jpg')
         },
         {
-          img: require('../access/img-6@2x.png')
+          img: require('../access/img/beeple-08-12-20.jpg')
         }
       ]
     }
@@ -133,10 +112,12 @@ export default {
         })
         return
       }
-      this.$router.push({ name: 'EditBlazon', query: {
-        masterIndex: this.masterIndex,
-        blazonIndex: this.blazonIndex
-      }})
+      this.$router.push({
+        name: 'EditBlazon', query: {
+          masterIndex: this.masterIndex,
+          blazonIndex: this.blazonIndex
+        }
+      })
     },
     setMaster() {
       this.isShowGuidPage = false
@@ -225,6 +206,12 @@ export default {
           color: #f5f5f5;
           position: absolute;
           bottom: 0;
+          &::before {
+            height: 100px;
+            width: 100%;
+            content: ' ';
+            filter: blur(10px);
+          }
         }
       }
       .master-title {
@@ -275,7 +262,7 @@ export default {
           &.selectBlazon {
             &::before {
               position: absolute;
-              content: " ";
+              content: ' ';
               width: 295px;
               left: -9.5px;
               top: -8.5px;
@@ -313,7 +300,7 @@ export default {
             position: absolute;
             bottom: 0;
             &::before {
-              content: " ";
+              content: ' ';
               filter: blur(10px);
               position: absolute;
               z-index: -1;
