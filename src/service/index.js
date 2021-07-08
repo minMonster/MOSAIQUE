@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const service = axios.create({
-  baseURL: , // 请求地址
+  baseURL: "http://114.115.173.246:8099", // 请求地址
   timeout: 40000, // request timeout
   withCredentials: true
 })
