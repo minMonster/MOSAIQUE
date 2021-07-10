@@ -33,11 +33,7 @@ if (VUE_APP_BASE_API_PROXY) {
       errors: true
     },
     proxy: {
-      '/api': {
-        target: VUE_APP_BASE_API_PROXY,
-        changeOrigin: true
-      },
-      '/fb': {
+      '/nin/mosai': {
         target: VUE_APP_BASE_API_PROXY,
         changeOrigin: true
       }

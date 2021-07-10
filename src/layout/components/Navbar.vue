@@ -12,7 +12,7 @@
         <div class="nav-item" @click="$router.push('/MoScan')">MoScan</div>
       </div>
       <div class="navbar-right">
-        <p class="com-iconBg">
+        <p class="com-iconBg" @click="showWallet">
           <img src="../../icons/user.png" alt="">
         </p>
         <p class="com-iconBg">
@@ -20,15 +20,28 @@
         </p>
       </div>
     </div>
+    <testing-wallet v-if="walletDig" @close="walletDig = false" />
   </div>
 </template>
-
 <script>
+import TestingWallet from '@/components/testing-wallet.vue'
 
 export default {
-  components: {},
+  name: 'Navbar',
+  components: {
+    TestingWallet
+  },
+  data: function() {
+    return {
+      walletDig: false
+    }
+  },
   computed: {},
-  methods: {}
+  methods: {
+    showWallet() {
+      this.walletDig = true
+    }
+  }
 }
 </script>
 

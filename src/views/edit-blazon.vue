@@ -1,8 +1,10 @@
 <template>
   <div class="edit-blazon">
     <div v-if="!downImg" class="edition-center">
-      <div class="left">
-        <div ref="image-box" style="width: 431px">
+      <div class="left" style="position: relative;">
+        <el-image ref="master" :src="masterSrc" style="width: 431px;position: relative;" />
+        <el-image ref="blazon" v-drag style="left: 0;top: 230px;position: absolute;width: 431px;" :src="require('../access/img/beeple-03-29-18.jpg')" :style="{transform:'scale('+blazonZoom+') ' + 'rotateZ('+blazonDeg+'deg)'}" />
+        <!-- <div ref="image-box" style="width: 431px">
           <vue-cropper
             ref="cropper"
             class="ccccc"
@@ -18,7 +20,7 @@
             @zoom="zoom"
             @ready="ready"
           />
-        </div>
+        </div> -->
         <div class="options">
           <i class="el-icon-circle-plus" @click="optionClick('plus')" />
           <i class="el-icon-remove" @click="optionClick('remove')" />
@@ -28,6 +30,7 @@
           <i class="el-icon-caret-top" @click="optionClick('top')" />
           <i class="el-icon-refresh-right" @click="optionClick('refresh-right')" />
           <i class="el-icon-refresh-left" @click="optionClick('refresh-left')" />
+          <i class="el-icon-refresh-left" @click="getImgData" />
         </div>
       </div>
       <div class="right">
@@ -97,6 +100,8 @@ export default ({
   components: { VueCropper },
   data() {
     return {
+      blazonZoom: 1,
+      blazonDeg: 0,
       masterSrc: require('../access/tianshu.jpg'),
       blazonSrc: require('../access/img-1@2x.png'),
       parameter: {
@@ -143,6 +148,20 @@ export default ({
     this.cropperDom = this.$refs.cropper
   },
   methods: {
+    getImgData() {
+      const blazonDom = this.$refs['blazon']
+      const masterDom = this.$refs['master']
+      console.log(blazonDom, blazonDom.$el.style.left, blazonDom.$el.style.top)
+      console.log(
+        `left: ${masterDom.$el.offsetLeft - blazonDom.$el.offsetLeft}`,
+        `top: ${masterDom.$el.offsetTop - blazonDom.$el.offsetTop}`,
+        `zoom: ${this.blazonZoom}`,
+        `initialWidth: ${blazonDom.$el.clientWidth}`,
+        `initialHeight: ${blazonDom.$el.clientHeight}`,
+        `width: ${blazonDom.$el.clientWidth * this.blazonZoom}`,
+        `height: ${blazonDom.$el.clientHeight * this.blazonZoom}`,
+      )
+    },
     download() {
       const domNode = this.$refs['image-box']
       const scale = 2
@@ -166,36 +185,38 @@ export default ({
       // })
     },
     optionClick(type) {
+      const blazonDom = this.$refs['blazon']
       switch (type) {
         case 'plus':
-          this.cropperDom.relativeZoom(0.1)
+          this.blazonZoom += 0.1
           break
         case 'remove':
-          this.cropperDom.relativeZoom(-0.1)
+          this.blazonZoom -= 0.1
           break
         case 'left':
-          this.cropperDom.move(-10, 0)
+          blazonDom.$el.style.left = parseInt(blazonDom.$el.style.left || 0) - 10 + 'px'
+          console.log(blazonDom.$el.style.left)
           break
         case 'right':
-          this.cropperDom.move(10, 0)
+          blazonDom.$el.style.left = parseInt(blazonDom.$el.style.left || 0) + 10 + 'px'
           break
         case 'bottom':
-          this.cropperDom.move(0, 10)
+          blazonDom.$el.style.top = parseInt(blazonDom.$el.style.top || 0) + 10 + 'px'
           break
         case 'top':
-          this.cropperDom.move(0, -10)
+          blazonDom.$el.style.top = parseInt(blazonDom.$el.style.top || 0) - 10 + 'px'
           break
         case 'refresh-right':
-          this.cropperDom.rotate(45)
+          this.blazonDeg += 45
           break
         case 'refresh-left':
-          this.cropperDom.rotate(-45)
+          this.blazonDeg -= 45
           break
       }
-      const { left, top } = this.cropperDom.getCanvasData()
-      const { rotate, width, height } = this.cropperDom.getImageData()
-      this.parameter = { left, top, rotate: rotate | 0, width, height }
-      console.log(`left: ${left}`, `top: ${top}`, `rotate: ${rotate | 0}`, `width: ${width}`, `height: ${height}`)
+      // const { left, top } = this.cropperDom.getCanvasData()
+      // const { rotate, width, height } = this.cropperDom.getImageData()
+      // this.parameter = { left, top, rotate: rotate | 0, width, height }
+      // console.log(`left: ${left}`, `top: ${top}`, `rotate: ${rotate | 0}`, `width: ${width}`, `height: ${height}`)
     },
     ready() {
       this.cropperDom.relativeZoom(-2)

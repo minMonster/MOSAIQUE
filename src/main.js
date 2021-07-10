@@ -15,6 +15,8 @@ console.log('etst')
 // svg 全局图标组件
 import '@/icons'
 
+import '@/directive/drag'
+
 Vue.use(ElementUI)
 
 // 全局混合器

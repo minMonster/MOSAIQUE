@@ -1,7 +1,7 @@
 <template>
   <div class="enlarge-box">
     <div class="enlarge-con">
-      <el-image class="close" :src="require('../../access/close-icon.png')" @click="close" />
+      <el-image class="close" :src="require('../access/close-icon.png')" @click="close" />
       <div class="basic-information">
         <p class="title">Artwork name</p>
         <p class="edition">Edition 1 of 1</p>
@@ -41,7 +41,7 @@
         <div class="same-boxs" style="margin-top: 30px">
           <div class="list">
             <p class="head-portrait">
-              <el-image :src="require('../../icons/love-icon.png')" />
+              <el-image :src="require('../icons/love-icon.png')" />
             </p>
             <div>
               <p class="black-title">8</p>
@@ -50,7 +50,7 @@
           </div>
           <div class="list">
             <p class="head-portrait">
-              <el-image :src="require('../../icons/see-icon.png')" />
+              <el-image :src="require('../icons/see-icon.png')" />
             </p>
             <div>
               <p class="black-title">244</p>

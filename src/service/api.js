@@ -1,3 +1,14 @@
 import request from '@/service'
 
-export const myInfo = (params, opts) => request.get('my_info', { params, ...opts })
+// 获取 nft 图片列表
+export function getImages() {
+  return request(
+    {
+      url: 'pbgpm.do',
+      method: 'post',
+      data: {
+        'keyinfo': 'oss_image'
+      }
+    }
+  )
+}

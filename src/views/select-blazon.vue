@@ -65,8 +65,9 @@
   </div>
 </template>
 <script>
-import enlargeProduct from './components/enlarge.vue'
-import GuidePage from './components/guide-page.vue'
+import enlargeProduct from '@/components/enlarge.vue'
+import GuidePage from '@/components/guide-page.vue'
+import * as api from '@/service/api'
 export default {
   name: 'Blazon',
   components: {
@@ -103,7 +104,20 @@ export default {
       ]
     }
   },
+  created() {
+    this.init()
+  },
   methods: {
+    init() {
+      api.getImages().then(res => {
+        console.log(res.data.valueInfo.split(';'))
+        this.imagList = res.data.valueInfo.split(';').map(i => {
+          return {
+            img: i
+          }
+        })
+      })
+    },
     next() {
       if (this.masterIndex === -1 || this.blazonIndex === -1) {
         this.$message({

@@ -1,6 +1,7 @@
 <template>
   <div class="testing-wallet">
     <div class="edition-center">
+      <div class="marking" @click="close" />
       <div class="content">
         <p class="title">Connect your wallet</p>
         <p class="tips">
@@ -17,10 +18,20 @@
   </div>
 </template>
 <script>
-export default ({
-})
+export default {
+  name: 'TestingWallet',
+  data: function() {
+    return {}
+  },
+  methods: {
+    close() {
+      this.$emit('close')
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
+
 .testing-wallet {
   z-index: 9999;
   width: 100%;
@@ -28,11 +39,24 @@ export default ({
   left: 0;
   top: 0;
   .edition-center {
+    position: relative;
     width: 1200px;
-    overflow: hidden;
+
     justify-content: flex-end;
+    .marking {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    background:rgba(0, 0, 0, 0.4);
+    top: 0;
+    z-index: 100;
+    bottom: 0;
+    left: 0;
+  }
     .content {
       text-align: center;
+      position: relative;
+      z-index: 101;
       margin-top: 86px;
       float: right;
       padding: 108px 50px 112px;

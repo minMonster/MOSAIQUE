@@ -23,7 +23,7 @@ const createRouter = () => new Router({
           meta: {
             title: 'home'
           },
-          component: () => import(/* webpackChunkName: "orderList" */ '@/views/home-view.vue')
+          component: () => import(/* webpackChunkName: "orderList" */ '@/views/home.vue')
         },
         {
           path: '/team',

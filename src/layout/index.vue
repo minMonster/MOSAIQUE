@@ -3,13 +3,13 @@
     <!-- :style="{zoom: zoomApp}" -->
     <div class="main-container">
       <div>
-        <m-navbar v-if="isMobile" />
-        <navbar v-else />
+        <!-- <m-navbar v-if="isMobile" /> -->
+        <navbar />
       </div>
       <app-main />
       <div>
-        <MFooter v-if="isMobile" />
-        <Footer v-else />
+        <!-- <MFooter v-if="isMobile" /> -->
+        <Footer />
       </div>
     </div>
   </div>

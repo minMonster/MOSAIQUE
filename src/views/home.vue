@@ -17,7 +17,7 @@
   </div>
 </template>
 <script>
-import TestingWallet from './components/testing-wallet.vue'
+import TestingWallet from '@/components/testing-wallet.vue'
 export default {
   name: 'Home',
   components: {
@@ -81,16 +81,6 @@ export default {
     .title {
       margin-top: 134px;
     }
-  }
-  .marking {
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    background:rgba(0, 0, 0, 0.4);
-    top: 0;
-    z-index: 100;
-    bottom: 0;
-    left: 0;
   }
 }
 </style>

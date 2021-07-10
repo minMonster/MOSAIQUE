@@ -1,9 +1,9 @@
 <template>
   <div class="guide-page">
     <div class="guide-con">
-      <el-image class="close" :src="require('../../access/close-icon.png')" @click="close" />
+      <el-image class="close" :src="require('../access/close-icon.png')" @click="close" />
       <div class="pig">
-        <el-image :src="require('../../access/img-1@2x.png')" style="width: 360px; height: 360px; border-radius: 10px" />
+        <el-image :src="require('../access/img-1@2x.png')" style="width: 360px; height: 360px; border-radius: 10px" />
       </div>
       <div class="information">
         <p class="title">Whether to Make Program the NFT?</p>
