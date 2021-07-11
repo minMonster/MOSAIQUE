@@ -6,8 +6,16 @@
           <div class="title">Recently Used</div>
           <div class="master-box" :class="{ active: true }">
             <template v-if="masterIndex !== -1">
-              <el-image fit="cover" class="data-img" :src="imagList[masterIndex].img" />
-              <el-image class="close" :src="require('../access/close-icon.png')" @click="detele('M')" />
+              <el-image
+                fit="cover"
+                class="data-img"
+                :src="imagList[masterIndex].img"
+              />
+              <el-image
+                class="close"
+                :src="require('../access/close-icon.png')"
+                @click="detele('M')"
+              />
               <div class="dec">
                 <p class="name">Collection name</p>
                 <p class="type">Artwork</p>
@@ -17,8 +25,16 @@
           <div class="master-title">Master</div>
           <div class="blazon-box">
             <template v-if="blazonIndex !== -1">
-              <el-image fit="cover" class="data-img" :src="imagList[blazonIndex].img" />
-              <el-image class="close" :src="require('../access/close-icon.png')" @click="detele('B')" />
+              <el-image
+                fit="cover"
+                class="data-img"
+                :src="imagList[blazonIndex].img"
+              />
+              <el-image
+                class="close"
+                :src="require('../access/close-icon.png')"
+                @click="detele('B')"
+              />
               <div class="dec">
                 <p class="name">Collection name</p>
                 <p class="type">Artwork</p>
@@ -37,17 +53,23 @@
               class="image-item"
               :class="{
                 selectMaster: masterIndex === index,
-                selectBlazon: blazonIndex === index,
+                selectBlazon: blazonIndex === index
               }"
             >
               <!-- <img :src="item.img" alt="" class="img"> -->
-              <el-image :src="item.img" class="img" />
+              <el-image :src="item.img" fit="cover" class="img" />
               <div class="dec">
+                <div class="blur-mao" :style="{backgroundImage: 'url('+ item.img +')'}" />
                 <p class="name">Collection name</p>
                 <p class="type">Artwork</p>
               </div>
               <div class="hover-mark">
-                <img class="enlarge-icon" src="../icons/enlarge.png" alt="" @click="enlargeProduct(item)">
+                <img
+                  class="enlarge-icon"
+                  src="../icons/enlarge.png"
+                  alt=""
+                  @click="enlargeProduct(item)"
+                >
                 <!-- <el-image class="show-image-btn" /> -->
                 <div class="select-item">
                   <div @click="setDataStatus(index, 'M')">Master</div>
@@ -83,24 +105,24 @@ export default {
       masterIndex: -1,
       blazonIndex: -1,
       imagList: [
-        {
-          img: require('../access/img/beeple-03-29-18.jpg')
-        },
-        {
-          img: require('../access/img/beeple-07-12-20.jpg')
-        },
-        {
-          img: require('../access/img/beeple-07-25-20.jpg')
-        },
-        {
-          img: require('../access/img/beeple-07-26-20.jpg')
-        },
-        {
-          img: require('../access/img/beeple-07-30-20.jpg')
-        },
-        {
-          img: require('../access/img/beeple-08-12-20.jpg')
-        }
+        // {
+        //   img: require('../access/img/beeple-03-29-18.jpg')
+        // },
+        // {
+        //   img: require('../access/img/beeple-07-12-20.jpg')
+        // },
+        // {
+        //   img: require('../access/img/beeple-07-25-20.jpg')
+        // },
+        // {
+        //   img: require('../access/img/beeple-07-26-20.jpg')
+        // },
+        // {
+        //   img: require('../access/img/beeple-07-30-20.jpg')
+        // },
+        // {
+        //   img: require('../access/img/beeple-08-12-20.jpg')
+        // }
       ]
     }
   },
@@ -127,9 +149,10 @@ export default {
         return
       }
       this.$router.push({
-        name: 'EditBlazon', query: {
-          masterIndex: this.masterIndex,
-          blazonIndex: this.blazonIndex
+        name: 'EditBlazon',
+        query: {
+          master: this.imagList[this.masterIndex].img,
+          blazon: this.imagList[this.blazonIndex].img
         }
       })
     },
@@ -223,7 +246,7 @@ export default {
           &::before {
             height: 100px;
             width: 100%;
-            content: ' ';
+            content: " ";
             filter: blur(10px);
           }
         }
@@ -271,18 +294,36 @@ export default {
           margin-bottom: 50px;
           width: 285px;
           height: 375px;
-          position: relative;
           &.selectMaster,
           &.selectBlazon {
             &::before {
               position: absolute;
-              content: ' ';
+              content: " ";
               width: 295px;
               left: -9.5px;
               top: -8.5px;
               height: 385px;
+              z-index: 10;
               border: 4px solid #da6464;
               border-radius: 15px;
+              background-color: #fff;
+            }
+            &::after {
+              content: "M";
+              z-index: 9;
+              position: absolute;
+              background-color: #da6464;
+              text-align: center;
+              font-size: 18px;
+              font-family: Verdana;
+              font-weight: bold;
+              color: #ffffff;
+              height: 48px;
+              padding-top: 6px;
+              width: 60px;
+              left: -9.5px;
+              top: -34.5px;
+              border-radius: 10px;
             }
             .select-item {
               display: none !important;
@@ -292,10 +333,16 @@ export default {
             &::before {
               border: 4px solid #464952;
             }
+             &::after {
+              content: "B";
+              background-color: #464952;
+             }
           }
           .el-image {
             width: 100%;
             height: 100%;
+            position: relative;
+            z-index: 11;
             border-radius: 10px;
           }
           img {
@@ -308,21 +355,26 @@ export default {
             justify-content: center;
             height: 90px;
             width: 100%;
+            overflow: hidden;
             text-align: center;
             font-size: 12px;
             color: #f5f5f5;
             position: absolute;
+            z-index: 12;
             bottom: 0;
-            &::before {
-              content: ' ';
-              filter: blur(10px);
+            .blur-mao {
+              content: " ";
               position: absolute;
               z-index: -1;
               left: 0;
               right: 0;
+              transform: scale(1.5);
               filter: blur(10px);
               height: 100%;
               width: 100%;
+              object-fit: cover;
+              background-size: cover;
+              background-position: 0 -217px;
             }
             p {
               padding: 0;
@@ -334,6 +386,7 @@ export default {
           .hover-mark {
             display: none;
             position: absolute;
+            z-index: 12;
             background-color: rgba(0, 0, 0, 0.5);
             width: 285px;
             height: 377px;

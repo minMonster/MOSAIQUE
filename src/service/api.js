@@ -12,3 +12,14 @@ export function getImages() {
     }
   )
 }
+
+// 盖章
+export function mint(data) {
+  return request(
+    {
+      url: 'pbttm.do',
+      method: 'post',
+      data
+    }
+  )
+}

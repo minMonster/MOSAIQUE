@@ -3,7 +3,7 @@
     <div v-if="!downImg" class="edition-center">
       <div class="left" style="position: relative;">
         <el-image ref="master" :src="masterSrc" style="width: 431px;position: relative;" />
-        <el-image ref="blazon" v-drag style="left: 0;top: 230px;position: absolute;width: 431px;" :src="require('../access/img/beeple-03-29-18.jpg')" :style="{transform:'scale('+blazonZoom+') ' + 'rotateZ('+blazonDeg+'deg)'}" />
+        <el-image ref="blazon" v-drag style="left: 0;top: 230px;position: absolute;" :src="blazonSrc" :style="{transform:'scale('+blazonZoom+') ' + 'rotateZ('+blazonDeg+'deg)'}" @onmouseup="onmouseup11" />
         <!-- <div ref="image-box" style="width: 431px">
           <vue-cropper
             ref="cropper"
@@ -30,7 +30,6 @@
           <i class="el-icon-caret-top" @click="optionClick('top')" />
           <i class="el-icon-refresh-right" @click="optionClick('refresh-right')" />
           <i class="el-icon-refresh-left" @click="optionClick('refresh-left')" />
-          <i class="el-icon-refresh-left" @click="getImgData" />
         </div>
       </div>
       <div class="right">
@@ -45,26 +44,18 @@
           <p class="introduce">Pot</p>
           <p class="label">Coordinate</p>
           <div class="coordinate-mess">
-            <div class="itme"><span>X</span> <el-input v-model="parameter.left" disabled size="small" /></div>
-            <div class="itme"><span>Y</span> <el-input v-model="parameter.top" disabled size="small" /></div>
+            <div class="itme"><span style="margin-right: 10px">X</span> <el-input v-model="blazonX" size="small" /></div>
+            <div class="itme"><span style="margin-left: 10px; margin-right: 10px">Y</span> <el-input v-model="blazonY" size="small" /></div>
           </div>
           <p class="label">Size</p>
-          <div class="coordinate-mes size-itme">
-            <div class="itme"><span>width</span> <el-input v-model="parameter.width" disabled size="small" /></div>
-            <div class="itme"><span>height</span> <el-input v-model="parameter.height" disabled size="small" /></div>
+          <div class="coordinate-mess size-itme">
+            <div class="itme"> <el-input v-model="blazonZoom" size="small" /><span style="margin-left: 10px"> %</span></div>
           </div>
-          <!-- <p class="label">Scale</p>
-          <div class="coordinate-mes size-itme">
-            <div class="itme">
-              <span>ScaleX</span> <el-input v-model="parameter.XCoordinate" size="small" />
-            </div>
-            <div class="itme">
-              <span>ScaleY</span> <el-input v-model="parameter.YCoordinate" size="small" />
-            </div>
-          </div> -->
 
           <p class="label" style="margin-top: 20px">Rotate</p>
-          <div class="rotate-itme"><el-input v-model="parameter.rotate" disabled style="width: 90px; display: inline-block" size="small" /><span>°</span></div>
+          <div class="coordinate-mess size-itme">
+            <div class="itme"><el-input v-model="blazonDeg" style="" size="small" /><span style="margin-left: 10px"> °</span></div>
+          </div>
           <div class="icon-box">
             <img src="../icons/icon-3.png" alt="">
             <img src="../icons/icon-2.png" alt="">
@@ -91,91 +82,120 @@
   </div>
 </template>
 <script>
-import VueCropper from 'vue-cropperjs'
+// import VueCropper from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
-import domtoimage from 'dom-to-image'
+// import domtoimage from 'dom-to-image'
+import * as api from '@/service/api'
 
 export default ({
   name: 'EditButton',
-  components: { VueCropper },
+  // components: { VueCropper },
   data() {
     return {
       blazonZoom: 1,
       blazonDeg: 0,
+      blazonX: 0,
+      blazonY: 0,
       masterSrc: require('../access/tianshu.jpg'),
       blazonSrc: require('../access/img-1@2x.png'),
-      parameter: {
-        left: 0,
-        top: 0,
-        rotate: 0,
-        width: 0,
-        height: 0
-      },
-      imagList: [
-        {
-          img: require('../access/img/beeple-03-29-18.jpg')
-        },
-        {
-          img: require('../access/img/beeple-07-12-20.jpg')
-        },
-        {
-          img: require('../access/img/beeple-07-25-20.jpg')
-        },
-        {
-          img: require('../access/img/beeple-07-26-20.jpg')
-        },
-        {
-          img: require('../access/img/beeple-07-30-20.jpg')
-        },
-        {
-          img: require('../access/img/beeple-08-12-20.jpg')
-        }
-      ],
       masterIndex: 0,
       blazonIndex: 0,
       cropperDom: null,
-      downImg: false
+      downImg: false,
+      masterWidth: 431
     }
   },
   created() {
-    const { masterIndex, blazonIndex } = this.$route.query
-    // this.masterIndex = Number(masterIndex)
-    // this.blazonIndex = Number(blazonIndex)
-    this.masterSrc = this.imagList[Number(masterIndex)].img
-    this.blazonSrc = this.imagList[Number(blazonIndex)].img
+    const { master, blazon } = this.$route.query
+    const imgM = new Image()
+    const that = this
+    imgM.src = master
+    imgM.onload = function() {
+      that.masterSrc = master
+      that.masterWidth = this.width
+    }
+    const imgB = new Image()
+    imgB.src = blazon
+    imgB.onload = function() {
+      that.blazonSrc = blazon
+    }
   },
   mounted() {
     this.cropperDom = this.$refs.cropper
   },
   methods: {
-    getImgData() {
-      const blazonDom = this.$refs['blazon']
-      const masterDom = this.$refs['master']
-      console.log(blazonDom, blazonDom.$el.style.left, blazonDom.$el.style.top)
-      console.log(
-        `left: ${masterDom.$el.offsetLeft - blazonDom.$el.offsetLeft}`,
-        `top: ${masterDom.$el.offsetTop - blazonDom.$el.offsetTop}`,
-        `zoom: ${this.blazonZoom}`,
-        `initialWidth: ${blazonDom.$el.clientWidth}`,
-        `initialHeight: ${blazonDom.$el.clientHeight}`,
-        `width: ${blazonDom.$el.clientWidth * this.blazonZoom}`,
-        `height: ${blazonDom.$el.clientHeight * this.blazonZoom}`,
-      )
+    onmouseup11(e) {
+      console.log(11)
     },
     download() {
-      const domNode = this.$refs['image-box']
-      const scale = 2
-      domtoimage.toJpeg(this.$refs['image-box'], {
-        width: domNode.clientWidth * scale,
-        height: domNode.clientHeight * scale,
-        style: {
-          transform: 'scale(' + scale + ')',
-          transformOrigin: 'top left'
-        }
-      }).then(dataUrl => {
-        this.downImg = dataUrl
-        window.localStorage.setItem('downImg', dataUrl)
+      const bDom = this.$refs['blazon'].$el.getBoundingClientRect()
+      const mDom = this.$refs['master'].$el.getBoundingClientRect()
+      const bDomX = bDom.left
+      const bDomY = bDom.top
+      const bDomW = bDom.width
+      const bDomH = bDom.height
+      const mDomX = mDom.left
+      const mDomY = mDom.top
+      const mDomW = mDom.width
+      const mDomH = mDom.height
+      // console.log(bDom, 'getBoundingClientRect')
+      // console.log(mDom, 'getBoundingClientRect')
+      // console.log(`mDomX: ${mDomX}, mDomY: ${mDomY}, mDomW: ${mDomW}, mDomH: ${mDomH}`)
+      // console.log(`bDomX: ${bDomX}, bDomY: ${bDomY}, bDomW: ${bDomW}, bDomH: ${bDomH}`)
+      const X边界值 = bDomX < mDomX ? bDomX : mDomX
+      const Y边界值 = bDomY < mDomY ? bDomY : mDomY
+      const 画板宽度 = ((bDomX + bDomW) > (mDomX + mDomW) ? (bDomX + bDomW) : (mDomX + mDomW)) - X边界值
+      const 画板高度 = ((bDomY + bDomH) > (mDomY + mDomH) ? (bDomY + bDomH) : (mDomY + mDomH)) - Y边界值
+      // console.log(`画板宽度: ${画板宽度} 画板高度: ${画板高度} zoom: ${this.blazonZoom}, mX: ${mDomX - X边界值}, mY: ${mDomY - Y边界值} , bX: ${bDomX - X边界值}, bY: ${bDomY - Y边界值} `)
+      const zoom = mDomW / this.masterWidth
+      console.log(`zoom: ${zoom} 画板宽度: ${画板宽度 / zoom} 画板高度: ${画板高度 / zoom} zoom: ${this.blazonZoom / zoom}, mX: ${(mDomX - X边界值) / zoom}, mY: ${(mDomY - Y边界值) / zoom} mW: ${mDomW / zoom},mH: ${mDomH / zoom}, bX: ${(bDomX - X边界值) / zoom}, bY: ${(bDomY - Y边界值) / zoom} `)
+      api.mint({
+        'drawing_board_width': Number(画板宽度 / zoom).toFixed(0) + '',
+        'drawing_board_height': Number(画板高度 / zoom).toFixed(0) + '',
+        'master_contract': this.masterSrc,
+        'master_tokenid': '2106',
+        'master_x': Number((mDomX - X边界值) / zoom).toFixed(0) + '',
+        'master_y': Number((mDomY - Y边界值) / zoom).toFixed(0) + '',
+        'blazen_contract': this.blazonSrc,
+        'blazen_tokenid': '928',
+        'blazen_x': Number((bDomX - X边界值) / zoom).toFixed(0) + '',
+        'blazen_y': Number((bDomY - Y边界值) / zoom).toFixed(0) + '',
+        'blazen_rotate': Number(this.blazonDeg).toFixed(0) + '',
+        'blazen_scale': Number(this.blazonZoom / zoom).toFixed(3) + '',
+        'jsoninfo': '7b0a20202020227469746c65223a202262756c6c222c0a2020202022696d6167655f75726c223a202268747470733a2f2f696d67312e6d706179732e696f2f6d7061792f696d672f616e696d616c2f636174746c652f62756c6c2e706e67220a7d'
+      }).then(res => {
+
       })
+      // api.mint({
+      //   'drawing_board_width': '100',
+      //   'drawing_board_height': '100',
+      //   'master_contract': this.masterSrc,
+      //   'master_tokenid': '2106',
+      //   'master_x': '10',
+      //   'master_y': '10',
+      //   'blazen_contract': this.blazonSrc,
+      //   'blazen_tokenid': '928',
+      //   'blazen_x': '10',
+      //   'blazen_y': '10',
+      //   'blazen_rotate': '45',
+      //   'blazen_scale': '0.5',
+      //   'jsoninfo': '7b0a20202020227469746c65223a202262756c6c222c0a2020202022696d6167655f75726c223a202268747470733a2f2f696d67312e6d706179732e696f2f6d7061792f696d672f616e696d616c2f636174746c652f62756c6c2e706e67220a7d'
+      // }).then(res => {
+
+      // })
+      // const domNode = this.$refs['image-box']
+      // const scale = 2
+      // domtoimage.toJpeg(this.$refs['image-box'], {
+      //   width: domNode.clientWidth * scale,
+      //   height: domNode.clientHeight * scale,
+      //   style: {
+      //     transform: 'scale(' + scale + ')',
+      //     transformOrigin: 'top left'
+      //   }
+      // }).then(dataUrl => {
+      //   this.downImg = dataUrl
+      //   window.localStorage.setItem('downImg', dataUrl)
+      // })
       // html2canvas(this.$refs['image-box'], {
       //   dpi: 300
       // }).then(canvas => {
@@ -195,16 +215,19 @@ export default ({
           break
         case 'left':
           blazonDom.$el.style.left = parseInt(blazonDom.$el.style.left || 0) - 10 + 'px'
-          console.log(blazonDom.$el.style.left)
+          this.blazonX = blazonDom.$el.style.left
           break
         case 'right':
           blazonDom.$el.style.left = parseInt(blazonDom.$el.style.left || 0) + 10 + 'px'
+          this.blazonX = blazonDom.$el.style.left
           break
         case 'bottom':
           blazonDom.$el.style.top = parseInt(blazonDom.$el.style.top || 0) + 10 + 'px'
+          this.blazonY = blazonDom.$el.style.top
           break
         case 'top':
           blazonDom.$el.style.top = parseInt(blazonDom.$el.style.top || 0) - 10 + 'px'
+          this.blazonY = blazonDom.$el.style.top
           break
         case 'refresh-right':
           this.blazonDeg += 45
@@ -323,6 +346,10 @@ export default ({
           display: flex;
           overflow: hidden;
           margin-bottom: 19px;
+          .itme {
+            display: flex;
+            align-items: center;
+          }
           .coordinate-mess-itme {
             display: flex;
             justify-content: center;
