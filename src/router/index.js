@@ -26,14 +26,6 @@ const createRouter = () => new Router({
           component: () => import(/* webpackChunkName: "orderList" */ '@/views/home.vue')
         },
         {
-          path: '/team',
-          name: 'team',
-          meta: {
-            title: 'team'
-          },
-          component: () => import(/* webpackChunkName: "orderList" */ '@/views/team-view.vue')
-        },
-        {
           path: '/writing',
           name: 'writing',
           meta: {
@@ -47,7 +39,15 @@ const createRouter = () => new Router({
           meta: {
             title: 'select blazon'
           },
-          component: () => import(/* webpackChunkName: "writing" */ '@/views/select-blazon.vue')
+          component: () => import(/* webpackChunkName: "selectBlazon" */ '@/views/select-blazon.vue')
+        },
+        {
+          path: '/select-Inscription',
+          name: 'selectInscription',
+          meta: {
+            title: 'select Inscription'
+          },
+          component: () => import(/* webpackChunkName: "selectInscription" */ '@/views/select-Inscription.vue')
         },
         {
           path: '/edit-blazon',
@@ -55,8 +55,17 @@ const createRouter = () => new Router({
           meta: {
             title: 'EditBlazon'
           },
-          component: () => import(/* webpackChunkName: "writing" */ '@/views/edit-blazon.vue')
+          component: () => import(/* webpackChunkName: "EditBlazon" */ '@/views/edit-blazon.vue')
         },
+        {
+          path: '/edit-Inscription',
+          name: 'EditInscription',
+          meta: {
+            title: 'EditInscription'
+          },
+          component: () => import(/* webpackChunkName: "EditInscription" */ '@/views/edit-Inscription.vue')
+        },
+
         {
           path: '/snapshotable',
           name: 'Snapshotable',

@@ -4,6 +4,11 @@ Vue.directive('drag',
   function(el, binding) {
     const oDiv = el // 当前元素
     oDiv.onmousedown = function(e) {
+      if (!binding.value) {
+        document.onmousemove = null
+        document.onmouseup = null
+        return
+      }
       e.preventDefault()
       const bw = document.body.clientWidth
       const bh = document.body.clientHeight

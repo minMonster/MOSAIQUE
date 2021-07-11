@@ -2,14 +2,37 @@
   <div class="edit-blazon">
     <div class="edition-center">
       <div class="left" style="position: relative;">
-        <el-image v-if="status === 2" class="minted-image" style="width: 431px;position: relative;" :src="mintedImage" />
+        <el-image
+          v-if="status === 2"
+          class="minted-image"
+          style="width: 431px;position: relative;"
+          :src="mintedImage"
+        />
         <el-image
           v-if="status === 0 || status === 1"
           ref="master"
           :src="masterSrc"
           style="width: 431px;position: relative;"
         />
-        <el-image
+        <div
+          v-if="status === 0 || status === 1"
+          ref="blazon"
+          v-drag="status===0"
+          style="top: 230px;left: 0;"
+          class="blazon-box"
+          :style="{
+            left: blazonX + 'px',
+            top: blazonY + 'px',
+            transform:
+              'scale(' + blazonZoom + ') ' + 'rotateZ(' + blazonDeg + 'deg)'
+          }"
+          @mousemove="bMousemove"
+        >
+          <span class="decorate-left">@theworId</span>
+          <span class="text" v-html="introduceText" />
+          <span class="decorate-right">@elonmusk</span>
+        </div>
+        <!-- <el-image
           v-if="status === 0 || status === 1"
           ref="blazon"
           v-drag="status===0"
@@ -20,7 +43,7 @@
               'scale(' + blazonZoom + ') ' + 'rotateZ(' + blazonDeg + 'deg)'
           }"
           @mousemove="bMousemove"
-        />
+        /> -->
         <!-- <div ref="image-box" style="width: 431px">
           <vue-cropper
             ref="cropper"
@@ -38,7 +61,7 @@
             @ready="ready"
           />
         </div> -->
-        <div v-if="status===0" class="options">
+        <div v-if="status === 0" class="options">
           <i class="el-icon-circle-plus" @click="optionClick('plus')" />
           <i class="el-icon-remove" @click="optionClick('remove')" />
           <i class="el-icon-caret-left" @click="optionClick('left')" />
@@ -54,7 +77,11 @@
             @click="optionClick('refresh-left')"
           />
         </div>
-        <div v-if="status===2" class="dow" :style="{ top: 画板高度 + 230 + 'px' }">
+        <div
+          v-if="status === 2"
+          class="dow"
+          :style="{ top: 画板高度 + 230 + 'px' }"
+        >
           <p class="title-tip">Minted!</p>
           <p class="item-info"><label>Time</label>2021.04.19,08:15pm EST</p>
           <p class="item-info">
@@ -65,16 +92,53 @@
         </div>
       </div>
       <div class="right">
-        <div v-if="status===0" class="right-mint-box">
+        <div v-if="status === 0" class="right-mint-box">
           <p class="return-icon" @click="$route.go(-1)">
             <img src="../icons/return.png" alt="">
           </p>
           <div class="set-message">
-            <p class="title">Edit Blazon</p>
+            <p class="title">Edit Inscription</p>
             <p class="label">Master</p>
             <p class="introduce">The NFT Song</p>
-            <p class="label">Blazon</p>
-            <p class="introduce">Pot</p>
+            <p class="label">Inscription</p>
+            <div>
+              <el-input v-model="introduceText" />
+            </div>
+            <div
+              ref="blazon-img"
+              class="blazon-box"
+            >
+              <span class="decorate-left">@theworId</span>
+              <span class="text" v-html="introduceText" />
+              <span class="decorate-right">@elonmusk</span>
+            </div>
+            <p class="label">Style</p>
+            <div class="introduce-items">
+              <div class="item">
+                123
+              </div>
+              <div class="item">
+                123
+              </div>
+              <div class="item">
+                123
+              </div>
+              <div class="item">
+                123
+              </div>
+              <div class="item">
+                123
+              </div>
+              <div class="item">
+                123
+              </div>
+            </div>
+            <p class="label">Font Size</p>
+            <div class="coordinate-mess">
+              <div class="itme">
+                <el-input :value="blazonX" size="small" @input="xChange" />
+              </div>
+            </div>
             <p class="label">Coordinate</p>
             <div class="coordinate-mess">
               <div class="itme">
@@ -121,20 +185,35 @@
             <p class="btn" @click="download">Mint</p>
           </div>
         </div>
-        <template v-if="status===1">
-          <el-image style="margin-top: 300px" :src="require('../access/Loading_20210708.gif')" />
+        <template v-if="status === 1">
+          <el-image
+            style="margin-top: 300px"
+            :src="require('../access/Loading_20210708.gif')"
+          />
         </template>
-        <div v-if="status===2" class="minted-btn" @click="">
+        <div v-if="status === 2" class="minted-btn" @click="">
           Imprint another one
         </div>
       </div>
+    </div>
+    <div
+      ref="blazon-img"
+      style="position: relative;left: 0;top: 0;display: inline-block"
+      class="blazon-box"
+      :style="{
+      }"
+      @mousemove="bMousemove"
+    >
+      <span class="decorate-left">@theworId</span>
+      <span class="text" v-html="introduceText" />
+      <span class="decorate-right">@elonmusk</span>
     </div>
   </div>
 </template>
 <script>
 // import VueCropper from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
-// import domtoimage from 'dom-to-image'
+import domtoimage from 'dom-to-image'
 import * as api from '@/service/api'
 
 export default {
@@ -142,6 +221,7 @@ export default {
   // components: { VueCropper },
   data() {
     return {
+      introduceText: '',
       blazonZoom: 1,
       blazonDeg: 0,
       blazonX: 0,
@@ -152,26 +232,20 @@ export default {
       blazonIndex: 0,
       cropperDom: null,
       masterWidth: 431,
-      blazonWidth: 431,
       画板高度: 0,
       status: 0, // 0: edit , 1: loading, 2: minted
-      mintedImage: ''
+      mintedImage: '',
+      blazonImgWidth: 120
     }
   },
   created() {
-    const { master, blazon } = this.$route.query
+    const { master } = this.$route.query
     const imgM = new Image()
     const that = this
     imgM.src = master
     imgM.onload = function() {
       that.masterSrc = master
       that.masterWidth = this.width
-    }
-    const imgB = new Image()
-    imgB.src = blazon
-    imgB.onload = function() {
-      that.blazonSrc = blazon
-      that.blazonWidth = this.width
     }
   },
   mounted() {
@@ -180,21 +254,21 @@ export default {
   methods: {
     xChange(e) {
       const blazonDom = this.$refs['blazon']
-      blazonDom.$el.style.left = parseInt(e || 0) + 'px'
-      this.blazonX = parseInt(blazonDom.$el.style.left)
+      blazonDom.style.left = parseInt(e || 0) + 'px'
+      this.blazonX = parseInt(blazonDom.style.left)
     },
     yChange(e) {
       const blazonDom = this.$refs['blazon']
-      blazonDom.$el.style.top = parseInt(e || 0) + 'px'
-      this.blazonY = parseInt(blazonDom.$el.style.top)
+      blazonDom.style.top = parseInt(e || 0) + 'px'
+      this.blazonY = parseInt(blazonDom.style.top)
     },
     bMousemove() {
       const blazonDom = this.$refs['blazon']
-      this.blazonX = parseInt(blazonDom.$el.style.left)
-      this.blazonY = parseInt(blazonDom.$el.style.top)
+      this.blazonX = parseInt(blazonDom.style.left)
+      this.blazonY = parseInt(blazonDom.style.top)
     },
     download() {
-      const bDom = this.$refs['blazon'].$el.getBoundingClientRect()
+      const bDom = this.$refs['blazon'].getBoundingClientRect()
       const mDom = this.$refs['master'].$el.getBoundingClientRect()
       const bDomX = bDom.left
       const bDomY = bDom.top
@@ -204,93 +278,48 @@ export default {
       const mDomY = mDom.top
       const mDomW = mDom.width
       const mDomH = mDom.height
-      // console.log(bDom, 'getBoundingClientRect')
-      // console.log(mDom, 'getBoundingClientRect')
-      // console.log(`mDomX: ${mDomX}, mDomY: ${mDomY}, mDomW: ${mDomW}, mDomH: ${mDomH}`)
-      // console.log(`bDomX: ${bDomX}, bDomY: ${bDomY}, bDomW: ${bDomW}, bDomH: ${bDomH}`)
       const X边界值 = bDomX < mDomX ? bDomX : mDomX
       const Y边界值 = bDomY < mDomY ? bDomY : mDomY
-      const 画板宽度 =
-        (bDomX + bDomW > mDomX + mDomW ? bDomX + bDomW : mDomX + mDomW) -
-        X边界值
-      const 画板高度 =
-        (bDomY + bDomH > mDomY + mDomH ? bDomY + bDomH : mDomY + mDomH) -
-        Y边界值
+      const 画板宽度 = (bDomX + bDomW > mDomX + mDomW ? bDomX + bDomW : mDomX + mDomW) - X边界值
+      const 画板高度 = (bDomY + bDomH > mDomY + mDomH ? bDomY + bDomH : mDomY + mDomH) - Y边界值
       this.画板高度 = 画板高度
-      // console.log(`画板宽度: ${画板宽度} 画板高度: ${画板高度} zoom: ${this.blazonZoom}, mX: ${mDomX - X边界值}, mY: ${mDomY - Y边界值} , bX: ${bDomX - X边界值}, bY: ${bDomY - Y边界值} `)
       const zoom = mDomW / this.masterWidth
-      const bZoom = (431 / this.blazonWidth) * this.blazonZoom
-      console.log(
-        `zoom: ${zoom}, bZoom: ${bZoom}  画板宽度: ${画板宽度 /
-          zoom} 画板高度: ${画板高度 / zoom} zoom: ${this.blazonZoom /
-          zoom}, mX: ${(mDomX - X边界值) / zoom}, mY: ${(mDomY - Y边界值) /
-          zoom} mW: ${mDomW / zoom},mH: ${mDomH / zoom}, bX: ${(bDomX -
-          X边界值) /
-          zoom}, bY: ${(bDomY - Y边界值) / zoom} `
-      )
+      const bZoom = this.blazonZoom
       this.status = 1
-
-      api
-        .mint({
+      const scale = 2
+      this.blazonImgWidth = bDomW
+      console.log(this.$refs['blazon-img'].clientWidth)
+      domtoimage.toPng(this.$refs['blazon-img'], {
+        width: this.$refs['blazon-img'].getBoundingClientRect().width * scale,
+        height: this.$refs['blazon-img'].getBoundingClientRect().height * scale,
+        style: {
+          transform: 'scale(' + scale + ')',
+          transformOrigin: 'top left'
+        }
+      }).then(e => {
+        api.inscriptionMint({
           drawing_board_width: Number(画板宽度 / zoom).toFixed(0) + '',
           drawing_board_height: Number(画板高度 / zoom).toFixed(0) + '',
           master_contract: this.masterSrc,
           master_tokenid: '2106',
           master_x: Number((mDomX - X边界值) / zoom).toFixed(0) + '',
           master_y: Number((mDomY - Y边界值) / zoom).toFixed(0) + '',
-          blazen_contract: this.blazonSrc,
-          blazen_tokenid: '928',
-          blazen_x: Number((bDomX - X边界值) / zoom).toFixed(0) + '',
-          blazen_y: Number((bDomY - Y边界值) / zoom).toFixed(0) + '',
-          blazen_rotate: Number(this.blazonDeg).toFixed(0) + '',
-          blazen_scale: Number(bZoom / zoom).toFixed(3) + '',
-          jsoninfo:
-            '7b0a20202020227469746c65223a202262756c6c222c0a2020202022696d6167655f75726c223a202268747470733a2f2f696d67312e6d706179732e696f2f6d7061792f696d672f616e696d616c2f636174746c652f62756c6c2e706e67220a7d'
+          image_txt: e.split(',')[1],
+          image_txt_x: Number((bDomX - X边界值) / zoom).toFixed(0) + '',
+          image_txt_y: Number((bDomY - Y边界值) / zoom).toFixed(0) + '',
+          image_txt_rotate: Number(this.blazonDeg).toFixed(0) + '',
+          image_txt_scale: Number(bZoom / zoom / scale).toFixed(2) + '',
+          jsoninfo: '7b0a20202020227469746c65223a202262756c6c222c0a2020202022696d6167655f75726c223a202268747470733a2f2f696d67312e6d706179732e696f2f6d7061792f696d672f616e696d616c2f636174746c652f62756c6c2e706e67220a7d'
         })
-        .then(res => {
-          this.status = 2
-          this.mintedImage = res.data.compose_image
-        })
-      // api.mint({
-      //   'drawing_board_width': '100',
-      //   'drawing_board_height': '100',
-      //   'master_contract': this.masterSrc,
-      //   'master_tokenid': '2106',
-      //   'master_x': '10',
-      //   'master_y': '10',
-      //   'blazen_contract': this.blazonSrc,
-      //   'blazen_tokenid': '928',
-      //   'blazen_x': '10',
-      //   'blazen_y': '10',
-      //   'blazen_rotate': '45',
-      //   'blazen_scale': '0.5',
-      //   'jsoninfo': '7b0a20202020227469746c65223a202262756c6c222c0a2020202022696d6167655f75726c223a202268747470733a2f2f696d67312e6d706179732e696f2f6d7061792f696d672f616e696d616c2f636174746c652f62756c6c2e706e67220a7d'
-      // }).then(res => {
-
-      // })
-      // const domNode = this.$refs['image-box']
-      // const scale = 2
-      // domtoimage.toJpeg(this.$refs['image-box'], {
-      //   width: domNode.clientWidth * scale,
-      //   height: domNode.clientHeight * scale,
-      //   style: {
-      //     transform: 'scale(' + scale + ')',
-      //     transformOrigin: 'top left'
-      //   }
-      // }).then(dataUrl => {
-      //   this.downImg = dataUrl
-      //   window.localStorage.setItem('downImg', dataUrl)
-      // })
-      // html2canvas(this.$refs['image-box'], {
-      //   dpi: 300
-      // }).then(canvas => {
-      //   const dataURL = canvas.toDataURL('image/png')
-      //   this.downImg = dataURL
-      //   console.log(dataURL)
-      // })
+          .then(res => {
+            this.status = 2
+            this.mintedImage = res.data.compose_image
+          })
+      })
     },
     optionClick(type) {
       const blazonDom = this.$refs['blazon']
+      console.log(blazonDom)
       switch (type) {
         case 'plus':
           this.blazonZoom += 0.1
@@ -299,24 +328,20 @@ export default {
           this.blazonZoom -= 0.1
           break
         case 'left':
-          blazonDom.$el.style.left =
-            parseInt(blazonDom.$el.style.left || 0) - 10 + 'px'
-          this.blazonX = parseInt(blazonDom.$el.style.left)
+          blazonDom.style.left = parseInt(blazonDom.style.left || 0) - 10 + 'px'
+          this.blazonX = parseInt(blazonDom.style.left)
           break
         case 'right':
-          blazonDom.$el.style.left =
-            parseInt(blazonDom.$el.style.left || 0) + 10 + 'px'
-          this.blazonX = parseInt(blazonDom.$el.style.left)
+          blazonDom.style.left = parseInt(blazonDom.style.left || 0) + 10 + 'px'
+          this.blazonX = parseInt(blazonDom.style.left)
           break
         case 'bottom':
-          blazonDom.$el.style.top =
-            parseInt(blazonDom.$el.style.top || 0) + 10 + 'px'
-          this.blazonY = parseInt(blazonDom.$el.style.top)
+          blazonDom.style.top = parseInt(blazonDom.style.top || 0) + 10 + 'px'
+          this.blazonY = parseInt(blazonDom.style.top)
           break
         case 'top':
-          blazonDom.$el.style.top =
-            parseInt(blazonDom.$el.style.top || 0) - 10 + 'px'
-          this.blazonY = parseInt(blazonDom.$el.style.top)
+          blazonDom.style.top = parseInt(blazonDom.style.top || 0) - 10 + 'px'
+          this.blazonY = parseInt(blazonDom.style.top)
           break
         case 'refresh-right':
           this.blazonDeg += 45
@@ -325,10 +350,6 @@ export default {
           this.blazonDeg -= 45
           break
       }
-      // const { left, top } = this.cropperDom.getCanvasData()
-      // const { rotate, width, height } = this.cropperDom.getImageData()
-      // this.parameter = { left, top, rotate: rotate | 0, width, height }
-      // console.log(`left: ${left}`, `top: ${top}`, `rotate: ${rotate | 0}`, `width: ${width}`, `height: ${height}`)
     },
     ready() {
       this.cropperDom.relativeZoom(-2)
@@ -346,6 +367,32 @@ export default {
 <style lang="scss">
 .edit-blazon {
   background-color: #f5f5f5;
+   .blazon-box {
+        position: absolute;
+        top: 230px;
+        left: 0;
+        height: 60px;
+        background-color: #fff;
+        padding: 0 20px;
+        .decorate-left {
+          position: absolute;
+          color: #DA6464;
+          left: 10px;
+          top: 5px;
+        }
+        .text {
+          display: block;
+          line-height: 60px;
+          font-size: 20px;
+          min-width: 100px;
+        }
+        .decorate-right {
+          position: absolute;
+          color: #DA6464;
+          right: 10px;
+          bottom: 5px;
+        }
+      }
   .edition-center {
     width: 1200px;
     margin: 0 auto;
@@ -358,6 +405,31 @@ export default {
       padding-top: 230px;
       align-items: center;
       flex-direction: column;
+      .blazon-box {
+        position: absolute;
+        top: 230px;
+        left: 0;
+        height: 60px;
+        background-color: #fff;
+        padding: 0 20px;
+        .decorate-left {
+          position: absolute;
+          color: #DA6464;
+          left: 10px;
+          top: 5px;
+        }
+        .text {
+          display: block;
+          line-height: 60px;
+          min-width: 100px;
+        }
+        .decorate-right {
+          position: absolute;
+          color: #DA6464;
+          right: 10px;
+          bottom: 5px;
+        }
+      }
       .options {
         margin-top: 20px;
         font-size: 25px;
@@ -414,6 +486,14 @@ export default {
       margin-bottom: 252px;
       box-sizing: border-box;
       position: relative;
+      .blazon-box {
+        position: relative;
+        display: none;
+      }
+      .introduce-items {
+        display: flex;
+        flex-wrap: wrap;
+      }
       .right-mint-box {
         padding: 40px;
         background-color: #fff;

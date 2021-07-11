@@ -5,7 +5,7 @@
         <p class="title">Blazon</p>
         <p>Suggest to add text description</p>
       </div>
-      <div class="Inscription same" @click="goRouter('Inscription')">
+      <div class="Inscription same" @click="goRouter('select-Inscription')">
         <p class="title">Inscription</p>
         <p>Suggest to add text description</p>
       </div>

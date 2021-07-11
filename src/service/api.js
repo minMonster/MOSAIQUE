@@ -23,3 +23,14 @@ export function mint(data) {
     }
   )
 }
+
+// 提拔
+export function inscriptionMint(data) {
+  return request(
+    {
+      url: 'pbttd.do',
+      method: 'post',
+      data
+    }
+  )
+}
