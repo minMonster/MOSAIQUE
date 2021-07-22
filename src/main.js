@@ -16,7 +16,7 @@ console.log('etst')
 import '@/icons'
 
 import '@/directive/drag'
-
+// import '../serve'
 Vue.use(ElementUI)
 
 // 全局混合器

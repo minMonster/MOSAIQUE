@@ -81,6 +81,14 @@ const createRouter = () => new Router({
             title: 'test'
           },
           component: () => import(/* webpackChunkName: "writing" */ '@/views/test.vue')
+        },
+        {
+          path: '/drops',
+          name: 'drops',
+          meta: {
+            title: 'drops'
+          },
+          component: () => import(/* webpackChunkName: "drops" */ '@/views/drops.vue')
         }
       ]
     }

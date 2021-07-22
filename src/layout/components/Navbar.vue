@@ -8,7 +8,7 @@
       <div class="nav-tabs">
         <div class="nav-item" @click="$router.push('/Imprint')">Imprint</div>
         <div class="nav-item" @click="$router.push('/snapshotable')">Snapshot</div>
-        <div class="nav-item" @click="$router.push('/Drops')">Drops</div>
+        <div class="nav-item" @click="$router.push('/drops')">Drops</div>
         <div class="nav-item" @click="$router.push('/MoScan')">MoScan</div>
       </div>
       <div class="navbar-right">

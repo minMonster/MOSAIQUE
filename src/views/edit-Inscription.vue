@@ -153,20 +153,14 @@
             <p class="label">Size</p>
             <div class="coordinate-mess size-itme">
               <div class="itme">
-                <el-input v-model="blazonZoom" size="small" /><span
-                  style="margin-left: 10px"
-                >
-                  %</span>
+                <el-input v-model="blazonZoom" size="small" /><span style="margin-left: 10px">%</span>
               </div>
             </div>
 
             <p class="label" style="margin-top: 20px">Rotate</p>
             <div class="coordinate-mess size-itme">
               <div class="itme">
-                <el-input v-model="blazonDeg" style="" size="small" /><span
-                  style="margin-left: 10px"
-                >
-                  °</span>
+                <el-input v-model="blazonDeg" style="" size="small" /><span style="margin-left: 10px">°</span>
               </div>
             </div>
             <div class="icon-box">
@@ -493,6 +487,9 @@ export default {
       .introduce-items {
         display: flex;
         flex-wrap: wrap;
+        .item {
+          
+        }
       }
       .right-mint-box {
         padding: 40px;

@@ -102,14 +102,13 @@ export default {
   }
   .enlarge-con {
     width: 1200px;
-    height: 900px;
+    height: 740px;
     position: absolute;
     right: 0;
     left: 50%;
     margin-left: -600px;
     bottom: 0;
-    top: 50%;
-    margin-top: -450px;
+    top: 80px;
     border-radius: 10px;
     background-color: #fff;
     display: flex;
