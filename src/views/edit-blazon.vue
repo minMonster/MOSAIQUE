@@ -136,6 +136,7 @@
 import 'cropperjs/dist/cropper.css'
 // import domtoimage from 'dom-to-image'
 import * as api from '@/service/api'
+import { mapState } from 'vuex'
 
 export default {
   name: 'EditButton',
@@ -158,19 +159,26 @@ export default {
       mintedImage: ''
     }
   },
+  computed: {
+    ...mapState({
+      imageItems: state => state.app.imageItems
+    })
+  },
   created() {
-    const { master, blazon } = this.$route.query
+    let { master, blazon } = this.$route.query
+    master = Number(master)
+    blazon = Number(blazon)
     const imgM = new Image()
     const that = this
-    imgM.src = master
+    imgM.src = this.imageItems[master].image
     imgM.onload = function() {
-      that.masterSrc = master
+      that.masterSrc = that.imageItems[master].image
       that.masterWidth = this.width
     }
     const imgB = new Image()
-    imgB.src = blazon
+    imgB.src = this.imageItems[blazon].image
     imgB.onload = function() {
-      that.blazonSrc = blazon
+      that.blazonSrc = that.imageItems[blazon].image
       that.blazonWidth = this.width
     }
   },
@@ -229,17 +237,19 @@ export default {
           zoom}, bY: ${(bDomY - Y边界值) / zoom} `
       )
       this.status = 1
-
+      let { master, blazon } = this.$route.query
+      master = Number(master)
+      blazon = Number(blazon)
       api
         .mint({
           drawing_board_width: Number(画板宽度 / zoom).toFixed(0) + '',
           drawing_board_height: Number(画板高度 / zoom).toFixed(0) + '',
-          master_contract: this.masterSrc,
-          master_tokenid: '2106',
+          master_contract: this.imageItems[master].image,
+          master_tokenid: this.imageItems[master].tokenOfOwnerByIndex,
           master_x: Number((mDomX - X边界值) / zoom).toFixed(0) + '',
           master_y: Number((mDomY - Y边界值) / zoom).toFixed(0) + '',
-          blazen_contract: this.blazonSrc,
-          blazen_tokenid: '928',
+          blazen_contract: this.imageItems[blazon].image,
+          blazen_tokenid: this.imageItems[blazon].tokenOfOwnerByIndex,
           blazen_x: Number((bDomX - X边界值) / zoom).toFixed(0) + '',
           blazen_y: Number((bDomY - Y边界值) / zoom).toFixed(0) + '',
           blazen_rotate: Number(this.blazonDeg).toFixed(0) + '',
@@ -250,6 +260,10 @@ export default {
         .then(res => {
           this.status = 2
           this.mintedImage = res.data.compose_image
+        }).catch(err => {
+          this.status = 0
+          console.log(err)
+          this.$message.error(err.message || err.msg)
         })
       // api.mint({
       //   'drawing_board_width': '100',

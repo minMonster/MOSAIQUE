@@ -1,7 +1,8 @@
 const state = {
   isMobile: false,
   domWidth: 1200,
-  zoomApp: 1
+  zoomApp: 1,
+  imageItems: []
 }
 
 const mutations = {
@@ -13,6 +14,9 @@ const mutations = {
   },
   SET_ZOOM_APP(state, payload) {
     state.zoomApp = payload
+  },
+  SET_IMAGE_IMTES(state, payload) {
+    state.imageItems = payload
   }
 }
 

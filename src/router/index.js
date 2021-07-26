@@ -89,6 +89,22 @@ const createRouter = () => new Router({
             title: 'drops'
           },
           component: () => import(/* webpackChunkName: "drops" */ '@/views/drops.vue')
+        },
+        {
+          path: '/support',
+          name: 'support',
+          meta: {
+            title: 'support'
+          },
+          component: () => import(/* webpackChunkName: "support" */ '@/views/support.vue')
+        },
+        {
+          path: '/imprint',
+          name: 'imprint',
+          meta: {
+            title: 'imprint'
+          },
+          component: () => import(/* webpackChunkName: "imprint" */ '@/views/select-imprint.vue')
         }
       ]
     }

@@ -9,7 +9,7 @@
               <el-image
                 fit="cover"
                 class="data-img"
-                :src="imagList[masterIndex].img"
+                :src="imagList[masterIndex].image"
               />
               <el-image
                 class="close"
@@ -28,7 +28,7 @@
               <el-image
                 fit="cover"
                 class="data-img"
-                :src="imagList[blazonIndex].img"
+                :src="imagList[blazonIndex].image"
               />
               <el-image
                 class="close"
@@ -57,7 +57,7 @@
               }"
             >
               <!-- <img :src="item.img" alt="" class="img"> -->
-              <el-image :src="item.img" fit="cover" class="img" />
+              <el-image :src="item.image" fit="cover" class="img" />
               <div class="dec">
                 <div class="blur-mao" :style="{backgroundImage: 'url('+ item.img +')'}" />
                 <p class="name">Collection name</p>
@@ -89,12 +89,18 @@
 <script>
 import enlargeProduct from '@/components/enlarge.vue'
 import GuidePage from '@/components/guide-page.vue'
-import * as api from '@/service/api'
+// import * as api from '@/service/api'
+import { mapState } from 'vuex'
 export default {
   name: 'Blazon',
   components: {
     enlargeProduct,
     GuidePage
+  },
+  computed: {
+    ...mapState({
+      imageItems: state => state.app.imageItems
+    })
   },
   data: function() {
     return {
@@ -131,14 +137,15 @@ export default {
   },
   methods: {
     init() {
-      api.getImages().then(res => {
-        console.log(res.data.valueInfo.split(';'))
-        this.imagList = res.data.valueInfo.split(';').map(i => {
-          return {
-            img: i
-          }
-        })
-      })
+      this.imagList = this.imageItems
+      // api.getImages().then(res => {
+      //   console.log(res.data.valueInfo.split(';'))
+      //   this.imagList = res.data.valueInfo.split(';').map(i => {
+      //     return {
+      //       img: i
+      //     }
+      //   })
+      // })
     },
     next() {
       if (this.masterIndex === -1 || this.blazonIndex === -1) {
@@ -151,8 +158,8 @@ export default {
       this.$router.push({
         name: 'EditBlazon',
         query: {
-          master: this.imagList[this.masterIndex].img,
-          blazon: this.imagList[this.blazonIndex].img
+          master: this.masterIndex,
+          blazon: this.blazonIndex
         }
       })
     },

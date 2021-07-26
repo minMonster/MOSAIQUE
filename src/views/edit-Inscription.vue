@@ -209,6 +209,7 @@
 import 'cropperjs/dist/cropper.css'
 import domtoimage from 'dom-to-image'
 import * as api from '@/service/api'
+import { mapState } from 'vuex'
 
 export default {
   name: 'EditButton',
@@ -232,13 +233,19 @@ export default {
       blazonImgWidth: 120
     }
   },
+  computed: {
+    ...mapState({
+      imageItems: state => state.app.imageItems
+    })
+  },
   created() {
-    const { master } = this.$route.query
+    let { master } = this.$route.query
+    master = Number(master)
     const imgM = new Image()
     const that = this
-    imgM.src = master
+    imgM.src = this.imageItems[master].image
     imgM.onload = function() {
-      that.masterSrc = master
+      that.masterSrc = that.imageItems[master].image
       that.masterWidth = this.width
     }
   },
@@ -291,11 +298,14 @@ export default {
           transformOrigin: 'top left'
         }
       }).then(e => {
+        let { master, blazon } = this.$route.query
+        master = Number(master)
+        blazon = Number(blazon)
         api.inscriptionMint({
           drawing_board_width: Number(画板宽度 / zoom).toFixed(0) + '',
           drawing_board_height: Number(画板高度 / zoom).toFixed(0) + '',
-          master_contract: this.masterSrc,
-          master_tokenid: '2106',
+          master_contract: this.imageItems[master].image,
+          master_tokenid: this.imageItems[master].tokenOfOwnerByIndex,
           master_x: Number((mDomX - X边界值) / zoom).toFixed(0) + '',
           master_y: Number((mDomY - Y边界值) / zoom).toFixed(0) + '',
           image_txt: e.split(',')[1],
@@ -308,6 +318,10 @@ export default {
           .then(res => {
             this.status = 2
             this.mintedImage = res.data.compose_image
+          }).catch(err => {
+            this.status = 0
+            console.log(err)
+            this.$message.error(err.message || err.msg)
           })
       })
     },
@@ -488,7 +502,7 @@ export default {
         display: flex;
         flex-wrap: wrap;
         .item {
-          
+
         }
       }
       .right-mint-box {

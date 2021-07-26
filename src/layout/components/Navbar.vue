@@ -6,25 +6,26 @@
         <img class="logo-text" src="../../access/logo-text.png" alt="">
       </div>
       <div class="nav-tabs">
-        <div class="nav-item" @click="$router.push('/Imprint')">Imprint</div>
-        <div class="nav-item" @click="$router.push('/snapshotable')">Snapshot</div>
-        <div class="nav-item" @click="$router.push('/drops')">Drops</div>
-        <div class="nav-item" @click="$router.push('/MoScan')">MoScan</div>
+        <div class="nav-item" @click="goRoute('/imprint')">Imprint</div>
+        <div class="nav-item" @click="goRoute('/snapshotable')">Snapshot</div>
+        <div class="nav-item" @click="goRoute('/drops')">Drops</div>
+        <div class="nav-item" @click="goRoute('/MoScan')">MoScan</div>
       </div>
       <div class="navbar-right">
         <p class="com-iconBg" @click="showWallet">
           <img src="../../icons/user.png" alt="">
         </p>
-        <p class="com-iconBg">
+        <!-- <p class="com-iconBg">
           <img src="../../icons/wallet.png" alt="">
-        </p>
+        </p> -->
       </div>
     </div>
-    <testing-wallet v-if="walletDig" @close="walletDig = false" />
+    <testing-wallet v-show="walletDig" @close="walletDig = false" />
   </div>
 </template>
 <script>
 import TestingWallet from '@/components/testing-wallet.vue'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Navbar',
@@ -36,8 +37,20 @@ export default {
       walletDig: false
     }
   },
-  computed: {},
+  computed: {
+    ...mapState({
+      imageItems: state => state.app.imageItems
+    })
+  },
   methods: {
+    goRoute(url) {
+      if (this.imageItems.length === 0) {
+        this.$message('Please link Wallet')
+        return
+      } else {
+        this.$router.push(url)
+      }
+    },
     showWallet() {
       this.walletDig = true
     }

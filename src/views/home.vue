@@ -18,10 +18,17 @@
 </template>
 <script>
 import TestingWallet from '@/components/testing-wallet.vue'
+import { mapState } from 'vuex'
+
 export default {
   name: 'Home',
   components: {
     TestingWallet
+  },
+  computed: {
+    ...mapState({
+      imageItems: state => state.app.imageItems
+    })
   },
   data: function() {
     return {
@@ -36,7 +43,12 @@ export default {
 
   methods: {
     goRouter(route) {
-      this.$router.push({ path: route })
+      if (this.imageItems.length === 0) {
+        this.$message('Please link Wallet')
+        return
+      } else {
+        this.$router.push({ path: route })
+      }
     }
   }
 }

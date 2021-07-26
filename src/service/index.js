@@ -16,6 +16,10 @@ service.interceptors.request.use(config => {
 
 service.interceptors.response.use(
   response => {
+    console.log(response, 'response')
+    if (response.data.err_code !== 1) {
+      return Promise.reject(response.data)
+    }
     return response
   }
 )

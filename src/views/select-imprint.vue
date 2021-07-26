@@ -118,12 +118,12 @@ export default {
         })
         return
       }
-      this.$router.push({
-        name: 'EditInscription',
-        query: {
-          master: this.curIndex
-        }
-      })
+      // this.$router.push({
+      //   name: 'EditInscription',
+      //   query: {
+      //     master: this.curIndex
+      //   }
+      // })
     },
     setMaster() {
       this.isShowGuidPage = false

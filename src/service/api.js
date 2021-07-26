@@ -17,7 +17,7 @@ export function getImages() {
 export function mint(data) {
   return request(
     {
-      url: 'pbttm.do',
+      url: 'pbiwm.do',
       method: 'post',
       data
     }
@@ -28,7 +28,7 @@ export function mint(data) {
 export function inscriptionMint(data) {
   return request(
     {
-      url: 'pbttd.do',
+      url: 'pbihd.do',
       method: 'post',
       data
     }
