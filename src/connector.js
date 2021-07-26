@@ -4,7 +4,7 @@ import store from '@/store'
 import Web3 from 'web3'
 
 export const rpcUrls = {
-  1: 'https://114.115.173.246:38545'
+  1: 'http://94.74.87.188:8545'
 }
 export const web3 = new Web3(window.ethereum || rpcUrls['1'])
 export const eth = web3.eth
