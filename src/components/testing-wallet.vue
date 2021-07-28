@@ -71,8 +71,29 @@ export default {
     },
 
     getAddress() {
-      return eth.getAccounts().then(res => {
-        this.waAddress = res[0]
+      // return eth.getAccounts().then(res => {
+      //   this.waAddress = res[0]
+      // })
+      
+      eth.getAccounts().then(accounts => {
+        console.log('>>>>>>>>.getaccounts', accounts)
+        if (accounts && accounts.length) {
+          // context.commit('setAddress', accounts[0])
+          this.waAddress = accounts[0]
+        } else {
+          eth.requestAccounts().then(accounts => {
+            if (accounts && accounts.length) {
+              // context.commit('setAddress', accounts[0])
+              this.waAddress = accounts[0]
+            }
+          }).catch(err => {
+            if(err.code == -32002) {
+              Toast('Please unlock your wallet')
+            }
+          })
+        }
+      }).catch(err => {
+        console.error('getaccounterr..................j',err)
       })
     },
     // 查询资产

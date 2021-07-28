@@ -6,7 +6,10 @@ import Web3 from 'web3'
 export const rpcUrls = {
   1: 'http://94.74.87.188:8545'
 }
-export const web3 = new Web3(window.ethereum)
+// export const web3 = new Web3(window.ethereum)
+// export const eth = web3.eth
+
+export const web3 = new window.Web3(window.ethereum || rpcUrls['1'])
 export const eth = web3.eth
 
 // 切换链
@@ -51,9 +54,7 @@ export function initConnect() {
           addressBaseUrl = item.addressBaseUrl
         }
       })
-      if (chainId == 3388) {
-        chainId = 128
-      }
+      
       console.log(symbol)
       store.dispatch('getAddress')
       store.commit('CHANGE_CHAINID', chainId)
