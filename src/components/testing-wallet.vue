@@ -64,10 +64,15 @@ export default {
     },
     async init() {
       await this.getAddress()
-      const ethNumber = await this.getEth()
-      this.ethNumber = window.BigNumber(ethNumber).toFormat(4)
-      // console.log(ethNumber)
-      await this.getERC721Balance()
+      
+      console.info(this.waAddress)
+      if(this.waAddress){
+        const ethNumber = await this.getEth()
+        this.ethNumber = window.BigNumber(ethNumber).toFormat(4)
+        // console.log(ethNumber)
+        await this.getERC721Balance()
+      }
+      
     },
 
     getAddress() {
@@ -75,7 +80,7 @@ export default {
       //   this.waAddress = res[0]
       // })
       
-      eth.getAccounts().then(accounts => {
+      return eth.getAccounts().then(accounts => {
         console.log('>>>>>>>>.getaccounts', accounts)
         if (accounts && accounts.length) {
           // context.commit('setAddress', accounts[0])
@@ -92,9 +97,12 @@ export default {
             }
           })
         }
+        
       }).catch(err => {
         console.error('getaccounterr..................j',err)
       })
+
+      
     },
     // 查询资产
     getEth() {
