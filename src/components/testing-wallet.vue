@@ -64,45 +64,28 @@ export default {
     },
     async init() {
       await this.getAddress()
-      
+
       console.info(this.waAddress)
-      if(this.waAddress){
+      if (this.waAddress) {
         const ethNumber = await this.getEth()
         this.ethNumber = window.BigNumber(ethNumber).toFormat(4)
         // console.log(ethNumber)
         await this.getERC721Balance()
       }
-      
     },
 
     getAddress() {
       // return eth.getAccounts().then(res => {
       //   this.waAddress = res[0]
       // })
-      
+
       return eth.getAccounts().then(accounts => {
         console.log('>>>>>>>>.getaccounts', accounts)
-        if (accounts && accounts.length) {
+        if (accounts && accounts.length > 0) {
           // context.commit('setAddress', accounts[0])
           this.waAddress = accounts[0]
-        } else {
-          eth.requestAccounts().then(accounts => {
-            if (accounts && accounts.length) {
-              // context.commit('setAddress', accounts[0])
-              this.waAddress = accounts[0]
-            }
-          }).catch(err => {
-            if(err.code == -32002) {
-              Toast('Please unlock your wallet')
-            }
-          })
         }
-        
-      }).catch(err => {
-        console.error('getaccounterr..................j',err)
       })
-
-      
     },
     // 查询资产
     getEth() {
