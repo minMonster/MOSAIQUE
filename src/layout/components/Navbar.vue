@@ -6,7 +6,7 @@
         <img class="logo-text" src="../../access/logo-text.png" alt="">
       </div>
       <div class="nav-tabs">
-        <div class="nav-item" @click="goRoute('/imprint')">Imprint</div>
+        <div class="nav-item" @click="goRoute('/home')">Imprint</div>
         <div class="nav-item" @click="goRoute('/snapshotable')">Snapshot</div>
         <div class="nav-item" @click="goRoute('/drops')">Drops</div>
         <div class="nav-item" @click="goRoute('/MoScan')">MoScan</div>

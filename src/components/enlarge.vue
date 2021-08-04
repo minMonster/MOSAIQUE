@@ -15,7 +15,7 @@
         <div style="opacity: 0.5">#3d #animation #architecture #bitcoin #blockchain #blocks #btc #cloud #clouds #decentralization</div>
       </div>
       <div class="artwork">
-        <el-image style="width: 452px; height: 565px" :src="enlargeData.img" />
+        <el-image style="width: 452px; height: 565px" :src="enlargeData.image" />
       </div>
       <div class="browse">
         <div class="same-boxs">

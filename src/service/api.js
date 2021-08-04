@@ -13,11 +13,38 @@ export function getImages() {
   )
 }
 
-// 盖章
-export function mint(data) {
+/**
+   * 获取 newTokenUrl
+   * 文档地址：http://124.71.16.205:15566/mosaique/doc/blob/master/api.md
+   */
+export function getNewtokenUrl(data) {
   return request(
     {
       url: 'pbiwm.do',
+      method: 'post',
+      data
+    }
+  )
+}
+
+/**
+   * mint
+   * 文档地址：http://124.71.16.205:15566/mosaique/doc/blob/master/api.md
+   */
+export function mint(data) {
+  return request(
+    {
+      url: 'pbiwmm.do',
+      method: 'post',
+      data
+    }
+  )
+}
+// 提拔
+export function getInscriptionNewtokenUrl(data) {
+  return request(
+    {
+      url: 'pbihd.do',
       method: 'post',
       data
     }
@@ -28,7 +55,7 @@ export function mint(data) {
 export function inscriptionMint(data) {
   return request(
     {
-      url: 'pbihd.do',
+      url: 'pbihdm.do',
       method: 'post',
       data
     }

@@ -39,17 +39,17 @@ export function initConnect() {
   let symbol = ''
   let chainName = ''; let txBaseUrl = ''; let addressBaseUrl = ''
   eth.getChainId().then(chainId => {
-    if ((parseInt(chainId) == parseInt(chainIds[0])) || (parseInt(chainId) == parseInt(chainIds[1]))) {
+    if ((parseInt(chainId) === parseInt(chainIds[0])) || (parseInt(chainId) == parseInt(chainIds[1]))) {
       console.log('chainid>>>>>>>>>>>>>', chainId, chainConfigs)
       chainConfigs.forEach(item => {
         item = item[0]
-        if (parseInt(chainId) == parseInt(item.chainId)) {
+        if (parseInt(chainId) === parseInt(item.chainId)) {
           symbol = item.nativeCurrency.symbol
           chainName = item.chainName
         }
       })
       mainCoins.forEach(item => {
-        if (symbol == item.symbol) {
+        if (symbol === item.symbol) {
           txBaseUrl = item.txBaseUrl
           addressBaseUrl = item.addressBaseUrl
         }

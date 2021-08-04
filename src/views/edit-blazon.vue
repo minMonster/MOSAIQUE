@@ -137,6 +137,8 @@ import 'cropperjs/dist/cropper.css'
 // import domtoimage from 'dom-to-image'
 import * as api from '@/service/api'
 import { mapState } from 'vuex'
+import { eth, web3 } from '@/connector'
+import { status } from 'koa/lib/response'
 
 export default {
   name: 'EditButton',
@@ -161,7 +163,8 @@ export default {
   },
   computed: {
     ...mapState({
-      imageItems: state => state.app.imageItems
+      imageItems: state => state.app.imageItems,
+      waAddress: state => state.app.waAddress
     })
   },
   created() {
@@ -201,7 +204,7 @@ export default {
       this.blazonX = parseInt(blazonDom.$el.style.left)
       this.blazonY = parseInt(blazonDom.$el.style.top)
     },
-    download() {
+    async download() {
       const bDom = this.$refs['blazon'].$el.getBoundingClientRect()
       const mDom = this.$refs['master'].$el.getBoundingClientRect()
       const bDomX = bDom.left
@@ -240,31 +243,50 @@ export default {
       let { master, blazon } = this.$route.query
       master = Number(master)
       blazon = Number(blazon)
-      api
-        .mint({
-          drawing_board_width: Number(画板宽度 / zoom).toFixed(0) + '',
-          drawing_board_height: Number(画板高度 / zoom).toFixed(0) + '',
-          master_contract: this.imageItems[master].image,
-          master_tokenid: this.imageItems[master].tokenOfOwnerByIndex,
-          master_x: Number((mDomX - X边界值) / zoom).toFixed(0) + '',
-          master_y: Number((mDomY - Y边界值) / zoom).toFixed(0) + '',
-          blazen_contract: this.imageItems[blazon].image,
-          blazen_tokenid: this.imageItems[blazon].tokenOfOwnerByIndex,
-          blazen_x: Number((bDomX - X边界值) / zoom).toFixed(0) + '',
-          blazen_y: Number((bDomY - Y边界值) / zoom).toFixed(0) + '',
-          blazen_rotate: Number(this.blazonDeg).toFixed(0) + '',
-          blazen_scale: Number(bZoom / zoom).toFixed(3) + '',
-          jsoninfo:
-            '7b0a20202020227469746c65223a202262756c6c222c0a2020202022696d6167655f75726c223a202268747470733a2f2f696d67312e6d706179732e696f2f6d7061792f696d672f616e696d616c2f636174746c652f62756c6c2e706e67220a7d'
+      const resultNewtokenUrl = await api.getNewtokenUrl({
+        drawing_board_width: Number(画板宽度 / zoom).toFixed(0) + '',
+        drawing_board_height: Number(画板高度 / zoom).toFixed(0) + '',
+        master_contract: this.imageItems[master].contractAddress,
+        master_tokenid: this.imageItems[master].tokenOfOwnerByIndex,
+        master_x: Number((mDomX - X边界值) / zoom).toFixed(0) + '',
+        master_y: Number((mDomY - Y边界值) / zoom).toFixed(0) + '',
+        blazen_contract: this.imageItems[blazon].contractAddress,
+        blazen_tokenid: this.imageItems[blazon].tokenOfOwnerByIndex,
+        blazen_x: Number((bDomX - X边界值) / zoom).toFixed(0) + '',
+        blazen_y: Number((bDomY - Y边界值) / zoom).toFixed(0) + '',
+        blazen_rotate: Number(this.blazonDeg).toFixed(0) + '',
+        blazen_scale: Number(bZoom / zoom).toFixed(3) + ''
+      }).then(res => {
+        this.status = 2
+        this.mintedImage = res.data.compose_image
+        return res
+      }).catch(err => {
+        this.status = 0
+        console.log(err)
+        this.$message.error(err.message || err.msg)
+        return err
+      })
+      const { master_nft_mid, blazon_nft_mid, token_uri } = resultNewtokenUrl
+      let signature = null
+      if (master_nft_mid) {
+        signature = await eth.accounts.hashMessage(JSON.stringify({ master_nft_mid, blazon_nft_mid, token_uri }))
+      }
+
+      if (signature) {
+        await api.mint({
+          master_nft_mid,
+          blazon_nft_mid,
+          token_uri,
+          owner: this.waAddress,
+          signature
+        }).then(res => {
+          console.log(res)
         })
-        .then(res => {
-          this.status = 2
-          this.mintedImage = res.data.compose_image
-        }).catch(err => {
-          this.status = 0
-          console.log(err)
-          this.$message.error(err.message || err.msg)
-        })
+      }
+      // console.log(eth.accounts.hashMessage('Hello word'), 'eth.accounts.hashMessage()')
+
+      // JSON.stringify()
+
       // api.mint({
       //   'drawing_board_width': '100',
       //   'drawing_board_height': '100',

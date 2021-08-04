@@ -35,7 +35,7 @@
           </div>
           <span class="more">...</span>
         </div>
-        <div class="my-collections">My Collections</div>
+        <div class="my-collections" @click="sign">My Collections</div>
         <div class="disconnect">Disconnect</div>
         <p class="support" @click="toSupport">Support</p>
       </div>
@@ -46,6 +46,7 @@
 // import eth from '../eth.js'
 import { eth, web3 } from '@/connector'
 import * as contract from '@/contract'
+import { mapState } from 'vuex'
 export default {
   name: 'TestingWallet',
   data: function() {
@@ -53,9 +54,17 @@ export default {
       isLink: false,
       waAddress: '',
       imageItem: [],
-      ethNumber: '',
-      '721Address': '0xcC445E7389Ca3fe659C565239cf0DF3864fa4A21'
+      ethNumber: ''
+      // '721Address': '0xcC445E7389Ca3fe659C565239cf0DF3864fa4A21'
     }
+  },
+  computed: {
+    ...mapState({
+      '721Address': state => state.app['721Address']
+    })
+  },
+  created() {
+    console.log('721Address', this['721Address'])
   },
   methods: {
     toSupport() {
@@ -65,11 +74,10 @@ export default {
     async init() {
       await this.getAddress()
 
-      console.info(this.waAddress)
+      console.info(this.waAddress, 'waAddress')
       if (this.waAddress) {
         const ethNumber = await this.getEth()
         this.ethNumber = window.BigNumber(ethNumber).toFormat(4)
-        // console.log(ethNumber)
         await this.getERC721Balance()
       }
     },
@@ -82,16 +90,19 @@ export default {
       return eth.getAccounts().then(accounts => {
         console.log('>>>>>>>>.getaccounts', accounts)
         if (accounts && accounts.length > 0) {
-          // context.commit('setAddress', accounts[0])
+          this.$store.commit('app/setAddress', accounts[0])
           this.waAddress = accounts[0]
         }
       })
     },
+    sign() {
+    },
+
     // 查询资产
     getEth() {
       console.log('eeee')
       return eth.getBalance(this.waAddress).then(res => {
-        console.log(new BigNumber(res).div(1000000000000000000), 'eeeee')
+        console.log(new BigNumber(res).div(100000000000000000), 'eeeee')
         return new BigNumber(res).div(1000000000000000000)
       })
     },
@@ -99,6 +110,8 @@ export default {
       this.imageItem = await contract.getERC721Balance(
         this['721Address'],
         this.waAddress
+        // '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'
+        // '0x3C797A5Bf39A1BFeb4E008dac359a10229dDeE0b'
       )
       this.$store.commit('app/SET_IMAGE_IMTES', this.imageItem)
     },

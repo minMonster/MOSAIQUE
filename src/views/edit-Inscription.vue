@@ -304,7 +304,7 @@ export default {
         api.inscriptionMint({
           drawing_board_width: Number(画板宽度 / zoom).toFixed(0) + '',
           drawing_board_height: Number(画板高度 / zoom).toFixed(0) + '',
-          master_contract: this.imageItems[master].image,
+          master_contract: this.imageItems[master].contractAddress,
           master_tokenid: this.imageItems[master].tokenOfOwnerByIndex,
           master_x: Number((mDomX - X边界值) / zoom).toFixed(0) + '',
           master_y: Number((mDomY - Y边界值) / zoom).toFixed(0) + '',

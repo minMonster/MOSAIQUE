@@ -1,14 +1,14 @@
 <template>
   <div class="drops">
-    <div class="edition-center">
+    <div v-loading="loading" class="edition-center">
       <div class="snapshotable-title">IP Special-Cyberpunk</div>
       <div class="img-list">
-        <div v-for="item in imagList" :key="item" class="item-card">
+        <div v-for="item in imageItem" :key="item" class="item-card">
           <div class="top">
-            <el-image class="img" :src="item.img" />
+            <el-image class="img" :src="item.image" />
             <div class="mark-box">
               <div
-                :style="{ backgroundImage: 'url(' + item.img + ')' }"
+                :style="{ backgroundImage: 'url(' + item.image + ')' }"
                 class="mark"
               />
               <div class="info">
@@ -33,7 +33,7 @@
           </div>
         </div>
       </div>
-      <div class="snapshotable-title pt-0">For you</div>
+      <!-- <div class="snapshotable-title pt-0">For you</div>
       <div class="img-list">
         <div v-for="item in imagList" :key="item" class="item-card">
           <div class="top">
@@ -96,13 +96,15 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
     <enlarge-product v-if="isShowEnlarge" :enlarge-data="enlargeData" />
   </div>
 </template>
 <script>
 import enlargeProduct from '@/components/enlarge.vue'
+import { mapState } from 'vuex'
+import * as contract from '@/contract'
 
 export default {
   name: 'Drops',
@@ -111,6 +113,8 @@ export default {
     return {
       isShowEnlarge: false,
       enlargeData: null,
+      imageItem: [],
+      loading: true,
       imagList: [
         {
           img: require('../access/img/beeple-03-29-18.jpg')
@@ -133,12 +137,29 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapState({
+      '721Address': state => state.app['721Address']
+    })
+  },
   created() {
+    this.getERC721Balance()
     if (localStorage.getItem('downImg')) {
       this.imagList[0].img = localStorage.getItem('downImg')
     }
   },
   methods: {
+    async getERC721Balance() {
+      this.imageItem = await contract.getERC721Balance(
+        this['721Address'],
+        '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'
+      ).then((res) => {
+        this.loading = false
+        return res
+      }).catch(() => {
+        this.loading = false
+      })
+    },
     enlargeProduct(item) {
       this.isShowEnlarge = true
       this.enlargeData = item
@@ -171,7 +192,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     .item-card {
-      margin-right: 25px;
+      margin-right: 20px;
       &:nth-child(4) {
         margin-right: 0;
       }

@@ -50,6 +50,13 @@ export async function getERC20Balance(symbolAddress, decimals, address) {
 }
 
 /**
+ * 查询 snapshot 列表
+ * @param {*} contractAddress erc721合约地址
+ * @param {*} address 所要查询的地址
+ * @returns {*} imageItem nft 图片相关信息
+ */
+
+/**
  * 查询erc721资产余额
  * @param {*} contractAddress erc721合约地址
  * @param {*} address 所要查询的地址
@@ -58,6 +65,7 @@ export async function getERC20Balance(symbolAddress, decimals, address) {
 export async function getERC721Balance(contractAddress, address) {
   const contract = createERC721Contract(contractAddress)
   const balanceOf = await contract.methods.balanceOf(address).call()
+  console.log('balanceOf', balanceOf)
   const tokenOfOwnerByIndexsPromiseAll = []
   for (let i = 0; i < balanceOf; i++) {
     tokenOfOwnerByIndexsPromiseAll.push(contract.methods.tokenOfOwnerByIndex(address, i).call())
@@ -65,13 +73,14 @@ export async function getERC721Balance(contractAddress, address) {
   const tokenOfOwnerByIndexs = await Promise.all(tokenOfOwnerByIndexsPromiseAll).then(res => {
     return res
   })
+  console.log(tokenOfOwnerByIndexs, 'tokenOfOwnerByIndexs')
   // console.log(tokenOfOwnerByIndexs, 'tokenOfOwnerByIndexs')
   const tokenURIItemsPromiseAll = []
   tokenOfOwnerByIndexs.forEach(i => {
     tokenURIItemsPromiseAll.push(contract.methods.tokenURI(i).call())
   })
   const tokenURIs = await Promise.all(tokenURIItemsPromiseAll)
-  // console.log(tokenURIs, 'tokenURIItems')
+  console.log(tokenURIs, 'tokenURIItems')
   const prmiseAll = []
 
   tokenURIs.forEach(url => {
@@ -82,6 +91,7 @@ export async function getERC721Balance(contractAddress, address) {
   })
   const imageItem = images.map((i, index) => {
     return {
+      contractAddress,
       tokenOfOwnerByIndex: tokenOfOwnerByIndexs[index],
       tokenUrl: tokenURIs[index],
       ...i.data
