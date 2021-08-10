@@ -30,11 +30,11 @@ const mainCoinHT = {
   chain_id: htChainId,
   icon: symbolBaseUrl + HT + '.png',
   token_decimal: defaultDecimals,
-  token_address: '', 
+  token_address: '',
   txBaseUrl: 'https://hecoinfo.com/tx/',
   addressBaseUrl: 'https://hecoinfo.com/address/'
 }
-let bscChainConfig = [{
+const bscChainConfig = [{
   chainId: '0x38',
   chainName: 'BSC',
   nativeCurrency: {
@@ -45,7 +45,7 @@ let bscChainConfig = [{
   rpcUrls: ['https://bsc-dataseed.binance.org/'],
   blockExplorerUrls: ['https://bscscan.com/']
 }]
-let hecoChainConfig = [{
+const hecoChainConfig = [{
   chainId: '0x80',
   chainName: 'HECO',
   nativeCurrency: {
@@ -54,11 +54,10 @@ let hecoChainConfig = [{
     decimals: 18
   },
   rpcUrls: ['https://94.74.87.188:8545'],
-  blockExplorerUrls: ['https://hecoinfo.com/'],
+  blockExplorerUrls: ['https://hecoinfo.com/']
 }]
 const chainConfigs = [bscChainConfig, hecoChainConfig]
-const mainCoins = [ mainCoin, mainCoinHT ]
-
+const mainCoins = [mainCoin, mainCoinHT]
 
 export default { binanceChainId, defaultDecimals, slipPages, ceaseTime, fee, BNB, wBNB, baseDigit, coin, mainCoin,
   txBaseUrl, addressBaseUrl, symbolBaseUrl, maxNum, chainConfigs, HT, wHT, mainCoinHT, mainCoins

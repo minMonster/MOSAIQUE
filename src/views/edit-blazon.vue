@@ -163,8 +163,9 @@ export default {
   },
   computed: {
     ...mapState({
-      imageItems: state => state.app.imageItems,
-      waAddress: state => state.app.waAddress
+      userAddress: state => state.walletAccount['userAddress'],
+      formatEth: state => state.walletAccount.formatEth,
+      imageItems: state => state.nft.userNfts
     })
   },
   created() {
@@ -231,14 +232,14 @@ export default {
       // console.log(`画板宽度: ${画板宽度} 画板高度: ${画板高度} zoom: ${this.blazonZoom}, mX: ${mDomX - X边界值}, mY: ${mDomY - Y边界值} , bX: ${bDomX - X边界值}, bY: ${bDomY - Y边界值} `)
       const zoom = mDomW / this.masterWidth
       const bZoom = (431 / this.blazonWidth) * this.blazonZoom
-      console.log(
-        `zoom: ${zoom}, bZoom: ${bZoom}  画板宽度: ${画板宽度 /
-          zoom} 画板高度: ${画板高度 / zoom} zoom: ${this.blazonZoom /
-          zoom}, mX: ${(mDomX - X边界值) / zoom}, mY: ${(mDomY - Y边界值) /
-          zoom} mW: ${mDomW / zoom},mH: ${mDomH / zoom}, bX: ${(bDomX -
-          X边界值) /
-          zoom}, bY: ${(bDomY - Y边界值) / zoom} `
-      )
+      // console.log(
+      //   `zoom: ${zoom}, bZoom: ${bZoom}  画板宽度: ${画板宽度 /
+      //     zoom} 画板高度: ${画板高度 / zoom} zoom: ${this.blazonZoom /
+      //     zoom}, mX: ${(mDomX - X边界值) / zoom}, mY: ${(mDomY - Y边界值) /
+      //     zoom} mW: ${mDomW / zoom},mH: ${mDomH / zoom}, bX: ${(bDomX -
+      //     X边界值) /
+      //     zoom}, bY: ${(bDomY - Y边界值) / zoom} `
+      // )
       this.status = 1
       let { master, blazon } = this.$route.query
       master = Number(master)
@@ -271,6 +272,7 @@ export default {
       if (master_nft_mid) {
         signature = await eth.accounts.hashMessage(JSON.stringify({ master_nft_mid, blazon_nft_mid, token_uri }))
       }
+      console.log(signature, 'signature')
 
       if (signature) {
         await api.mint({

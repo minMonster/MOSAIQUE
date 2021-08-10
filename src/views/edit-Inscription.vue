@@ -235,7 +235,9 @@ export default {
   },
   computed: {
     ...mapState({
-      imageItems: state => state.app.imageItems
+      userAddress: state => state.walletAccount['userAddress'],
+      formatEth: state => state.walletAccount.formatEth,
+      imageItems: state => state.nft.userNfts
     })
   },
   created() {

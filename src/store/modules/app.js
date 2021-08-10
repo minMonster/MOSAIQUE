@@ -1,11 +1,8 @@
-import { eth } from '@/connector'
-
 const state = {
   isMobile: false,
   domWidth: 1200,
   zoomApp: 1,
-  imageItems: [],
-  '721Address': '0xcC445E7389Ca3fe659C565239cf0DF3864fa4A21'
+  imageItems: []
 }
 
 const mutations = {
@@ -18,24 +15,11 @@ const mutations = {
   SET_ZOOM_APP(state, payload) {
     state.zoomApp = payload
   },
-  setAddress(state, payload) {
-    state.waAddress = payload
-  },
   SET_IMAGE_IMTES(state, payload) {
     state.imageItems = payload
-  },
-  set_user_address(state, payload) {
-    state.user_address = payload
   }
 }
 const actions = {
-  getAddress({ commit }) {
-    return eth.getAccounts().then(accounts => {
-      if (accounts && accounts.length > 0) {
-        commit('set_user_address', accounts[0])
-      }
-    })
-  },
   checkMobile({ commit }) {
     const domWidth = document.documentElement.getBoundingClientRect().width
     let zoomApp = 1

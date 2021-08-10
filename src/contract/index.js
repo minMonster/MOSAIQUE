@@ -1,10 +1,8 @@
-import { web3, eth } from '@/connector'
+import { eth } from '@/connector'
 import axios from 'axios'
-
-import { MosaiqueV1, MosaiqueERC721V1, ERC721ABI, ERC20ABI } from './abi/index'
 import store from '@/store'
+import { MosaiqueV1, MosaiqueERC721V1, ERC721ABI, ERC20ABI } from './abi/index'
 import { defaultDecimals, ceaseTime } from '@/config'
-const lxAddress = '0x8A3c226f02a692894643d070214B9495F8b40D58'
 // import addrs from '@/config/address'
 export function createERC20Contract(symbolAddress) {
   return new eth.Contract(ERC20ABI, symbolAddress)
@@ -12,6 +10,43 @@ export function createERC20Contract(symbolAddress) {
 
 export function createERC721Contract(symbolAddress) {
   return new eth.Contract(ERC721ABI, symbolAddress)
+}
+
+export function createMosaiqueV1Contract(symbolAddress) {
+  return new eth.Contract(MosaiqueV1, symbolAddress)
+}
+// 复制
+export async function makeProgrammable(nftContract, tokenId) {
+  const { walletAccount } = store.state
+  const { userAddress } = walletAccount
+  const mosaique = await createMosaiqueV1Contract(nftContract)
+  console.log(userAddress, nftContract, tokenId)
+  const tx = await mosaique.methods.copyERC721(userAddress, nftContract, Number(tokenId)).send({
+    from: userAddress
+  })
+  console.log(tx)
+  return tx
+  // eth.getTransactionReceipt(tx)
+  // const accounts = await hre.ethers.getSigners()
+  // const account = accounts[0].address
+  // const attachs = hre.network.config.attachs
+
+  // console.log(attachs.mosaique721)
+
+  // const mosaiqueERC721 = await hre.ethers.getContractFactory('MosaiqueERC721V1')
+  // const erc721 = await mosaiqueERC721.attach(attachs.mosaique721)
+  // let count = await erc721.balanceOf(account)
+  // console.log('copy before count:' + count)
+
+  // const Mosaique = await hre.ethers.getContractFactory('MosaiqueV1')
+  // const mosaique = await Mosaique.attach(attachs.mosaique)
+  // console.log(tx)
+
+  // count = await erc721.balanceOf(account)
+  // console.log('copy end count:' + count)
+
+  // let tx1 = await erc721.tokenURI(0);
+  // console.log("copy end tokenURI:"+tx1);
 }
 
 /**

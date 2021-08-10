@@ -105,6 +105,14 @@ const createRouter = () => new Router({
             title: 'imprint'
           },
           component: () => import(/* webpackChunkName: "imprint" */ '@/views/select-imprint.vue')
+        },
+        {
+          path: '/copy',
+          name: 'copy',
+          meta: {
+            title: 'copy'
+          },
+          component: () => import(/* webpackChunkName: "copy" */ '@/views/copy.vue')
         }
       ]
     }

@@ -2,7 +2,7 @@
   <div class="testing-wallet">
     <div class="edition-center">
       <div class="marking" @click="close" />
-      <div v-if="!waAddress" class="content">
+      <div v-if="!userAddress" class="content">
         <p class="title">Connect your wallet</p>
         <p class="tips">
           <span>By connecting your wallet</span>
@@ -23,14 +23,14 @@
           </div>
           <i class="el-icon-edit" />
         </div>
-        <p v-loading="!ethNumber" class="eth">{{ ethNumber }}<span>ETH</span></p>
+        <p v-loading="!formatEth" class="eth">{{ formatEth }}<span>ETH</span></p>
         <p class="address">
-          {{ waAddress.substring(0, 19) }}...{{
-            waAddress.substring(waAddress.length - 4, waAddress.length)
+          {{ userAddress.substring(0, 19) }}...{{
+            userAddress.substring(userAddress.length - 4, userAddress.length)
           }}
         </p>
-        <div v-loading="imageItem.length === 0" class="nfts">
-          <div v-for="(item, index) in imageItem" :key="index">
+        <div v-loading="nftListLoading" class="nfts">
+          <div v-for="(item, index) in userNfts" :key="index">
             <el-image v-if="index < 3" :src="item.image" />
           </div>
           <span class="more">...</span>
@@ -43,24 +43,22 @@
   </div>
 </template>
 <script>
-// import eth from '../eth.js'
-import { eth, web3 } from '@/connector'
-import * as contract from '@/contract'
+import { status } from 'koa/lib/response'
 import { mapState } from 'vuex'
 export default {
   name: 'TestingWallet',
   data: function() {
     return {
       isLink: false,
-      waAddress: '',
-      imageItem: [],
+      nftListLoading: false,
       ethNumber: ''
-      // '721Address': '0xcC445E7389Ca3fe659C565239cf0DF3864fa4A21'
     }
   },
   computed: {
     ...mapState({
-      '721Address': state => state.app['721Address']
+      userAddress: state => state.walletAccount['userAddress'],
+      formatEth: state => state.walletAccount.formatEth,
+      userNfts: state => state.nft.userNfts
     })
   },
   created() {
@@ -72,48 +70,14 @@ export default {
       this.$router.push('/support')
     },
     async init() {
-      await this.getAddress()
-
-      console.info(this.waAddress, 'waAddress')
-      if (this.waAddress) {
-        const ethNumber = await this.getEth()
+      await this.$store.dispatch('walletAccount/getUserAddress')
+      if (this.userAddress) {
+        const ethNumber = await this.$store.dispatch('walletAccount/getEth')
         this.ethNumber = window.BigNumber(ethNumber).toFormat(4)
-        await this.getERC721Balance()
+        await this.$store.dispatch('nft/getERC721Balance')
       }
     },
-
-    getAddress() {
-      // return eth.getAccounts().then(res => {
-      //   this.waAddress = res[0]
-      // })
-
-      return eth.getAccounts().then(accounts => {
-        console.log('>>>>>>>>.getaccounts', accounts)
-        if (accounts && accounts.length > 0) {
-          this.$store.commit('app/setAddress', accounts[0])
-          this.waAddress = accounts[0]
-        }
-      })
-    },
     sign() {
-    },
-
-    // 查询资产
-    getEth() {
-      console.log('eeee')
-      return eth.getBalance(this.waAddress).then(res => {
-        console.log(new BigNumber(res).div(100000000000000000), 'eeeee')
-        return new BigNumber(res).div(1000000000000000000)
-      })
-    },
-    async getERC721Balance() {
-      this.imageItem = await contract.getERC721Balance(
-        this['721Address'],
-        this.waAddress
-        // '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'
-        // '0x3C797A5Bf39A1BFeb4E008dac359a10229dDeE0b'
-      )
-      this.$store.commit('app/SET_IMAGE_IMTES', this.imageItem)
     },
     close() {
       this.$emit('close')

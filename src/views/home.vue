@@ -27,7 +27,9 @@ export default {
   },
   computed: {
     ...mapState({
-      imageItems: state => state.app.imageItems
+      userAddress: state => state.walletAccount['userAddress'],
+      formatEth: state => state.walletAccount.formatEth,
+      userNfts: state => state.nft.userNfts
     })
   },
   data: function() {
@@ -43,7 +45,7 @@ export default {
 
   methods: {
     goRouter(route) {
-      if (this.imageItems.length === 0) {
+      if (!this.userAddress) {
         this.$message('Please link Wallet')
         return
       } else {

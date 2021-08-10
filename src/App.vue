@@ -16,6 +16,15 @@ export default {
     }
   },
   mounted() {
+    const that = this
+    window.ethereum.on('accountsChanged', function(accounts) {
+      console.log('accounts changed', accounts)
+      if (accounts && accounts.length) {
+        that.$store.commit('set_user_address', accounts[0])
+      } else {
+        that.$store.commit('remove_user_address')
+      }
+    })
     this.$store.dispatch('app/checkMobile')
     window.addEventListener('resize', () => {
       this.$store.dispatch('app/checkMobile')

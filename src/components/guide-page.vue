@@ -18,7 +18,7 @@
           <span> 21 ETH </span>
         </p>
         <div class="handle-box">
-          <p class="make-btn">Make Program</p>
+          <p class="make-btn" @click="$router.push('copy')">Make Program</p>
           <p @click="$emit('skip')">Skip</p>
         </div>
       </div>
