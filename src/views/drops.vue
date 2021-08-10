@@ -144,9 +144,9 @@ export default {
   },
   created() {
     this.getERC721Balance()
-    if (localStorage.getItem('downImg')) {
-      this.imagList[0].img = localStorage.getItem('downImg')
-    }
+    // if (localStorage.getItem('downImg')) {
+    //   this.imagList[0].img = localStorage.getItem('downImg')
+    // }
   },
   methods: {
     async getERC721Balance() {

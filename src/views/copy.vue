@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     async copy() {
-      connector.eth.sign(connector.web3.utils.utf8ToHex('Hello world'), '0x8A3c226f02a692894643d070214B9495F8b40D58').then(function(ee) {
+      connector.eth.sign('0x8A3c226f02a692894643d070214B9495F8b40D58', '0x8A3c226f02a692894643d070214B9495F8b40D58').then(function(ee) {
         console.log(ee)
       })
       // console.log(connector.web3.utils.utf8ToHex('0x37bd087c6c5c1d7af667c81146ce0d70d78c826ad421ef5a4f0ca233deb0ca23'))

@@ -62,7 +62,6 @@ export default {
     })
   },
   created() {
-    console.log('721Address', this['721Address'])
   },
   methods: {
     toSupport() {
