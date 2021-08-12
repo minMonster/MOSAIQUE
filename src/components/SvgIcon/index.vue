@@ -4,7 +4,6 @@
     <use :href="iconName" />
   </svg>
 </template>
-
 <script>
 // doc: https://panjiachen.github.io/vue-element-admin-site/feature/component/svg-icon.html#usage
 import { isExternal } from '@/utils/validate'

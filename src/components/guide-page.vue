@@ -47,18 +47,17 @@ export default {
   font-size: 16px;
   .guide-con {
     width: 1200px;
-    height: 650px;
+    height: 550px;
     background: #ffffff;
-    position: absolute;
+    position: fixed;
     right: 0;
     left: 50%;
     margin-left: -600px;
     bottom: 0;
-    top: 50%;
-    margin-top: -250px;
+    top: 130px;
     border-radius: 10px;
     display: flex;
-    padding: 145px 100px;
+    padding: 100px 100px;
     .close {
       cursor: pointer;
       position: absolute;

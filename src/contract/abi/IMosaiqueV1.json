@@ -21,6 +21,12 @@
       "inputs": [
         {
           "indexed": false,
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "indexed": false,
           "internalType": "bytes32",
           "name": "masterNftMID",
           "type": "bytes32"
@@ -47,42 +53,10 @@
       "inputs": [
         {
           "indexed": false,
-          "internalType": "bytes32",
-          "name": "masterNftMID",
-          "type": "bytes32"
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
         },
-        {
-          "indexed": false,
-          "internalType": "bytes32",
-          "name": "newNftMID",
-          "type": "bytes32"
-        }
-      ],
-      "name": "LogMintedBlazonNFT",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "bytes32",
-          "name": "masterNftMID",
-          "type": "bytes32"
-        },
-        {
-          "indexed": false,
-          "internalType": "bytes32",
-          "name": "newNftMID",
-          "type": "bytes32"
-        }
-      ],
-      "name": "LogMintedInscribedNFT",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
         {
           "indexed": false,
           "internalType": "bytes32",
@@ -98,6 +72,74 @@
         {
           "indexed": false,
           "internalType": "uint256",
+          "name": "newNftTokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "LogMintedBlazonNFT",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "masterNftMID",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "newNftMID",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "newNftTokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "LogMintedInscribedNFT",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "requester",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "masterNftMID",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "newNftMID",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "newTokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
           "name": "count",
           "type": "uint256"
         }
@@ -108,6 +150,12 @@
     {
       "anonymous": false,
       "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
         {
           "indexed": false,
           "internalType": "address",
@@ -242,9 +290,14 @@
           "type": "bytes32"
         },
         {
-          "internalType": "bytes32",
-          "name": "blazonNftMID",
-          "type": "bytes32"
+          "internalType": "contract IERC721Upgradeable",
+          "name": "blazonNftContract",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "blazonTokenId",
+          "type": "uint256"
         },
         {
           "internalType": "string",
@@ -255,9 +308,9 @@
       "name": "blazon",
       "outputs": [
         {
-          "internalType": "bytes32",
-          "name": "newNftMID",
-          "type": "bytes32"
+          "internalType": "uint256",
+          "name": "newTokenId",
+          "type": "uint256"
         }
       ],
       "stateMutability": "nonpayable",
@@ -477,9 +530,9 @@
       "name": "inscribe",
       "outputs": [
         {
-          "internalType": "bytes32",
-          "name": "newNftMID",
-          "type": "bytes32"
+          "internalType": "uint256",
+          "name": "newTokenId",
+          "type": "uint256"
         }
       ],
       "stateMutability": "nonpayable",
@@ -516,9 +569,9 @@
       "name": "inscribe",
       "outputs": [
         {
-          "internalType": "bytes32",
-          "name": "newNftMID",
-          "type": "bytes32"
+          "internalType": "uint256",
+          "name": "newTokenId",
+          "type": "uint256"
         }
       ],
       "stateMutability": "nonpayable",
@@ -550,9 +603,9 @@
       "name": "mintSnapshot",
       "outputs": [
         {
-          "internalType": "bytes32",
-          "name": "newNftMID",
-          "type": "bytes32"
+          "internalType": "uint256",
+          "name": "newTokenId",
+          "type": "uint256"
         }
       ],
       "stateMutability": "nonpayable",
@@ -580,6 +633,24 @@
         }
       ],
       "name": "setMosaiqueERC721Instance",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "tokenContract",
+          "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "isWhitelisted",
+          "type": "bool"
+        }
+      ],
+      "name": "setNFTWhitelist",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

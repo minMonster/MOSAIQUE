@@ -267,11 +267,13 @@ export default {
         this.$message.error(err.message || err.msg)
         return err
       })
+      // 组装签名体
       const { master_nft_mid, blazon_nft_mid, token_uri } = resultNewtokenUrl
       let signature = null
       if (master_nft_mid) {
         signature = await eth.accounts.hashMessage(JSON.stringify({ master_nft_mid, blazon_nft_mid, token_uri }))
       }
+
       console.log(signature, 'signature')
 
       if (signature) {

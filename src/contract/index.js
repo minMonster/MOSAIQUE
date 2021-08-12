@@ -1,7 +1,7 @@
-import { eth } from '@/connector'
+import { eth, web3 } from '@/connector'
 import axios from 'axios'
 import store from '@/store'
-import { MosaiqueV1, MosaiqueERC721V1, ERC721ABI, ERC20ABI } from './abi/index'
+import { IMosaiqueV1, ERC721ABI, ERC20ABI } from './abi/index'
 import { defaultDecimals, ceaseTime } from '@/config'
 // import addrs from '@/config/address'
 export function createERC20Contract(symbolAddress) {
@@ -13,40 +13,34 @@ export function createERC721Contract(symbolAddress) {
 }
 
 export function createMosaiqueV1Contract(symbolAddress) {
-  return new eth.Contract(MosaiqueV1, symbolAddress)
+  return new eth.Contract(IMosaiqueV1, symbolAddress)
 }
+
+export async function sign(signParams) {
+  const nft0MID = '0xcbd5da68b986b9e825458be40c08559f53b6503a0f760d4f9269ac01b7c57801'
+  const nft1MID = '0x425b28aa0c36086decd0dfd98e5be1ca684f7923126f89a10bce35d416e6dca0'
+  const newTokenURI = '1 + 2'
+  signParams = signParams || [nft0MID, nft1MID, newTokenURI]
+  const sigHash = await web3.utils.sha3(await web3.eth.abi.encodeParameters(['bytes32', 'bytes32', 'string'], signParams))
+  const { walletAccount } = store.state
+  const { userAddress } = walletAccount
+  const hash = await eth.accounts.hashMessage(sigHash)
+  let signmssage = '1'
+  await eth.sign(hash, userAddress, (e, i) => {
+    signmssage = i
+  })
+  return signmssage
+}
+
 // 复制
 export async function makeProgrammable(nftContract, tokenId) {
   const { walletAccount } = store.state
   const { userAddress } = walletAccount
   const mosaique = await createMosaiqueV1Contract(nftContract)
-  console.log(userAddress, nftContract, tokenId)
   const tx = await mosaique.methods.copyERC721(userAddress, nftContract, Number(tokenId)).send({
     from: userAddress
   })
-  console.log(tx)
   return tx
-  // eth.getTransactionReceipt(tx)
-  // const accounts = await hre.ethers.getSigners()
-  // const account = accounts[0].address
-  // const attachs = hre.network.config.attachs
-
-  // console.log(attachs.mosaique721)
-
-  // const mosaiqueERC721 = await hre.ethers.getContractFactory('MosaiqueERC721V1')
-  // const erc721 = await mosaiqueERC721.attach(attachs.mosaique721)
-  // let count = await erc721.balanceOf(account)
-  // console.log('copy before count:' + count)
-
-  // const Mosaique = await hre.ethers.getContractFactory('MosaiqueV1')
-  // const mosaique = await Mosaique.attach(attachs.mosaique)
-  // console.log(tx)
-
-  // count = await erc721.balanceOf(account)
-  // console.log('copy end count:' + count)
-
-  // let tx1 = await erc721.tokenURI(0);
-  // console.log("copy end tokenURI:"+tx1);
 }
 
 /**
@@ -229,7 +223,7 @@ export async function getSnapshotStatus(masterNftMID) {
   // );
   // 这是平台铸造合约地址,需要根据实际数据调整
   const address = store.state.address
-  const contract = new eth.Contract(MosaiqueV1, address)
+  const contract = new eth.Contract(IMosaiqueV1, address)
   return contract.methods.getSnapshotStatus(masterNftMID).call()
 }
 
@@ -250,7 +244,7 @@ export async function getNftInfo(nftMID) {
   // );
   // 这是平台铸造合约地址,需要根据实际数据调整
   const address = store.state.address
-  const contract = new eth.Contract(MosaiqueV1, address)
+  const contract = new eth.Contract(IMosaiqueV1, address)
   return contract.methods.getNftInfo(nftMID).call()
 }
 
@@ -264,7 +258,7 @@ export async function getNftMID(nftContract, tokenId) {
   // returns (bytes32 nftMID);
   // 这是平台铸造合约地址,需要根据实际数据调整
   const address = store.state.address
-  const contract = new eth.Contract(MosaiqueV1, address)
+  const contract = new eth.Contract(IMosaiqueV1, address)
   return contract.methods.getNftMID(nftContract, tokenId).call()
 }
 

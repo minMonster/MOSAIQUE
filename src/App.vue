@@ -34,7 +34,8 @@ export default {
 </script>
 <style lang="scss">
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC","Helvetica Neue",STHeiti,"Microsoft Yahei",Tahoma,Simsun,sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC",
+    "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
 }
 
 .f-base {
@@ -45,6 +46,12 @@ body {
   box-sizing: border-box;
 }
 p {
-   margin: 0;
+  margin: 0;
+}
+.edition-center {
+  width: 1200px;
+  margin: 0 auto;
+  height: 100%;
+  position: relative;
 }
 </style>
