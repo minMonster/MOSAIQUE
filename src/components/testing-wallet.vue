@@ -73,7 +73,7 @@ export default {
       await this.$store.dispatch('walletAccount/getUserAddress')
       if (!this.userAddress) {
         await window.ethereum.enable()
-        this.init
+        this.init()
       }
       if (this.userAddress) {
         await this.$store.dispatch('walletAccount/getEth')

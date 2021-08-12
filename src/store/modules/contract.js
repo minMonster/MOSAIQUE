@@ -9,7 +9,6 @@ const state = {
     mosaique: '0x6c198aa7D4817c62dE7A338316769Be784167646',
     mosaique721: '0x7490c0400b8f504101F296A3e9392E554f305CD3'
   }
-
 }
 
 const mutations = {

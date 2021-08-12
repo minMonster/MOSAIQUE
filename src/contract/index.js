@@ -16,12 +16,9 @@ export function createMosaiqueV1Contract(symbolAddress) {
   return new eth.Contract(IMosaiqueV1, symbolAddress)
 }
 
-export async function sign(signParams) {
-  const nft0MID = '0x3b4408cc3a21f62c119bd0661509f09b03e71f2e2bbbdf1617ec41dba1dded77'
-  const nft1MID = '0x0131705c715f48751ccf84c158bf63f5825cba5917f05afb506223a46203f637'
-  const newTokenURI = 'https://img1.uapay.io/mpay/img/txt/mosaique/2c9180820000000a017b3a6bd9a80011'
-  signParams = signParams || [nft0MID, nft1MID, newTokenURI]
-  const sigHash = await web3.utils.sha3(await web3.eth.abi.encodeParameters(['bytes32', 'bytes32', 'string'], signParams))
+export async function sign(signParams, encodeParameters) {
+  console.log(signParams, encodeParameters)
+  const sigHash = await web3.utils.sha3(await web3.eth.abi.encodeParameters(encodeParameters, signParams))
   const { walletAccount } = store.state
   const { userAddress } = walletAccount
   const hash = await eth.accounts.hashMessage(sigHash)
@@ -138,8 +135,8 @@ export async function getERC721Balance(contractAddress, address) {
  * @param {*} tokenId erc721 tokenId
  * @returns
  */
-export async function erc721transfer(contractAddress, address, from, to, tokenId) {
-  console.log(contractAddress, address, from, to, tokenId, '123123123')
+export function erc721transfer(contractAddress, address, from, to, tokenId) {
+  console.log(contractAddress, address, from, to, tokenId, 'erc721transfer')
   const contract = createERC721Contract(contractAddress)
   return contract.methods.safeTransferFrom(from, to, tokenId).send({
     from: address

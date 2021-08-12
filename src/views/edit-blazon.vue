@@ -2,15 +2,15 @@
   <div class="edit-blazon">
     <div class="edition-center">
       <div class="left" style="position: relative;">
-        <el-image v-if="status === 2" class="minted-image" style="width: 431px;position: relative;" :src="mintedImage" />
+        <el-image v-if="status !== 0" class="minted-image" style="width: 431px;position: relative;" :src="mintedImage" />
         <el-image
-          v-if="status === 0 || status === 1"
+          v-if="status === 0"
           ref="master"
           :src="masterSrc"
           style="width: 431px;position: relative;"
         />
         <el-image
-          v-if="status === 0 || status === 1"
+          v-if="status === 0"
           ref="blazon"
           v-drag="status===0"
           style="left: 0;top: 230px;position: absolute;width: 431px"
@@ -21,23 +21,6 @@
           }"
           @mousemove="bMousemove"
         />
-        <!-- <div ref="image-box" style="width: 431px">
-          <vue-cropper
-            ref="cropper"
-            class="ccccc"
-            :style="{ backgroundImage: 'url(' + masterSrc + ')' }"
-            style="width: 431px"
-            :src="blazonSrc"
-            rotatable
-            :background="false"
-            drag-mode="move"
-            :auto-crop="false"
-            alt="Source Image"
-            @cropmove="cropmove"
-            @zoom="zoom"
-            @ready="ready"
-          />
-        </div> -->
         <div v-if="status===0" class="options">
           <i class="el-icon-circle-plus" @click="optionClick('plus')" />
           <i class="el-icon-remove" @click="optionClick('remove')" />
@@ -118,13 +101,16 @@
             <p style="font-size: 14px; font-weight: bold">
               0.0245 ETH (about $54.53)
             </p>
-            <p class="btn" @click="submit">Mint</p>
+            <p class="btn" @click="submit">Print</p>
           </div>
         </div>
-        <template v-if="status===1">
+        <template v-if="status===-1">
           <el-image style="margin-top: 300px" :src="require('../access/Loading_20210708.gif')" />
         </template>
-        <div v-if="status===2" class="minted-btn" @click="">
+        <div v-if="status===1" class="minted-btn" @click="mint">
+          Print
+        </div>
+        <div v-if="status===2" class="minted-btn">
           Imprint another one
         </div>
       </div>
@@ -137,8 +123,7 @@ import 'cropperjs/dist/cropper.css'
 // import domtoimage from 'dom-to-image'
 import * as api from '@/service/api'
 import { mapState } from 'vuex'
-import { eth, web3 } from '@/connector'
-import { status } from 'koa/lib/response'
+import { eth } from '@/connector'
 import * as contract from '@/contract'
 export default {
   name: 'EditButton',
@@ -157,13 +142,15 @@ export default {
       masterWidth: 431,
       blazonWidth: 431,
       画板高度: 0,
-      status: 0, // 0: edit , 1: loading, 2: minted
-      mintedImage: ''
+      status: 0, // -1: loading 0: edit , 1: print, 2: minted
+      mintedImage: '',
+      resultNewtokenUrl: null
     }
   },
   computed: {
     ...mapState({
       contractAddress: state => state.contract['contractAddress'],
+      mosaique: state => state.contract['CollectionContract'].mosaique,
       userAddress: state => state.walletAccount['userAddress'],
       formatEth: state => state.walletAccount.formatEth,
       imageItems: state => state.nft.userNfts
@@ -241,7 +228,7 @@ export default {
       //     X边界值) /
       //     zoom}, bY: ${(bDomY - Y边界值) / zoom} `
       // )
-      this.status = 1
+      this.status = -1
       let { master, blazon } = this.$route.query
       master = Number(master)
       blazon = Number(blazon)
@@ -259,7 +246,6 @@ export default {
         blazen_rotate: Number(this.blazonDeg).toFixed(0) + '',
         blazen_scale: Number(bZoom / zoom).toFixed(3) + ''
       }).then(res => {
-        this.status = 2
         this.mintedImage = res.data.compose_image
         return res
       }).catch(err => {
@@ -270,108 +256,89 @@ export default {
       })
       return resultNewtokenUrl
     },
-    async sign(resultNewtokenUrl) {
-      const { master_nft_mid, blazon_nft_mid, token_uri } = resultNewtokenUrl
-      let signature = null
-      if (master_nft_mid) {
-        signature = await contract.sign([master_nft_mid, blazon_nft_mid, token_uri])
-      }
-      return signature
+
+    erc721transfer() {
+      const { master } = this.$route.query
+      const transferHash = contract.erc721transfer(
+        this.contractAddress, // erc721合约地址
+        this.userAddress, // 操作地址
+        this.userAddress, // erc721转出方
+        this.mosaique, // erc721接收方
+        // '0xcC445E7389Ca3fe659C565239cf0DF3864fa4A21', // erc721接收方
+        this.imageItems[master].tokenOfOwnerByIndex // erc721 tokenId
+      ).on('transactionHash', (reject) => {
+        console.log(reject, 'reject')
+        this.loadingTransferHash(reject, 1)
+      })
+      return transferHash
+    },
+    loadingTransferHash(transferHash, status) {
+      console.log('loadingTransferHash')
+      return eth.getTransactionReceipt(transferHash).then(res => {
+        console.log(res, 'res')
+        if (res === null || res === 0) {
+          setTimeout(() => {
+            return this.loadingTransferHash(transferHash, status)
+          }, 1000)
+        } else {
+          this.status = status
+          return true
+        }
+      }).catch(err => {
+        console.log(err)
+        return false
+      })
     },
     async submit() {
-      // const resultNewtokenUrl = await this.compose_image
+      this.resultNewtokenUrl = await this.compose_image()
       // blazon_nft_mid: "0x3b4408cc3a21f62c119bd0661509f09b03e71f2e2bbbdf1617ec41dba1dded77"
       // compose_image: "https://img1.uapay.io/mpay/img/png/mosaique/2c9180820000000a017b3a6824d3000a.png"
       // err_code: 1
       // master_nft_mid: "0x0131705c715f48751ccf84c158bf63f5825cba5917f05afb506223a46203f637"
       // msg: "成功"
       // token_uri: "https://img1.uapay.io/mpay/img/txt/mosaique/2c9180820000000a017b3a682b04000b"
-      /**
-       * erc721转账
-       * @param {*} contractAddress erc721合约地址
-       * @param {*} address 操作地址
-       * @param {*} from erc721转出方
-       * @param {*} to erc721接收方
-       * @param {*} tokenId erc721 tokenId
-       * @returns
-       */
-      const { master } = this.$route.query
+      this.erc721transfer()
+    },
+    async sign(resultNewtokenUrl) {
+      const { blazon } = this.$route.query
+      const blazonItem = this.imageItems[blazon]
+      console.log('sign => resultNewtokenUrl', resultNewtokenUrl)
+      // compose_image: "https://img1.uapay.io/mpay/img/png/mosaique/2c9180820000000a017b3b36a7510052.png"
+      // err_code: 1
+      // master_nft_mid: "0x133cdf97d9498ba1fbca395074facdb7c7857a0272484657ba90b6d195659f7c"
+      // msg: "成功"
+      // token_uri: "https://img1.uapay.io/mpay/img/txt/mosaique/2c9180820000000a017b3b36a7e90053"
 
-      const transferHash = await contract.erc721transfer(
-        this.contractAddress, // erc721合约地址
-        this.userAddress, // 操作地址
-        this.userAddress, // erc721转出方
-        '0xA7264347B7494B8eDc541C42691f17b2c18eae84', // erc721接收方
-        this.imageItems[master].tokenOfOwnerByIndex // erc721 tokenId
-      )
-      console.log(transferHash, 'transferHash')
-      return
-      // 组装签名体
-      // nft1MID  需要通过查询合约getNFTMid获取
-      // nft2MID  需要通过查询合约getNFTMid获取
-      // newTokenURI  通过接口合成图片后获取
-      // const { master_nft_mid, blazon_nft_mid, token_uri } = resultNewtokenUrl
-      // let signature = null
-      // if (master_nft_mid) {
-      //   signature = await contract.sign([master_nft_mid, blazon_nft_mid, token_uri])
-      // }
-
-      // transfer
-
-      console.log(transferHash, 'signature')
-
+      const { master_nft_mid, token_uri } = resultNewtokenUrl
+      let signature = null
+      if (master_nft_mid) {
+        signature = await contract.sign([master_nft_mid, blazonItem.contractAddress, blazonItem.tokenOfOwnerByIndex, token_uri], ['bytes32', 'address', 'uint256', 'string'])
+      }
+      console.log(signature, 'signature')
+      return signature
+    },
+    async mint() {
+      console.log('mint')
+      this.status = -1
+      const resultNewtokenUrl = this.resultNewtokenUrl.data
+      const signature = await this.sign(resultNewtokenUrl)
+      const { blazon } = this.$route.query
+      const blazonItem = this.imageItems[blazon]
       if (signature) {
         await api.mint({
-          master_nft_mid,
-          blazon_nft_mid,
-          token_uri,
-          owner: this.waAddress,
+          master_nft_mid: resultNewtokenUrl.master_nft_mid,
+          blazen_contract: blazonItem.contractAddress,
+          blazen_tokenid: blazonItem.tokenOfOwnerByIndex,
+          new_token_uri: resultNewtokenUrl.token_uri,
+          owner: this.userAddress,
           signature
         }).then(res => {
+          this.status = 2
           console.log(res)
+        }).catch(err => {
+          this.loadingTransferHash(err.transaction_hash, 2)
         })
       }
-      // console.log(eth.accounts.hashMessage('Hello word'), 'eth.accounts.hashMessage()')
-
-      // JSON.stringify()
-
-      // api.mint({
-      //   'drawing_board_width': '100',
-      //   'drawing_board_height': '100',
-      //   'master_contract': this.masterSrc,
-      //   'master_tokenid': '2106',
-      //   'master_x': '10',
-      //   'master_y': '10',
-      //   'blazen_contract': this.blazonSrc,
-      //   'blazen_tokenid': '928',
-      //   'blazen_x': '10',
-      //   'blazen_y': '10',
-      //   'blazen_rotate': '45',
-      //   'blazen_scale': '0.5',
-      //   'jsoninfo': '7b0a20202020227469746c65223a202262756c6c222c0a2020202022696d6167655f75726c223a202268747470733a2f2f696d67312e6d706179732e696f2f6d7061792f696d672f616e696d616c2f636174746c652f62756c6c2e706e67220a7d'
-      // }).then(res => {
-
-      // })
-      // const domNode = this.$refs['image-box']
-      // const scale = 2
-      // domtoimage.toJpeg(this.$refs['image-box'], {
-      //   width: domNode.clientWidth * scale,
-      //   height: domNode.clientHeight * scale,
-      //   style: {
-      //     transform: 'scale(' + scale + ')',
-      //     transformOrigin: 'top left'
-      //   }
-      // }).then(dataUrl => {
-      //   this.downImg = dataUrl
-      //   window.localStorage.setItem('downImg', dataUrl)
-      // })
-      // html2canvas(this.$refs['image-box'], {
-      //   dpi: 300
-      // }).then(canvas => {
-      //   const dataURL = canvas.toDataURL('image/png')
-      //   this.downImg = dataURL
-      //   console.log(dataURL)
-      // })
     },
     optionClick(type) {
       const blazonDom = this.$refs['blazon']
