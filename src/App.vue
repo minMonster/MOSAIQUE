@@ -15,14 +15,18 @@ export default {
       }
     }
   },
-  mounted() {
+  async mounted() {
     const that = this
-    window.ethereum.on('accountsChanged', function(accounts) {
+    window.ethereum.on('accountsChanged', async function(accounts) {
       console.log('accounts changed', accounts)
       if (accounts && accounts.length) {
-        that.$store.commit('set_user_address', accounts[0])
+        that.$store.commit('walletAccount/set_user_address', accounts[0])
+        if (accounts[0]) {
+          await that.$store.dispatch('walletAccount/getEth')
+          await that.$store.dispatch('nft/getERC721Balance')
+        }
       } else {
-        that.$store.commit('remove_user_address')
+        that.$store.commit('walletAccount/remove_user_address')
       }
     })
     this.$store.dispatch('app/checkMobile')

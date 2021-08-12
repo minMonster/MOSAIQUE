@@ -69,10 +69,14 @@ export default {
       this.$router.push('/support')
     },
     async init() {
+      // 链接钱包
       await this.$store.dispatch('walletAccount/getUserAddress')
+      if (!this.userAddress) {
+        await window.ethereum.enable()
+        this.init
+      }
       if (this.userAddress) {
-        const ethNumber = await this.$store.dispatch('walletAccount/getEth')
-        this.ethNumber = window.BigNumber(ethNumber).toFormat(4)
+        await this.$store.dispatch('walletAccount/getEth')
         await this.$store.dispatch('nft/getERC721Balance')
       }
     },
@@ -94,6 +98,7 @@ export default {
   .edition-center {
     position: relative;
     width: 1200px;
+    margin: 0;
 
     justify-content: flex-end;
     .marking {

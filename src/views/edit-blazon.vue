@@ -118,7 +118,7 @@
             <p style="font-size: 14px; font-weight: bold">
               0.0245 ETH (about $54.53)
             </p>
-            <p class="btn" @click="download">Mint</p>
+            <p class="btn" @click="submit">Mint</p>
           </div>
         </div>
         <template v-if="status===1">
@@ -139,7 +139,7 @@ import * as api from '@/service/api'
 import { mapState } from 'vuex'
 import { eth, web3 } from '@/connector'
 import { status } from 'koa/lib/response'
-
+import * as contract from '@/contract'
 export default {
   name: 'EditButton',
   // components: { VueCropper },
@@ -163,6 +163,7 @@ export default {
   },
   computed: {
     ...mapState({
+      contractAddress: state => state.contract['contractAddress'],
       userAddress: state => state.walletAccount['userAddress'],
       formatEth: state => state.walletAccount.formatEth,
       imageItems: state => state.nft.userNfts
@@ -205,7 +206,7 @@ export default {
       this.blazonX = parseInt(blazonDom.$el.style.left)
       this.blazonY = parseInt(blazonDom.$el.style.top)
     },
-    async download() {
+    async compose_image() {
       const bDom = this.$refs['blazon'].$el.getBoundingClientRect()
       const mDom = this.$refs['master'].$el.getBoundingClientRect()
       const bDomX = bDom.left
@@ -267,14 +268,57 @@ export default {
         this.$message.error(err.message || err.msg)
         return err
       })
-      // 组装签名体
+      return resultNewtokenUrl
+    },
+    async sign(resultNewtokenUrl) {
       const { master_nft_mid, blazon_nft_mid, token_uri } = resultNewtokenUrl
       let signature = null
       if (master_nft_mid) {
-        signature = await eth.accounts.hashMessage(JSON.stringify({ master_nft_mid, blazon_nft_mid, token_uri }))
+        signature = await contract.sign([master_nft_mid, blazon_nft_mid, token_uri])
       }
+      return signature
+    },
+    async submit() {
+      // const resultNewtokenUrl = await this.compose_image
+      // blazon_nft_mid: "0x3b4408cc3a21f62c119bd0661509f09b03e71f2e2bbbdf1617ec41dba1dded77"
+      // compose_image: "https://img1.uapay.io/mpay/img/png/mosaique/2c9180820000000a017b3a6824d3000a.png"
+      // err_code: 1
+      // master_nft_mid: "0x0131705c715f48751ccf84c158bf63f5825cba5917f05afb506223a46203f637"
+      // msg: "成功"
+      // token_uri: "https://img1.uapay.io/mpay/img/txt/mosaique/2c9180820000000a017b3a682b04000b"
+      /**
+       * erc721转账
+       * @param {*} contractAddress erc721合约地址
+       * @param {*} address 操作地址
+       * @param {*} from erc721转出方
+       * @param {*} to erc721接收方
+       * @param {*} tokenId erc721 tokenId
+       * @returns
+       */
+      const { master } = this.$route.query
 
-      console.log(signature, 'signature')
+      const transferHash = await contract.erc721transfer(
+        this.contractAddress, // erc721合约地址
+        this.userAddress, // 操作地址
+        this.userAddress, // erc721转出方
+        '0xA7264347B7494B8eDc541C42691f17b2c18eae84', // erc721接收方
+        this.imageItems[master].tokenOfOwnerByIndex // erc721 tokenId
+      )
+      console.log(transferHash, 'transferHash')
+      return
+      // 组装签名体
+      // nft1MID  需要通过查询合约getNFTMid获取
+      // nft2MID  需要通过查询合约getNFTMid获取
+      // newTokenURI  通过接口合成图片后获取
+      // const { master_nft_mid, blazon_nft_mid, token_uri } = resultNewtokenUrl
+      // let signature = null
+      // if (master_nft_mid) {
+      //   signature = await contract.sign([master_nft_mid, blazon_nft_mid, token_uri])
+      // }
+
+      // transfer
+
+      console.log(transferHash, 'signature')
 
       if (signature) {
         await api.mint({

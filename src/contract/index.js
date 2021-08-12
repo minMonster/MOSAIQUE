@@ -17,9 +17,9 @@ export function createMosaiqueV1Contract(symbolAddress) {
 }
 
 export async function sign(signParams) {
-  const nft0MID = '0xcbd5da68b986b9e825458be40c08559f53b6503a0f760d4f9269ac01b7c57801'
-  const nft1MID = '0x425b28aa0c36086decd0dfd98e5be1ca684f7923126f89a10bce35d416e6dca0'
-  const newTokenURI = '1 + 2'
+  const nft0MID = '0x3b4408cc3a21f62c119bd0661509f09b03e71f2e2bbbdf1617ec41dba1dded77'
+  const nft1MID = '0x0131705c715f48751ccf84c158bf63f5825cba5917f05afb506223a46203f637'
+  const newTokenURI = 'https://img1.uapay.io/mpay/img/txt/mosaique/2c9180820000000a017b3a6bd9a80011'
   signParams = signParams || [nft0MID, nft1MID, newTokenURI]
   const sigHash = await web3.utils.sha3(await web3.eth.abi.encodeParameters(['bytes32', 'bytes32', 'string'], signParams))
   const { walletAccount } = store.state

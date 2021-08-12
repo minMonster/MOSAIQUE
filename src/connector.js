@@ -9,8 +9,9 @@ export const rpcUrls = {
 export const web3 = new window.Web3(window.ethereum || rpcUrls['1'])
 export const eth = web3.eth
 
-export function initConnect() {
-  // store.dispatch('getAddress')
+export async function initConnect() {
+  // console.log(store)
+  // store.dispatch('walletAccount/getUserAddress')
 }
 
 initConnect()
