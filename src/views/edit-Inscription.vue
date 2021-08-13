@@ -176,7 +176,7 @@
             <p style="font-size: 14px; font-weight: bold">
               0.0245 ETH (about $54.53)
             </p>
-            <p class="btn" @click="download">Mint</p>
+            <p class="btn" @click="submit">Print</p>
           </div>
         </div>
         <template v-if="status === 1">
@@ -185,7 +185,10 @@
             :src="require('../access/Loading_20210708.gif')"
           />
         </template>
-        <div v-if="status === 2" class="minted-btn" @click="">
+        <div v-if="status === 1" class="minted-btn" @click="mint">
+          Inscription
+        </div>
+        <div v-if="status === 2" class="minted-btn">
           Imprint another one
         </div>
       </div>
@@ -210,6 +213,8 @@ import 'cropperjs/dist/cropper.css'
 import domtoimage from 'dom-to-image'
 import * as api from '@/service/api'
 import { mapState } from 'vuex'
+import { eth } from '@/connector'
+import * as contract from '@/contract'
 
 export default {
   name: 'EditButton',
@@ -230,11 +235,14 @@ export default {
       画板高度: 0,
       status: 0, // 0: edit , 1: loading, 2: minted
       mintedImage: '',
-      blazonImgWidth: 120
+      blazonImgWidth: 120,
+      resultNewtokenUrl: null
     }
   },
   computed: {
     ...mapState({
+      contractAddress: state => state.contract['contractAddress'],
+      mosaique: state => state.contract['CollectionContract'].mosaique,
       userAddress: state => state.walletAccount['userAddress'],
       formatEth: state => state.walletAccount.formatEth,
       imageItems: state => state.nft.userNfts
@@ -270,7 +278,7 @@ export default {
       this.blazonX = parseInt(blazonDom.style.left)
       this.blazonY = parseInt(blazonDom.style.top)
     },
-    download() {
+    async compose_image() {
       const bDom = this.$refs['blazon'].getBoundingClientRect()
       const mDom = this.$refs['master'].$el.getBoundingClientRect()
       const bDomX = bDom.left
@@ -292,7 +300,7 @@ export default {
       const scale = 2
       this.blazonImgWidth = bDomW
       console.log(this.$refs['blazon-img'].clientWidth)
-      domtoimage.toPng(this.$refs['blazon-img'], {
+      const imageBase64 = await domtoimage.toPng(this.$refs['blazon-img'], {
         width: this.$refs['blazon-img'].getBoundingClientRect().width * scale,
         height: this.$refs['blazon-img'].getBoundingClientRect().height * scale,
         style: {
@@ -300,32 +308,107 @@ export default {
           transformOrigin: 'top left'
         }
       }).then(e => {
-        let { master, blazon } = this.$route.query
-        master = Number(master)
-        blazon = Number(blazon)
-        api.inscriptionMint({
-          drawing_board_width: Number(画板宽度 / zoom).toFixed(0) + '',
-          drawing_board_height: Number(画板高度 / zoom).toFixed(0) + '',
-          master_contract: this.imageItems[master].contractAddress,
-          master_tokenid: this.imageItems[master].tokenOfOwnerByIndex,
-          master_x: Number((mDomX - X边界值) / zoom).toFixed(0) + '',
-          master_y: Number((mDomY - Y边界值) / zoom).toFixed(0) + '',
-          image_txt: e.split(',')[1],
-          image_txt_x: Number((bDomX - X边界值) / zoom).toFixed(0) + '',
-          image_txt_y: Number((bDomY - Y边界值) / zoom).toFixed(0) + '',
-          image_txt_rotate: Number(this.blazonDeg).toFixed(0) + '',
-          image_txt_scale: Number(bZoom / zoom / scale).toFixed(2) + '',
-          jsoninfo: '7b0a20202020227469746c65223a202262756c6c222c0a2020202022696d6167655f75726c223a202268747470733a2f2f696d67312e6d706179732e696f2f6d7061792f696d672f616e696d616c2f636174746c652f62756c6c2e706e67220a7d'
-        })
-          .then(res => {
-            this.status = 2
-            this.mintedImage = res.data.compose_image
-          }).catch(err => {
-            this.status = 0
-            console.log(err)
-            this.$message.error(err.message || err.msg)
-          })
+        return e
       })
+      let { master } = this.$route.query
+      master = Number(master)
+      const resultNewtokenUrl = await api.getInscriptionNewtokenUrl({
+        drawing_board_width: Number(画板宽度 / zoom).toFixed(0) + '',
+        drawing_board_height: Number(画板高度 / zoom).toFixed(0) + '',
+        master_contract: this.imageItems[master].contractAddress,
+        master_tokenid: this.imageItems[master].tokenOfOwnerByIndex,
+        master_x: Number((mDomX - X边界值) / zoom).toFixed(0) + '',
+        master_y: Number((mDomY - Y边界值) / zoom).toFixed(0) + '',
+        image_txt: imageBase64.split(',')[1],
+        image_txt_x: Number((bDomX - X边界值) / zoom).toFixed(0) + '',
+        image_txt_y: Number((bDomY - Y边界值) / zoom).toFixed(0) + '',
+        image_txt_rotate: Number(this.blazonDeg).toFixed(0) + '',
+        image_txt_scale: Number(bZoom / zoom / scale).toFixed(2) + '',
+        jsoninfo: '7b0a20202020227469746c65223a202262756c6c222c0a2020202022696d6167655f75726c223a202268747470733a2f2f696d67312e6d706179732e696f2f6d7061792f696d672f616e696d616c2f636174746c652f62756c6c2e706e67220a7d'
+      }).then(res => {
+        this.mintedImage = res.data.compose_image
+        return res
+      }).catch(err => {
+        this.status = 0
+        this.$message.error(err.message || err.msg)
+      })
+      return resultNewtokenUrl
+    },
+    erc721transfer() {
+      const { master } = this.$route.query
+      const transferHash = contract.erc721transfer(
+        this.contractAddress, // erc721合约地址
+        this.userAddress, // 操作地址
+        this.userAddress, // erc721转出方
+        this.mosaique, // erc721接收方
+        // '0xcC445E7389Ca3fe659C565239cf0DF3864fa4A21', // erc721接收方
+        this.imageItems[master].tokenOfOwnerByIndex // erc721 tokenId
+      ).on('transactionHash', (reject) => {
+        console.log(reject, 'reject')
+        this.loadingTransferHash(reject, 1)
+      })
+      return transferHash
+    },
+    loadingTransferHash(transferHash, status) {
+      console.log('loadingTransferHash')
+      return eth.getTransactionReceipt(transferHash).then(res => {
+        console.log(res, 'res')
+        if (res === null || res === 0) {
+          setTimeout(() => {
+            return this.loadingTransferHash(transferHash, status)
+          }, 1000)
+        } else {
+          this.status = status
+          return true
+        }
+      }).catch(err => {
+        console.log(err)
+        return false
+      })
+    },
+    async submit() {
+      this.resultNewtokenUrl = await this.compose_image()
+      // blazon_nft_mid: "0x3b4408cc3a21f62c119bd0661509f09b03e71f2e2bbbdf1617ec41dba1dded77"
+      // compose_image: "https://img1.uapay.io/mpay/img/png/mosaique/2c9180820000000a017b3a6824d3000a.png"
+      // err_code: 1
+      // master_nft_mid: "0x0131705c715f48751ccf84c158bf63f5825cba5917f05afb506223a46203f637"
+      // msg: "成功"
+      // token_uri: "https://img1.uapay.io/mpay/img/txt/mosaique/2c9180820000000a017b3a682b04000b"
+      this.erc721transfer()
+    },
+    async sign(resultNewtokenUrl) {
+      // compose_image: "https://img1.uapay.io/mpay/img/png/mosaique/2c9180820000000a017b3b36a7510052.png"
+      // err_code: 1
+      // master_nft_mid: "0x133cdf97d9498ba1fbca395074facdb7c7857a0272484657ba90b6d195659f7c"
+      // msg: "成功"
+      // token_uri: "https://img1.uapay.io/mpay/img/txt/mosaique/2c9180820000000a017b3b36a7e90053"
+
+      const { master_nft_mid, token_uri } = resultNewtokenUrl
+      let signature = null
+      if (master_nft_mid) {
+        signature = await contract.sign([master_nft_mid, token_uri], ['bytes32', 'string'])
+      }
+      console.log(signature, 'signature')
+      return signature
+    },
+    async mint() {
+      console.log('mint')
+      this.status = -1
+      const resultNewtokenUrl = this.resultNewtokenUrl.data
+      const signature = await this.sign(resultNewtokenUrl)
+      if (signature) {
+        await api.inscriptionMint({
+          master_nft_mid: resultNewtokenUrl.master_nft_mid,
+          new_token_uri: resultNewtokenUrl.token_uri,
+          owner: this.userAddress,
+          signature
+        }).then(res => {
+          this.status = 2
+          console.log(res)
+        }).catch(err => {
+          this.loadingTransferHash(err.transaction_hash, 2)
+        })
+      }
     },
     optionClick(type) {
       const blazonDom = this.$refs['blazon']

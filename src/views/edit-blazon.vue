@@ -2,15 +2,15 @@
   <div class="edit-blazon">
     <div class="edition-center">
       <div class="left" style="position: relative;">
-        <el-image v-if="status !== 0" class="minted-image" style="width: 431px;position: relative;" :src="mintedImage" />
+        <el-image v-if="status === 2" class="minted-image" style="width: 431px;position: relative;" :src="mintedImage" />
         <el-image
-          v-if="status === 0"
+          v-if="status === 0|| status === 1"
           ref="master"
           :src="masterSrc"
           style="width: 431px;position: relative;"
         />
         <el-image
-          v-if="status === 0"
+          v-if="status === 0 || status === 1"
           ref="blazon"
           v-drag="status===0"
           style="left: 0;top: 230px;position: absolute;width: 431px"

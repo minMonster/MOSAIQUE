@@ -93,7 +93,7 @@ export default {
     ...mapState({
       userAddress: state => state.walletAccount['userAddress'],
       formatEth: state => state.walletAccount.formatEth,
-      userNfts: state => state.nft.userNfts
+      imageItems: state => state.nft.userNfts
     })
   },
   created() {
@@ -101,6 +101,7 @@ export default {
   },
   methods: {
     init() {
+      console.log('init')
       this.imagList = this.userNfts
 
       // api.getImages().then(res => {
