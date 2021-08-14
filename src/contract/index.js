@@ -30,14 +30,13 @@ export async function sign(signParams, encodeParameters) {
 }
 
 // 复制
-export async function makeProgrammable(nftContract, tokenId) {
-  const { walletAccount } = store.state
+export function makeProgrammable(nftContract, tokenId) {
+  const { walletAccount, contract } = store.state
   const { userAddress } = walletAccount
-  const mosaique = await createMosaiqueV1Contract(nftContract)
-  const tx = await mosaique.methods.copyERC721(userAddress, nftContract, Number(tokenId)).send({
+  const mosaique = createMosaiqueV1Contract(contract.CollectionContract.mosaique)
+  return mosaique.methods.copyERC721(userAddress, nftContract, Number(tokenId)).send({
     from: userAddress
   })
-  return tx
 }
 
 /**
