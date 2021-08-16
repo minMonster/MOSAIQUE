@@ -47,6 +47,10 @@
               <p class="btn" @click="submit">Save</p>
               <p class="btn cancel">Cancel</p>
             </div>
+            <div class="buttons">
+              <p class="btn" @click="mintSubmit">Mint</p>
+              <p class="btn cancel">Cancel</p>
+            </div>
           </div></section>
         <section v-if="status == -1" class="loading">
           <el-image :src="require('../access/Loading_20210708.gif')" />
@@ -76,7 +80,7 @@
 </template>
 <script>
 // import * as api from '@/service/api'
-import { web3 } from '@/connector'
+import { web3, eth } from '@/connector'
 import * as api from '@/service/api'
 import * as echarts from 'echarts'
 import * as contract from '@/contract'
@@ -156,42 +160,83 @@ export default {
       //   return res
       // })
       const { initialPrice, totalSupply, priceCurve, birth, deadline } = this
+      let priceCurve66 = String(web3.utils.fromAscii(priceCurve))
+      if (priceCurve66.length < 66) {
+        for (let i = priceCurve66.length; i < 66; i++) {
+          priceCurve66 += '0'
+        }
+      }
+      console.log(priceCurve66, 'priceCurve66')
       const signature = await contract.sign(
-        [this.contractAddress, 43, initialPrice, totalSupply, web3.utils.fromAscii(priceCurve, 32), birth, deadline],
+        [this.contractAddress, 43, initialPrice, totalSupply, priceCurve66, birth, deadline],
         ['address', 'uint256', 'uint256', 'uint256', 'bytes32', 'uint256', 'uint256']
       )
       console.log(signature, 'signature')
       return signature
     },
-    async mintSign() {
-      const newTokenURI = await contract.methods.tokenURI(this.imageItem.token_id).call()
-      console.log(newTokenURI, 'newTokenURI')
+    async mintSign(newTokenURI) {
       const signature = await contract.sign(
-        [this.imageItem.nft_mid, newTokenURI],
-        ['bytes32', 'string']
+        [this.imageItem.contract, Number(this.imageItem.token_id), newTokenURI],
+        ['address', 'uint256', 'string']
       )
       console.log(signature, 'signature')
       return signature
     },
+    loadingTransferHash(transferHash) {
+      console.log('loadingTransferHash')
+      return eth.getTransactionReceipt(transferHash).then(res => {
+        console.log(res, 'res')
+        if (res === null || res === 0) {
+          setTimeout(() => {
+            return this.loadingTransferHash(transferHash)
+          }, 1000)
+        } else {
+          return true
+        }
+      }).catch(err => {
+        console.log(err)
+        return false
+      })
+    },
     async submit() {
       const { initialPrice, totalSupply, priceCurve, birth, deadline } = this
       const signature = await this.sign(this.imageItem.nft_mid)
+      let priceCurve66 = String(web3.utils.fromAscii(priceCurve))
+      if (priceCurve66.length < 66) {
+        for (let i = priceCurve66.length; i < 66; i++) {
+          priceCurve66 += '0'
+        }
+      }
+      console.log(priceCurve66, 'priceCurve66')
       api.createSnapshotSupply({
+        owner: this.userAddress,
         signature,
         contract: this.contractAddress,
         token_id: 43,
         initialPrice,
         totalSupply,
-        priceCurve,
+        priceCurve: priceCurve66,
         birth,
         deadline
       }
       ).then(res => {
-        console.log()
+        this.loadingTransferHash(res.data.data)
       })
     },
     async mintSubmit() {
-      this.mintSign()
+      const contract1 = contract.createERC721Contract(this.imageItem.contract)
+      const newTokenURI = await contract1.methods.tokenURI(this.imageItem.token_id).call()
+      console.log(newTokenURI)
+      const signature = await this.mintSign(newTokenURI)
+      api.createMintSnapshot({
+        requester: this.userAddress,
+        signature,
+        contract: this.imageItem.contract,
+        token_id: this.imageItem.token_id,
+        newTokenURI
+      }).then(res => {
+        this.loadingTransferHash(res.data.data)
+      })
     },
     drawLine(type) {
       type = type || 'const'

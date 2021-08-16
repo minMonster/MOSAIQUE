@@ -55,11 +55,12 @@ export default {
     this.getList()
   },
   methods: {
-    getList() {
-      api.getSnapshots().then(res => {
+    async getList() {
+      const snapshots = await api.getSnapshots().then(res => {
         this.imagList = res.data.snapshots
         return res.data.snapshots
       })
+      // api.getArtistInfo({ address: snapshots.map(i => i.address) })
     }
   }
 }

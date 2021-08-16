@@ -298,25 +298,6 @@ export async function getNftInfo(nftMID, address) {
   const contract = new eth.Contract(IMosaiqueV1, '0x3700C29CC19e333CB5C8CBC26e8aeAE9cBD40564')
   return contract.methods.getNftInfo(nftMID).call()
 }
-export function createSnapshotSupply(personalSignature, nftMID, initialPrice, totalSupply, priceCurve, birth, deadline) {
-  console.log(personalSignature, nftMID, initialPrice, totalSupply, priceCurve, birth, deadline)
-  // returns (
-  //     address nftContract,
-  //     uint256 tokenId,
-  //     address owner,
-  //     bool burned,
-  //     bool imprinted,
-  //     bool unlocked,
-  //     bool copy
-  // );
-  // 这是平台铸造合约地址,需要根据实际数据调整
-  const { walletAccount } = store.state
-  const { userAddress } = walletAccount
-  const contract = createMosaiqueV1Contract('0x3700C29CC19e333CB5C8CBC26e8aeAE9cBD40564')
-  return contract.methods.createSnapshotSupply(userAddress, personalSignature, nftMID, initialPrice, totalSupply, priceCurve, birth, deadline).send({
-    from: userAddress
-  })
-}
 
 /**
  * 查询NFTMID

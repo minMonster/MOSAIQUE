@@ -62,7 +62,47 @@ export function inscriptionMint(data) {
   )
 }
 
-// get snapshots
+// 获取平台收录NFT合约地址
+export function getNftContractAddr(data) {
+  return request(
+    {
+      url: 'pbgcp.do',
+      method: 'post',
+      data
+    }
+  )
+}
+
+export function createSnapshotSupply(data) {
+  return request(
+    {
+      url: 'pbcss.do',
+      method: 'post',
+      data
+    }
+  )
+}
+
+export function createMintSnapshot(data) {
+  return request(
+    {
+      url: 'pbmss.do',
+      method: 'post',
+      data
+    }
+  )
+}
+
+export function getArtistInfo(data) {
+  return request(
+    {
+      url: 'pbqui.do',
+      method: 'post',
+      data
+    }
+  )
+}
+
 export function getSnapshots(data) {
   return request(
     {
@@ -73,13 +113,46 @@ export function getSnapshots(data) {
   )
 }
 
-// get snapshots
-export function createSnapshotSupply(data) {
+// 获取当前钱包地址用户信息（头像、昵称、介绍）
+export function getUserInfo(data) {
   return request(
     {
-      url: 'pbcss.do',
+      url: 'pbqui.do',
       method: 'post',
       data
     }
   )
 }
+
+// 修改用户信息
+export function modifyUserInfo(data) {
+  return request(
+    {
+      url: 'pbsui.do',
+      method: 'post',
+      data
+    }
+  )
+}
+// 修改用户信息前 - 获取签名参数
+export function getModifyParams(data) {
+  return request(
+    {
+      url: 'pbgsp.do',
+      method: 'post',
+      data
+    }
+  )
+}
+
+// 修改用户信息前 - 校验签名参数，获得token
+export function getModifyToken(data) {
+  return request(
+    {
+      url: 'pbcls.do',
+      method: 'post',
+      data
+    }
+  )
+}
+
