@@ -113,6 +113,14 @@ const createRouter = () => new Router({
             title: 'copy'
           },
           component: () => import(/* webpackChunkName: "copy" */ '@/views/copy.vue')
+        },
+        {
+          path: '/my-collections',
+          name: 'my-collections',
+          meta: {
+            title: 'my-collections'
+          },
+          component: () => import(/* webpackChunkName: "my-collections" */ '@/views/my-collections.vue')
         }
       ]
     }

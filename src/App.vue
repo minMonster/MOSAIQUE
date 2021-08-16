@@ -58,4 +58,12 @@ p {
   height: 100%;
   position: relative;
 }
+ul,li{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+i{
+  font-style: normal !important;
+}
 </style>
