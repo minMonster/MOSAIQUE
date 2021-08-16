@@ -83,7 +83,7 @@
       </div>
     </section>
     <enlarge-product v-if="isShowEnlarge" :enlarge-data="enlargeData" />
-    <guide-page v-if="isShowGuidPage" @skip="setMaster" />
+    <guide-page v-if="isShowGuidPage" :image-index="curIndex" :image-item="userNfts[curIndex]" @skip="setMaster" />
   </div>
 </template>
 <script>

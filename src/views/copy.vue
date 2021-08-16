@@ -1,11 +1,11 @@
 <template>
   <div class="make-program">
-    <div class="edition-center">
+    <div v-if="imageItem" class="edition-center">
       <div class="left">
-        <el-image class="minted-image" :src="image" />
+        <el-image class="minted-image" :src="imageItem.image" />
       </div>
       <div class="right">
-        <section class="edit">
+        <section v-if="status== 0" class="edit">
           <h2 class="nft-name">
             Make Programmable
             <svg-icon style="width: 27px;height: 27px" icon-class="question" />
@@ -43,45 +43,97 @@
             <p class="btn cancel">cancel</p>
           </div>
         </section>
-        <section class="loading" />
-        <section class="finished" />
+        <section v-if="status== -1" class="loading">
+          <el-image
+            :src="require('../access/Loading_20210708.gif')"
+          />
+        </section>
+        <section v-if="status== 1" class="finished">
+          <p class="title-tip">Finished!</p>
+          <p class="title-tip black">The NFT Song</p>
+          <p class="item-info"><label>Owner</label>zhangsan</p>
+          <p class="item-info"><label>Time</label>2021.04.19,08:15pm EST</p>
+          <p class="item-info">
+            <label>Collection</label>Imprint Rarible<span>( {{ tx.blockHash.substring(0, 19) }}...{{
+              tx.blockHash.substring(tx.blockHash.length - 4, tx.blockHash.length)
+            }})</span>
+          </p>
+          <p class="item-info"><label>Token ID</label>23456</p>
+          <p class="item-info"><label># of Imprints</label>1</p>
+          <div class="minted-btn">
+            go to Imprint
+          </div>
+        </section>
       </div>
     </div>
   </div>
 </template>
 <script>
 import * as contract from '@/contract'
-import * as connector from '@/connector'
+// import * as connector from '@/connector'
+import { mapState } from 'vuex'
+import { eth } from '@/connector'
+
 export default {
   data: function() {
     return {
-      contractAddress: '0xcC445E7389Ca3fe659C565239cf0DF3864fa4A21',
-      image:
-        'https://ipfs.io/ipfs/Qme46XFBDEEv5F8uhxB1eQdTQR37vRmCCUo21nxGnyqsL2',
-      tokenOfOwnerByIndex: '6',
       tx: null,
-      ofImprints: 0
+      status: 0,
+      ofImprints: 0,
+      imageItem: null
     }
   },
+  computed: {
+    ...mapState({
+      userAddress: state => state.walletAccount['userAddress'],
+      formatEth: state => state.walletAccount.formatEth,
+      userNfts: state => state.nft.userNfts,
+      mosaique: state => state.contract['CollectionContract'].mosaique,
+      contractAddress: state => state.contract['contractAddress']
+    })
+  },
+  created() {
+    this.imageItem = this.userNfts[this.$route.query.imageIndex]
+  },
   methods: {
+    handleChange(e) {
+      console.log(e)
+    },
+    loadingTransferHash(transferHash) {
+      console.log('loadingTransferHash')
+      return eth.getTransactionReceipt(transferHash).then(res => {
+        console.log(res, 'res')
+        if (res === null || res === 0) {
+          setTimeout(() => {
+            return this.loadingTransferHash(transferHash, status)
+          }, 1000)
+        } else {
+          this.status = 1
+          this.tx = res
+          return true
+        }
+      }).catch(err => {
+        console.log(err)
+        return false
+      })
+    },
     async copy() {
-      // contract.sign()
-      // connector.eth.sign('0x8A3c226f02a692894643d070214B9495F8b40D58', '0x8A3c226f02a692894643d070214B9495F8b40D58').then(function(ee) {
-      // console.log(ee)
-      // })
-      // console.log(connector.web3.utils.utf8ToHex('0x37bd087c6c5c1d7af667c81146ce0d70d78c826ad421ef5a4f0ca233deb0ca23'))
-      // console.log(connector.eth.accounts.hashMessage('0xe5f897cd55b1481f0e3e18b76d6d83ea8109949c2fc63a46f30366b9130fcec0000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000033030300000000000000000000000000000000000000000000000000000000000'))
-      this.tx = await contract.makeProgrammable(
+      this.status = -1
+      contract.makeProgrammable(
         this.contractAddress,
-        this.tokenOfOwnerByIndex
-      )
+        this.imageItem.tokenOfOwnerByIndex
+      ).on('transactionHash', (reject) => {
+        this.loadingTransferHash(reject)
+      })
+      console.log(this.tx)
     }
   }
 }
 </script>
 <style lang="scss">
 .make-program {
-  height: 100vh;
+  min-height: 100vh;
+    padding-bottom: 200px;
   .edition-center {
     display: flex;
     padding-top: 152px;
@@ -156,6 +208,49 @@ export default {
         }
       }
     }
+  }
+    .finished {
+        p {
+          display: block;
+          font-size: 14px;
+          font-family: Verdana;
+          font-weight: Regular;
+          color: #454953;
+          margin-bottom: 12px;
+          span {
+            color: #da6464;
+          }
+          label {
+            width: 130px;
+            color: #454953;
+            font-weight: bold;
+
+            display: inline-block;
+          }
+        }
+        .title-tip {
+          margin-top: 35px;
+          margin-bottom: 52px;
+          font-size: 24px;
+          font-family: Verdana;
+          font-weight: bold;
+          color: #da6464;
+        }
+        .black {
+          color: #454953;
+        }
+      }
+      .minted-btn {
+    width: 309px;
+    height: 43px;
+    background: #da6464;
+    border-radius: 22px;
+    text-align: center;
+    line-height: 43px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-top: 100px;
   }
 }
 </style>

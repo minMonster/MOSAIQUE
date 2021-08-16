@@ -1,9 +1,9 @@
 <template>
   <div class="guide-page">
-    <div class="guide-con">
+    <div v-if="imageItem" class="guide-con">
       <el-image class="close" :src="require('../access/close-icon.png')" @click="close" />
       <div class="pig">
-        <el-image :src="require('../access/img-1@2x.png')" style="width: 360px; height: 360px; border-radius: 10px" />
+        <el-image :src="imageItem.image" style="width: 360px; height: 360px; border-radius: 10px" />
       </div>
       <div class="information">
         <p class="title">Whether to Make Program the NFT?</p>
@@ -18,7 +18,7 @@
           <span> 21 ETH </span>
         </p>
         <div class="handle-box">
-          <p class="make-btn" @click="$router.push('copy')">Make Program</p>
+          <p class="make-btn" @click="toCopy">Make Program</p>
           <p @click="$emit('skip')">Skip</p>
         </div>
       </div>
@@ -27,7 +27,22 @@
 </template>
 <script>
 export default {
+  props: {
+    imageItem: {
+      type: Object,
+      default: function() {
+        return null
+      }
+    },
+    imageIndex: {
+      type: Number,
+      default: 0
+    }
+  },
   methods: {
+    toCopy() {
+      this.$router.push({ name: 'copy', query: { imageIndex: this.imageIndex }})
+    },
     close() {
       this.$parent.isShowGuidPage = false
     }
