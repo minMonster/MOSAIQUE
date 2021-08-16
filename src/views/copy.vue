@@ -60,7 +60,7 @@
           </p>
           <p class="item-info"><label>Token ID</label>23456</p>
           <p class="item-info"><label># of Imprints</label>1</p>
-          <div class="minted-btn">
+          <div class="minted-btn" @click="$router.push('home')">
             go to Imprint
           </div>
         </section>

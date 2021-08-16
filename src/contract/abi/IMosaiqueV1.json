@@ -27,9 +27,33 @@
         },
         {
           "indexed": false,
-          "internalType": "bytes32",
-          "name": "masterNftMID",
-          "type": "bytes32"
+          "internalType": "address",
+          "name": "masterNftContract",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "masterTokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "totalSupply",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "birth",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "deadline",
+          "type": "uint256"
         }
       ],
       "name": "LogCreatedSnapshotSupply",
@@ -68,12 +92,6 @@
           "internalType": "bytes32",
           "name": "newNftMID",
           "type": "bytes32"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "newNftTokenId",
-          "type": "uint256"
         }
       ],
       "name": "LogMintedBlazonNFT",
@@ -99,12 +117,6 @@
           "internalType": "bytes32",
           "name": "newNftMID",
           "type": "bytes32"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "newNftTokenId",
-          "type": "uint256"
         }
       ],
       "name": "LogMintedInscribedNFT",
@@ -121,21 +133,21 @@
         },
         {
           "indexed": false,
-          "internalType": "bytes32",
-          "name": "masterNftMID",
-          "type": "bytes32"
+          "internalType": "address",
+          "name": "masterNftContract",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "masterTokenId",
+          "type": "uint256"
         },
         {
           "indexed": false,
           "internalType": "bytes32",
           "name": "newNftMID",
           "type": "bytes32"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "newTokenId",
-          "type": "uint256"
         },
         {
           "indexed": false,
@@ -352,9 +364,14 @@
           "type": "bytes"
         },
         {
-          "internalType": "bytes32",
-          "name": "masterNftMID",
-          "type": "bytes32"
+          "internalType": "address",
+          "name": "masterNftContract",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "masterTokenId",
+          "type": "uint256"
         },
         {
           "internalType": "uint256",
@@ -463,9 +480,14 @@
     {
       "inputs": [
         {
-          "internalType": "bytes32",
-          "name": "masterNftMID",
-          "type": "bytes32"
+          "internalType": "address",
+          "name": "masterNftContract",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "masterTokenId",
+          "type": "uint256"
         }
       ],
       "name": "getSnapshotStatus",
@@ -590,9 +612,14 @@
           "type": "bytes"
         },
         {
-          "internalType": "bytes32",
-          "name": "masterNftMID",
-          "type": "bytes32"
+          "internalType": "address",
+          "name": "masterNftContract",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "masterTokenId",
+          "type": "uint256"
         },
         {
           "internalType": "string",

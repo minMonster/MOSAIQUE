@@ -51,20 +51,13 @@ export function makeProgrammable(nftContract, tokenId) {
 export async function getERC20Balance(symbolAddress, decimals, address) {
   console.log(decimals)
   decimals = 18
-  // let address = store.state.address
-  // if (flag) {
-  //   address = store.state.addrs.pool_address
-  // }
-  // if (bonusAddress) {
-  //   address = bonusAddress
-  // }
   const contract = createERC20Contract(symbolAddress)
   if (!decimals) {
     decimals = await contract.methods.decimals().call()
   }
   decimals = Number(decimals) || defaultDecimals
   let balance = await contract.methods.balanceOf(address).call()
-  balance = new BigNumber(balance).div(10 ** decimals).toFixed(decimals)
+  balance = window.BigNumber(balance).div(10 ** decimals).toFixed(decimals)
   return new Promise((resolve, reject) => {
     if (typeof balance !== 'undefined') {
       resolve(balance)
@@ -73,13 +66,6 @@ export async function getERC20Balance(symbolAddress, decimals, address) {
     }
   })
 }
-
-/**
- * 查询 snapshot 列表
- * @param {*} contractAddress erc721合约地址
- * @param {*} address 所要查询的地址
- * @returns {*} imageItem nft 图片相关信息
- */
 
 /**
  * 查询erc721资产余额
@@ -125,6 +111,43 @@ export async function getERC721Balance(contractAddress, address) {
   return imageItem
 }
 
+export async function getERC721SnapshotList(contractAddress, address) {
+  const contract = createERC721Contract(contractAddress)
+  const balanceOf = await contract.methods.balanceOf(address).call()
+  console.log('balanceOf', balanceOf)
+  const tokenOfOwnerByIndexsPromiseAll = []
+  for (let i = 0; i < balanceOf; i++) {
+    tokenOfOwnerByIndexsPromiseAll.push(contract.methods.tokenOfOwnerByIndex(address, i).call())
+  }
+  const tokenOfOwnerByIndexs = await Promise.all(tokenOfOwnerByIndexsPromiseAll).then(res => {
+    return res
+  })
+  console.log(tokenOfOwnerByIndexs, 'tokenOfOwnerByIndexs')
+  // console.log(tokenOfOwnerByIndexs, 'tokenOfOwnerByIndexs')
+  const tokenURIItemsPromiseAll = []
+  tokenOfOwnerByIndexs.forEach(i => {
+    tokenURIItemsPromiseAll.push(contract.methods.tokenURI(i).call())
+  })
+  const tokenURIs = await Promise.all(tokenURIItemsPromiseAll)
+  console.log(tokenURIs, 'tokenURIItems')
+  const prmiseAll = []
+
+  tokenURIs.forEach(url => {
+    prmiseAll.push(axios.get(url))
+  })
+  const images = await Promise.all(prmiseAll).then(res => {
+    return res
+  })
+  const imageItem = images.map((i, index) => {
+    return {
+      contractAddress,
+      tokenOfOwnerByIndex: tokenOfOwnerByIndexs[index],
+      tokenUrl: tokenURIs[index],
+      ...i.data
+    }
+  })
+  return imageItem
+}
 /**
  * erc721转账
  * @param {*} contractAddress erc721合约地址
@@ -208,7 +231,41 @@ export function parseUnits(num, decimals) {
  * @param {*} masterNftMID 快照NFTMID
  * @returns
  */
-export async function getSnapshotStatus(masterNftMID) {
+export async function getSnapshotStatus(masterNftMID, address) {
+  // const contract = createERC721Contract('0xcC445E7389Ca3fe659C565239cf0DF3864fa4A21')
+  // const balanceOf = await contract.methods.balanceOf(address).call()
+  // console.log(balanceOf)
+  // const tokenOfOwnerByIndexsPromiseAll = []
+  // for (let i = 0; i < balanceOf; i++) {
+  //   tokenOfOwnerByIndexsPromiseAll.push(contract.methods.tokenOfOwnerByIndex(address, i).call())
+  // }
+  // const tokenOfOwnerByIndexs = await Promise.all(tokenOfOwnerByIndexsPromiseAll).then(res => {
+  //   return res
+  // })
+  // console.log(tokenOfOwnerByIndexs, 'tokenOfOwnerByIndexs')
+  // const tokenURIItemsPromiseAll = []
+  // tokenOfOwnerByIndexs.forEach(i => {
+  //   tokenURIItemsPromiseAll.push(contract.methods.tokenURI(i).call())
+  // })
+  // const tokenURIs = await Promise.all(tokenURIItemsPromiseAll)
+  // console.log(tokenURIs, 'tokenURIItems')
+  // const prmiseAll = []
+
+  // tokenURIs.forEach(url => {
+  //   prmiseAll.push(axios.get(url))
+  // })
+  // const images = await Promise.all(prmiseAll).then(res => {
+  //   return res
+  // })
+  // const imageItem = images.map((i, index) => {
+  //   return {
+  //     contractAddress: '0xcC445E7389Ca3fe659C565239cf0DF3864fa4A21',
+  //     tokenOfOwnerByIndex: tokenOfOwnerByIndexs[index],
+  //     tokenUrl: tokenURIs[index],
+  //     ...i.data
+  //   }
+  // })
+  // console.log(imageItem)
   // returns (
   //     uint256 initialPrice,
   //     uint256 totalSupply,
@@ -218,8 +275,7 @@ export async function getSnapshotStatus(masterNftMID) {
   //     uint256 deadline
   // );
   // 这是平台铸造合约地址,需要根据实际数据调整
-  const address = store.state.address
-  const contract = new eth.Contract(IMosaiqueV1, address)
+  const contract = new eth.Contract(IMosaiqueV1, '0x3700C29CC19e333CB5C8CBC26e8aeAE9cBD40564')
   return contract.methods.getSnapshotStatus(masterNftMID).call()
 }
 
@@ -228,7 +284,7 @@ export async function getSnapshotStatus(masterNftMID) {
  * @param {*} nftMID
  * @returns
  */
-export async function getNftInfo(nftMID) {
+export async function getNftInfo(nftMID, address) {
   // returns (
   //     address nftContract,
   //     uint256 tokenId,
@@ -239,9 +295,27 @@ export async function getNftInfo(nftMID) {
   //     bool copy
   // );
   // 这是平台铸造合约地址,需要根据实际数据调整
-  const address = store.state.address
-  const contract = new eth.Contract(IMosaiqueV1, address)
+  const contract = new eth.Contract(IMosaiqueV1, '0x3700C29CC19e333CB5C8CBC26e8aeAE9cBD40564')
   return contract.methods.getNftInfo(nftMID).call()
+}
+export function createSnapshotSupply(personalSignature, nftMID, initialPrice, totalSupply, priceCurve, birth, deadline) {
+  console.log(personalSignature, nftMID, initialPrice, totalSupply, priceCurve, birth, deadline)
+  // returns (
+  //     address nftContract,
+  //     uint256 tokenId,
+  //     address owner,
+  //     bool burned,
+  //     bool imprinted,
+  //     bool unlocked,
+  //     bool copy
+  // );
+  // 这是平台铸造合约地址,需要根据实际数据调整
+  const { walletAccount } = store.state
+  const { userAddress } = walletAccount
+  const contract = createMosaiqueV1Contract('0x3700C29CC19e333CB5C8CBC26e8aeAE9cBD40564')
+  return contract.methods.createSnapshotSupply(userAddress, personalSignature, nftMID, initialPrice, totalSupply, priceCurve, birth, deadline).send({
+    from: userAddress
+  })
 }
 
 /**
@@ -253,8 +327,9 @@ export async function getNftInfo(nftMID) {
 export async function getNftMID(nftContract, tokenId) {
   // returns (bytes32 nftMID);
   // 这是平台铸造合约地址,需要根据实际数据调整
-  const address = store.state.address
-  const contract = new eth.Contract(IMosaiqueV1, address)
-  return contract.methods.getNftMID(nftContract, tokenId).call()
+  const { contract } = store.state
+  const { CollectionContract } = contract
+  const contract1 = new eth.Contract(IMosaiqueV1, CollectionContract.mosaique)
+  return contract1.methods.getNftMID(nftContract, tokenId).call()
 }
 

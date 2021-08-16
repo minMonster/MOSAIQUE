@@ -108,7 +108,7 @@
           <el-image style="margin-top: 300px" :src="require('../access/Loading_20210708.gif')" />
         </template>
         <div v-if="status===1" class="minted-btn" @click="mint">
-          Print
+          Mint
         </div>
         <div v-if="status===2" class="minted-btn">
           Imprint another one

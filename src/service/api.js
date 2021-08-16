@@ -61,3 +61,25 @@ export function inscriptionMint(data) {
     }
   )
 }
+
+// get snapshots
+export function getSnapshots(data) {
+  return request(
+    {
+      url: 'pbgsl.do',
+      method: 'get',
+      data
+    }
+  )
+}
+
+// get snapshots
+export function createSnapshotSupply(data) {
+  return request(
+    {
+      url: 'pbcss.do',
+      method: 'post',
+      data
+    }
+  )
+}

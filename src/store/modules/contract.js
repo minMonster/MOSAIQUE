@@ -6,8 +6,8 @@ const state = {
   // 收录过来的合约
   CollectionContract: {
     bull721: '0x2B643390fE2BeD273E7989cADb856389034bE4cd',
-    mosaique: '0x3700C29CC19e333CB5C8CBC26e8aeAE9cBD40564',
-    mosaique721: '0x37d3bC83f09D78De7833f4b6A22389D6c2402dF8'
+    mosaique: '0xCD4ee20B85dd044742a2Ef1627E09b371D785286',
+    mosaique721: '0x8F5D7348b71208D1025F84250722F9d6C35f27e1'
   }
 }
 

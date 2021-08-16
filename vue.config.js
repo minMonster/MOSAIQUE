@@ -36,6 +36,10 @@ if (VUE_APP_BASE_API_PROXY) {
       '/nin/mosai': {
         target: VUE_APP_BASE_API_PROXY,
         changeOrigin: true
+      },
+      '/img1.uapay.io': {
+        target: 'https://img1.uapay.io',
+        changeOrigin: true
       }
     }
   }

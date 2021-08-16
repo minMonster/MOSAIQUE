@@ -3,11 +3,11 @@
     <div class="edition-center">
       <div class="snapshotable-title">Snapshotables</div>
       <div class="img-list">
-        <div v-for="item in imagList" :key="item" class="item-card">
+        <div v-for="item in imagList" :key="item.nft_mid" class="item-card">
           <div class="top">
-            <el-image class="img" :src="item.img" />
+            <el-image class="img" fit="cover" :src="item.uri" />
             <div class="mark-box">
-              <div :style="{ backgroundImage: 'url(' + item.img + ')' }" class="mark" />
+              <div :style="{ backgroundImage: 'url(' + item.uri + ')' }" class="mark" />
               <div class="info">
                 <p class="title">Artwork title</p>
                 <div class="user">
@@ -20,12 +20,12 @@
           <div class="bottom">
             <div class="bt-item">
               <p class="bt-title">Snapshot</p>
-              <p class="value">7/10</p>
+              <p class="value">{{ item.minted_count }}/{{ item.supply }}</p>
             </div>
-            <div class="bt-item">
+            <!-- <div class="bt-item">
               <p class="bt-title">Current Price</p>
               <p class="value">0.7 ETH</p>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -33,35 +33,33 @@
   </div>
 </template>
 <script>
+import * as api from '@/service/api'
 export default {
   name: 'Snapshotable',
   data: function() {
     return {
       imagList: [
-        {
-          img: require('../access/img/beeple-03-29-18.jpg')
-        },
-        {
-          img: require('../access/img/beeple-07-12-20.jpg')
-        },
-        {
-          img: require('../access/img/beeple-07-25-20.jpg')
-        },
-        {
-          img: require('../access/img/beeple-07-26-20.jpg')
-        },
-        {
-          img: require('../access/img/beeple-07-30-20.jpg')
-        },
-        {
-          img: require('../access/img/beeple-08-12-20.jpg')
-        }
+        // address: "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
+        // contract: "0x8F5D7348b71208D1025F84250722F9d6C35f27e1"
+        // minted_count: 0
+        // nft_mid: "0xbb02368ab08e80f6ae9b160827f412ce087f2ef4842947c5a7b8f67d14ef08c8"
+        // supply: 10
+        // token_id: "0"
+        // uri: "https://img1.uapay.io/mpay/img/txt/mosaique/2c9180820000000a017b361220310005"
       ]
     }
   },
+  computed: {
+  },
   created() {
-    if (localStorage.getItem('downImg')) {
-      this.imagList[0].img = localStorage.getItem('downImg')
+    this.getList()
+  },
+  methods: {
+    getList() {
+      api.getSnapshots().then(res => {
+        this.imagList = res.data.snapshots
+        return res.data.snapshots
+      })
     }
   }
 }
@@ -86,11 +84,11 @@ export default {
   .img-list {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     .item-card {
       width: 350px;
       height: 540px;
       overflow: hidden;
+      margin-right: 40px;
       border-radius: 10px;
       margin-bottom: 74px;
       .top {
@@ -101,7 +99,7 @@ export default {
         .img {
           height: 460px;
           img {
-            height: 460px;
+            width: 350px;
           }
         }
         .mark-box {
