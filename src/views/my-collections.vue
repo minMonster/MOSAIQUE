@@ -10,15 +10,15 @@
         </li>
       </ul>
       <!-- 收藏列表 -->
-      <ul class="list">
+      <ul v-loading="loading" class="loading list">
         <li v-for="(item,index) in collectionsList" :key="index" class="list-item">
           <!-- 上部 -->
-          <div class="h" :style="{ backgroundImage: 'url(' + item.data.image + ')' }">
+          <div class="h" :style="{ backgroundImage: 'url(' + item.image + ')' }">
             <!-- 分享按钮 -->
             <el-image class="share" :src="require('../access/share.png')" />
             <!-- 模糊遮罩 -->
             <div class="mask">
-              <div class="mask-bg" :style="{ backgroundImage: 'url(' + item.data.image + ')' }" />
+              <div class="mask-bg" :style="{ backgroundImage: 'url(' + item.image + ')' }" />
               <ul class="mask-con">
                 <li>
                   <span class="tit">Collection name</span>
@@ -31,24 +31,161 @@
               </ul>
             </div>
           </div>
+          <!--
+          1-b、i、p亮，s灰，p需要判断是否达到上限置灰
+          2-b、i亮，s、p灰
+          3-b、i、s亮，p灰
+          4-都灰
+          -->
           <!-- 底部 -->
-          <ul class="f">
-            <li class="active">
+          <ul v-show="item.nft_status === 1" class="f">
+            <li class="active" @click="jumpBlazon(item)">
+              <span class="sup">B</span>
+              <span class="sub">{{ item.blazon_count || 0 }}</span>
+            </li>
+            <li class="active" @click="jumpInscription(item)">
+              <span class="sup">I</span>
+              <span class="sub">{{ item.inscription_count || 0 }}</span>
+            </li>
+            <li>
+              <span class="sup">S</span>
+              <span class="sub fraction">
+                <i>{{ item.snapshot_count || 0 }}</i>
+                <i>{{ item.snapshot_supply || 0 }}</i>
+              </span>
+            </li>
+            <li v-show="item.program_supply === item.program_count">
+              <span class="sup">P</span>
+              <span class="sub fraction">
+                <i>{{ item.program_count || 0 }}</i>
+                <i>{{ item.program_supply || 0 }}</i>
+              </span>
+            </li>
+            <li v-show="(item.program_supply !== item.program_count) && item.program_count > 0" class="hollow">
+              <span class="sup">P</span>
+              <span class="sub fraction">
+                <i>{{ item.program_count || 0 }}</i>
+                <i>{{ item.program_supply || 0 }}</i>
+              </span>
+            </li>
+            <li v-show="(item.program_supply !== item.program_count) && item.program_count === 0" class="active" @click="jumpProgram(item)">
+              <span class="sup">P</span>
+              <span class="sub fraction">
+                <i>{{ item.program_count || 0 }}</i>
+                <i>{{ item.program_supply || 0 }}</i>
+              </span>
+            </li>
+          </ul>
+          <ul v-show="item.nft_status === 2" class="f">
+            <li class="active" @click="jumpBlazon(item)">
+              <span class="sup">B</span>
+              <span class="sub">{{ item.blazon_count || 0 }}</span>
+            </li>
+            <li class="active" @click="jumpInscription(item)">
+              <span class="sup">I</span>
+              <span class="sub">{{ item.inscription_count || 0 }}</span>
+            </li>
+            <li>
+              <span class="sup">S</span>
+              <span class="sub fraction">
+                <i>{{ item.snapshot_count || 0 }}</i>
+                <i>{{ item.snapshot_supply || 0 }}</i>
+              </span>
+            </li>
+            <li>
+              <span class="sup">P</span>
+              <span class="sub fraction">
+                <i>{{ item.program_count || 0 }}</i>
+                <i>{{ item.program_supply || 0 }}</i>
+              </span>
+            </li>
+          </ul>
+          <ul v-show="item.nft_status === 3" class="f">
+            <li class="active" @click="jumpBlazon(item)">
+              <span class="sup">B</span>
+              <span class="sub">{{ item.blazon_count || 0 }}</span>
+            </li>
+            <li class="active" @click="jumpInscription(item)">
+              <span class="sup">I</span>
+              <span class="sub">{{ item.inscription_count || 0 }}</span>
+            </li>
+            <!-- <li class="active" @click="jumpSnapshot(item)">
+              <span class="sup">S</span>
+              <span class="sub fraction">
+                <i>{{ item.snapshot_count || 0 }}</i>
+                <i>{{ item.snapshot_supply || 0 }}</i>
+              </span>
+            </li> -->
+            <li v-show="item.snapshot_supply === item.snapshot_count">
+              <span class="sup">S</span>
+              <span class="sub fraction">
+                <i>{{ item.snapshot_count || 0 }}</i>
+                <i>{{ item.snapshot_supply || 0 }}</i>
+              </span>
+            </li>
+            <li v-show="(item.snapshot_supply !== item.snapshot_count) && item.snapshot_count > 0" class="hollow">
+              <span class="sup">S</span>
+              <span class="sub fraction">
+                <i>{{ item.snapshot_count || 0 }}</i>
+                <i>{{ item.snapshot_supply || 0 }}</i>
+              </span>
+            </li>
+            <li v-show="(item.snapshot_supply !== item.snapshot_count) && item.snapshot_count === 0" class="active" @click="jumpSnapshot(item)">
+              <span class="sup">S</span>
+              <span class="sub fraction">
+                <i>{{ item.snapshot_count || 0 }}</i>
+                <i>{{ item.snapshot_supply || 0 }}</i>
+              </span>
+            </li>
+            <li>
+              <span class="sup">P</span>
+              <span class="sub fraction">
+                <i>{{ item.program_count || 0 }}</i>
+                <i>{{ item.program_supply || 0 }}</i>
+              </span>
+            </li>
+          </ul>
+          <ul v-show="item.nft_status === 4" class="f">
+            <li>
+              <span class="sup">B</span>
+              <span class="sub">{{ item.blazon_count || 0 }}</span>
+            </li>
+            <li>
+              <span class="sup">I</span>
+              <span class="sub">{{ item.inscription_count || 0 }}</span>
+            </li>
+            <li>
+              <span class="sup">S</span>
+              <span class="sub fraction">
+                <i>{{ item.snapshot_count || 0 }}</i>
+                <i>{{ item.snapshot_supply || 0 }}</i>
+              </span>
+            </li>
+            <li>
+              <span class="sup">P</span>
+              <span class="sub fraction">
+                <i>{{ item.program_count || 0 }}</i>
+                <i>{{ item.program_supply || 0 }}</i>
+              </span>
+            </li>
+          </ul>
+          <ul v-show="!item.nft_status" class="f">
+            <li>
               <span class="sup">B</span>
               <span class="sub">0</span>
             </li>
-            <li class="hollow">
+            <li>
               <span class="sup">I</span>
               <span class="sub">0</span>
             </li>
-            <li class="active">
+            <li>
               <span class="sup">S</span>
               <span class="sub fraction">
                 <i>0</i>
                 <i>0</i>
               </span>
             </li>
-            <li class="hollow">
+            <li>
               <span class="sup">P</span>
               <span class="sub fraction">
                 <i>0</i>
@@ -79,7 +216,8 @@ export default {
         { name: 'The Programmable', key: 'theProgrammable' }
       ],
       // 收藏列表
-      collectionsList: []
+      collectionsList: [],
+      loading: false
     }
   },
   computed: {
@@ -93,52 +231,102 @@ export default {
   methods: {
     // 获取平台收录NFT合约地址
     getNftContractAddr() {
-      api.getNftContractAddr().then(res => {
+      this.loading = true
+      api.getNftContractAddr().then(async(res) => {
         const addr = res.data.contract
         if (!addr || !addr.length) {
+          this.loading = false
           return false
         }
-        console.log(addr)
         for (let i = 0; i < addr.length; i++) {
-          console.log(addr[i])
-          this.getCollectionsList(addr[i].contract_address)
+          const contractAddr = addr[i].contract_address
+          const contracts = await contract.createERC721Contract(contractAddr)
+          const balanceOf = await contracts.methods.balanceOf(this.userAddress).call()
+          const itemArr = []
+          for (let j = 0; j < balanceOf; j++) {
+            await contracts.methods.tokenOfOwnerByIndex(this.userAddress, j).call().then(async(res) => {
+              contracts.methods.tokenURI(res).call().then(async(tokenURI) => {
+                await axios.get(tokenURI).then((res) => {
+                  const data = {
+                    contractAddr,
+                    tokenOfOwnerByIndex: res,
+                    tokenUrl: tokenURI,
+                    ...res.data
+                  }
+                  itemArr.push(data)
+                }).catch(err => console.log(err))
+              }).catch(err => { console.log(err) })
+            }).catch(err => { console.log(err) })
+          }
+          if (itemArr.length > 0) {
+            const newArr = this.$_.chunk(itemArr, 6)
+            for (let index = 0; index < newArr.length; index++) {
+              const collections = newArr[index].map(v => {
+                return {
+                  contract: v.contractAddr,
+                  token_id: v.tokenOfOwnerByIndex
+                }
+              })
+              const params = {
+                collections: collections
+              }
+              api.getCollectInfo(params).then(res => {
+                const { collections } = res && res.data
+                if (collections && collections.length) {
+                  for (let k = 0; k < newArr[index].length; k++) {
+                    Object.assign(newArr[index][k], collections[k])
+                  }
+                  this.collectionsList.push(...newArr[index])
+                  return false
+                }
+                this.collectionsList.push(...newArr[index])
+              }).catch(err => {
+                this.collectionsList.push(...newArr[index])
+                console.log(err)
+              })
+            }
+          }
         }
+        this.loading = false
       }).catch(err => {
+        this.loading = false
         this.$message.error(err.message || err.msg)
       })
     },
-    /**
-       * 1.创建合约
-       * 2.获取balanceOf 数值直接遍历通过索引作为id
-       * 3.tokenOfOwnerByIndex 通过上面balanceOf的索引获得
-       * 4.获取tokenURI
-       * 5.通过get请求得到返回值
-       * 6.有多个参数根据自己想要的参数进行格式化
-      */
-    //  获取收藏列表
-    async getCollectionsList(contractAddr) {
-      const contracts = contract.createERC721Contract(contractAddr)
-      const balanceOf = await contracts.methods.balanceOf(this.userAddress).call()
-      console.log('balanceOf', balanceOf)
-      for (let i = 0; i < balanceOf; i++) {
-        console.log(contractAddr, i)
-        contracts.methods.tokenOfOwnerByIndex(this.userAddress, i).call().then(res => {
-          contracts.methods.tokenURI(res).call().then(async(tokenURI) => {
-            console.log(tokenURI)
-            const result = await axios.get(tokenURI)
-            const data = {
-              contractAddr,
-              tokenOfOwnerByIndex: res,
-              tokenUrl: tokenURI,
-              ...result
-            }
-            this.collectionsList.push(data)
-            console.log('----------data----------', data, i)
-          }).catch(err => { console.log(err) })
-        }).catch(err => { console.log(err) })
-        console.log(this.collectionsList)
-      }
-    }
+    // 查询collections信息
+    getCollectInfo(data) {
+
+      // const collections = data.map(v => {
+      //   return {
+      //     contract: v.contractAddr,
+      //     token_id: v.tokenOfOwnerByIndex
+      //   }
+      // })
+      // const params = {
+      //   collections: collections
+      // }
+      // api.getCollectInfo(params).then(res => {
+      //   const { collections } = res && res.data
+      //   if (collections && collections.length) {
+      //     for (let k = 0; k < data.length; k++) {
+      //       Object.assign(data[k], collections[k])
+      //     }
+      //   }
+      //   console.log(data)
+      //   console.log(this.collectionsList)
+      // }).catch(err => {
+      //   console.log(err)
+      //   // this.$message.error(err.message || err.msg)
+      // })
+    },
+    // 跳转到 Blazon
+    jumpBlazon(item) {},
+    // 跳转到 Inscription
+    jumpInscription(item) {},
+    // 跳转到 Snapshot
+    jumpSnapshot(item) {},
+    // 跳转到 Program
+    jumpProgram(item) {}
   }
 
 }
@@ -283,6 +471,7 @@ export default {
             justify-content: center;
             padding: 0 15px;
             position: relative;
+            cursor:not-allowed;
             .sup{
               font-size: 40px;
               font-family: Verdana;
@@ -336,6 +525,7 @@ export default {
               }
             }
             &.active{
+              cursor: pointer;
               .sup{
                 color: #DA6464 !important;
               }
@@ -351,6 +541,7 @@ export default {
               }
             }
             &.hollow{
+              cursor: pointer;
               .sup{
                 color: #FFFFFF;
                 -webkit-text-stroke: 2px #D96363;
@@ -379,6 +570,18 @@ export default {
           }
 
         }
+      }
+    }
+    &>.loading{
+      /deep/ .el-loading-mask{
+        background: none !important;
+      }
+      /deep/ .el-loading-spinner .path{
+        stroke-dasharray: 90,150;
+        stroke-dashoffset: 0;
+        stroke-width: 2;
+        stroke: #da6464;
+        stroke-linecap: round;
       }
     }
   }

@@ -156,3 +156,14 @@ export function getModifyToken(data) {
   )
 }
 
+// 我的收藏 - 获取每个按钮信息
+export function getCollectInfo(data) {
+  return request(
+    {
+      url: 'pbgci.do',
+      method: 'post',
+      data
+    }
+  )
+}
+

@@ -14,6 +14,10 @@ import '@/libs/rem'
 // svg 全局图标组件
 import '@/icons'
 import '@/directive/drag'
+
+import _ from 'lodash'
+Vue.prototype.$_ = _
+
 Vue.use(ElementUI)
 // import eth from './eth'
 
