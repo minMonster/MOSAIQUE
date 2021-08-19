@@ -246,12 +246,12 @@ export default {
           for (let j = 0; j < balanceOf; j++) {
             await contracts.methods.tokenOfOwnerByIndex(this.userAddress, j).call().then(async(res) => {
               contracts.methods.tokenURI(res).call().then(async(tokenURI) => {
-                await axios.get(tokenURI).then((res) => {
+                await axios.get(tokenURI).then((result) => {
                   const data = {
                     contractAddr,
                     tokenOfOwnerByIndex: res,
                     tokenUrl: tokenURI,
-                    ...res.data
+                    ...result.data
                   }
                   itemArr.push(data)
                 }).catch(err => console.log(err))
@@ -261,7 +261,9 @@ export default {
           if (itemArr.length > 0) {
             const newArr = this.$_.chunk(itemArr, 6)
             for (let index = 0; index < newArr.length; index++) {
+              // console.log('---------------------', newArr[index])
               const collections = newArr[index].map(v => {
+                // console.log(v)
                 return {
                   contract: v.contractAddr,
                   token_id: v.tokenOfOwnerByIndex
@@ -270,6 +272,7 @@ export default {
               const params = {
                 collections: collections
               }
+              console.log(params)
               api.getCollectInfo(params).then(res => {
                 const { collections } = res && res.data
                 if (collections && collections.length) {
