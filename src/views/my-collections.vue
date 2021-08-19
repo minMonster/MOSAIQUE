@@ -254,41 +254,45 @@ export default {
                     ...result.data
                   }
                   itemArr.push(data)
+
+                  if (itemArr.length === 6 || j === balanceOf - 1) {
+                  // 此时渲染6个
+                  // if (itemArr.length > 0 && itemArrTmp.length > 0) {
+                    const newArr = this.$_.chunk(itemArr, 6)
+                    for (let index = 0; index < newArr.length; index++) {
+                      // console.log('---------------------', newArr[index])
+                      const collections = newArr[index].map(v => {
+                        // console.log(v)
+                        return {
+                          contract: v.contractAddr,
+                          token_id: v.tokenOfOwnerByIndex
+                        }
+                      })
+                      const params = {
+                        collections: collections
+                      }
+                      console.log(params)
+                      api.getCollectInfo(params).then(res => {
+                        const { collections } = res && res.data
+                        if (collections && collections.length) {
+                          for (let k = 0; k < newArr[index].length; k++) {
+                            Object.assign(newArr[index][k], collections[k])
+                          }
+                          this.collectionsList.push(...newArr[index])
+                          return false
+                        }
+                        this.collectionsList.push(...newArr[index])
+                      }).catch(err => {
+                        this.collectionsList.push(...newArr[index])
+                        console.log(err)
+                      })
+                    }
+                  itemArr.splice(0 ,itemArr.length)
+                }
                 }).catch(err => console.log(err))
               }).catch(err => { console.log(err) })
-            }).catch(err => { console.log(err) })
-          }
-          if (itemArr.length > 0) {
-            const newArr = this.$_.chunk(itemArr, 6)
-            for (let index = 0; index < newArr.length; index++) {
-              // console.log('---------------------', newArr[index])
-              const collections = newArr[index].map(v => {
-                // console.log(v)
-                return {
-                  contract: v.contractAddr,
-                  token_id: v.tokenOfOwnerByIndex
-                }
-              })
-              const params = {
-                collections: collections
-              }
-              console.log(params)
-              api.getCollectInfo(params).then(res => {
-                const { collections } = res && res.data
-                if (collections && collections.length) {
-                  for (let k = 0; k < newArr[index].length; k++) {
-                    Object.assign(newArr[index][k], collections[k])
-                  }
-                  this.collectionsList.push(...newArr[index])
-                  return false
-                }
-                this.collectionsList.push(...newArr[index])
-              }).catch(err => {
-                this.collectionsList.push(...newArr[index])
-                console.log(err)
-              })
-            }
-          }
+            }).catch(err => { console.log(err) })  
+        }
         }
         this.loading = false
       }).catch(err => {
