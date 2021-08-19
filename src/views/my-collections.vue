@@ -22,7 +22,7 @@
               <ul class="mask-con">
                 <li>
                   <span class="tit">Collection name</span>
-                  <span class="val">This NFT Song</span>
+                  <span class="val">{{ item.name }}</span>
                 </li>
                 <li>
                   <span class="tit">Current Price</span>
@@ -240,6 +240,7 @@ export default {
         }
         for (let i = 0; i < addr.length; i++) {
           const contractAddr = addr[i].contract_address
+          const contractName = addr[i].name
           const contracts = await contract.createERC721Contract(contractAddr)
           const balanceOf = await contracts.methods.balanceOf(this.userAddress).call()
           const itemArr = []
@@ -251,6 +252,7 @@ export default {
                     contractAddr,
                     tokenOfOwnerByIndex: res,
                     tokenUrl: tokenURI,
+                    name: contractName,
                     ...result.data
                   }
                   itemArr.push(data)
@@ -287,12 +289,12 @@ export default {
                         console.log(err)
                       })
                     }
-                  itemArr.splice(0 ,itemArr.length)
-                }
+                    itemArr.splice(0, itemArr.length)
+                  }
                 }).catch(err => console.log(err))
               }).catch(err => { console.log(err) })
-            }).catch(err => { console.log(err) })  
-        }
+            }).catch(err => { console.log(err) })
+          }
         }
         this.loading = false
       }).catch(err => {
