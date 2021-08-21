@@ -136,15 +136,15 @@ export default {
       blazonY: 230,
       masterSrc: '',
       blazonSrc: '',
-      masterIndex: 0,
-      blazonIndex: 0,
       cropperDom: null,
       masterWidth: 431,
       blazonWidth: 431,
       画板高度: 0,
       status: 0, // -1: loading 0: edit , 1: print, 2: minted
       mintedImage: '',
-      resultNewtokenUrl: null
+      resultNewtokenUrl: null,
+      masterImageItem: null,
+      blazonImageItem: null
     }
   },
   computed: {
@@ -157,20 +157,34 @@ export default {
     })
   },
   created() {
-    let { master, blazon } = this.$route.query
-    master = Number(master)
-    blazon = Number(blazon)
+    const { mImage, mToken_id, mContractAddress, bImage, bToken_id, bContractAddress } = this.$route.query
+    // mImage: this.masterImageItem.image,
+    //     mToken_id: this.masterImageItem.token_id,
+    //     mContractAddress: this.masterImageItem.contractAddress,
+    //     bImage: this.blazonImageItem.image,
+    //     bToken_id: this.blazonImageItem.token_id,
+    //     bContractAddress: this.blazonImageItem.contractAddress
+    this.masterImageItem = {
+      image: mImage,
+      token_id: Number(mToken_id),
+      contractAddress: mContractAddress
+    }
+    this.blazonImageItem = {
+      image: bImage,
+      token_id: Number(bToken_id),
+      contractAddress: bContractAddress
+    }
     const imgM = new Image()
     const that = this
-    imgM.src = this.imageItems[master].image
+    imgM.src = this.masterImageItem.image
     imgM.onload = function() {
-      that.masterSrc = that.imageItems[master].image
+      that.masterSrc = that.masterImageItem.image
       that.masterWidth = this.width
     }
     const imgB = new Image()
-    imgB.src = this.imageItems[blazon].image
+    imgB.src = this.blazonImageItem.image
     imgB.onload = function() {
-      that.blazonSrc = that.imageItems[blazon].image
+      that.blazonSrc = that.blazonImageItem.image
       that.blazonWidth = this.width
     }
   },
@@ -229,18 +243,15 @@ export default {
       //     zoom}, bY: ${(bDomY - Y边界值) / zoom} `
       // )
       this.status = -1
-      let { master, blazon } = this.$route.query
-      master = Number(master)
-      blazon = Number(blazon)
       const resultNewtokenUrl = await api.getNewtokenUrl({
         drawing_board_width: Number(画板宽度 / zoom).toFixed(0) + '',
         drawing_board_height: Number(画板高度 / zoom).toFixed(0) + '',
-        master_contract: this.imageItems[master].contractAddress,
-        master_tokenid: this.imageItems[master].tokenOfOwnerByIndex,
+        master_contract: this.masterImageItem.contractAddress,
+        master_tokenid: this.masterImageItem.token_id,
         master_x: Number((mDomX - X边界值) / zoom).toFixed(0) + '',
         master_y: Number((mDomY - Y边界值) / zoom).toFixed(0) + '',
-        blazen_contract: this.imageItems[blazon].contractAddress,
-        blazen_tokenid: this.imageItems[blazon].tokenOfOwnerByIndex,
+        blazen_contract: this.blazonImageItem.contractAddress,
+        blazen_tokenid: this.blazonImageItem.token_id,
         blazen_x: Number((bDomX - X边界值) / zoom).toFixed(0) + '',
         blazen_y: Number((bDomY - Y边界值) / zoom).toFixed(0) + '',
         blazen_rotate: Number(this.blazonDeg).toFixed(0) + '',
@@ -258,14 +269,13 @@ export default {
     },
 
     erc721transfer() {
-      const { master } = this.$route.query
       const transferHash = contract.erc721transfer(
         this.contractAddress, // erc721合约地址
         this.userAddress, // 操作地址
-        this.userAddress, // erc721转出方
+        this.masterImageItem.contractAddress, // erc721转出方
         this.mosaique, // erc721接收方
         // '0xcC445E7389Ca3fe659C565239cf0DF3864fa4A21', // erc721接收方
-        this.imageItems[master].tokenOfOwnerByIndex // erc721 tokenId
+        this.masterImageItem.token_id // erc721 tokenId
       ).on('transactionHash', (reject) => {
         console.log(reject, 'reject')
         this.loadingTransferHash(reject, 1)
@@ -300,8 +310,7 @@ export default {
       this.erc721transfer()
     },
     async sign(resultNewtokenUrl) {
-      const { blazon } = this.$route.query
-      const blazonItem = this.imageItems[blazon]
+      const blazonItem = this.blazonImageItem
       console.log('sign => resultNewtokenUrl', resultNewtokenUrl)
       // compose_image: "https://img1.uapay.io/mpay/img/png/mosaique/2c9180820000000a017b3b36a7510052.png"
       // err_code: 1
@@ -312,7 +321,7 @@ export default {
       const { master_nft_mid, token_uri } = resultNewtokenUrl
       let signature = null
       if (master_nft_mid) {
-        signature = await contract.sign([master_nft_mid, blazonItem.contractAddress, blazonItem.tokenOfOwnerByIndex, token_uri], ['bytes32', 'address', 'uint256', 'string'])
+        signature = await contract.sign([master_nft_mid, blazonItem.contractAddress, blazonItem.token_id, token_uri], ['bytes32', 'address', 'uint256', 'string'])
       }
       console.log(signature, 'signature')
       return signature
@@ -322,13 +331,12 @@ export default {
       this.status = -1
       const resultNewtokenUrl = this.resultNewtokenUrl.data
       const signature = await this.sign(resultNewtokenUrl)
-      const { blazon } = this.$route.query
-      const blazonItem = this.imageItems[blazon]
+      const blazonItem = this.blazonImageItem
       if (signature) {
         await api.mint({
           master_nft_mid: resultNewtokenUrl.master_nft_mid,
           blazen_contract: blazonItem.contractAddress,
-          blazen_tokenid: blazonItem.tokenOfOwnerByIndex,
+          blazen_tokenid: blazonItem.token_id,
           new_token_uri: resultNewtokenUrl.token_uri,
           owner: this.userAddress,
           signature

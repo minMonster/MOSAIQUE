@@ -3,7 +3,7 @@
     <div class="edition-center">
       <div class="snapshotable-title">Snapshotables</div>
       <div class="img-list">
-        <div v-for="item in imagList" :key="item.nft_mid" class="item-card">
+        <div v-for="item in imagList" :key="item.nft_mid" class="item-card" @click="toDetaile(item)">
           <div class="top">
             <el-image class="img" fit="cover" :src="item.uri" />
             <div class="mark-box">
@@ -55,6 +55,9 @@ export default {
     this.getList()
   },
   methods: {
+    toDetaile(item) {
+      this.$router.push({ path: '/snapshot-detaile', query: item })
+    },
     async getList() {
       const snapshots = await api.getSnapshots().then(res => {
         this.imagList = res.data.snapshots

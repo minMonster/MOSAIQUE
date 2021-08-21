@@ -114,15 +114,16 @@ export default {
           label: 'Price curve at quad'
         }
       ],
-      imageItem: {
-        address: '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',
-        contract: '0x8F5D7348b71208D1025F84250722F9d6C35f27e1',
-        minted_count: 0,
-        nft_mid: '0xbb02368ab08e80f6ae9b160827f412ce087f2ef4842947c5a7b8f67d14ef08c8',
-        supply: 10,
-        token_id: '0',
-        uri: 'https://img1.uapay.io/mpay/img/png/mosaique/2c9180820000000a017b36121a1e0004.png'
-      },
+      // imageItem: {
+      //   address: '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',
+      //   contract: '0x8F5D7348b71208D1025F84250722F9d6C35f27e1',
+      //   minted_count: 0,
+      //   nft_mid: '0xbb02368ab08e80f6ae9b160827f412ce087f2ef4842947c5a7b8f67d14ef08c8',
+      //   supply: 10,
+      //   token_id: '0',
+      //   uri: 'https://img1.uapay.io/mpay/img/png/mosaique/2c9180820000000a017b36121a1e0004.png'
+      // },
+      imageItem: null,
       ofImprints: '',
       chart: null
 
@@ -145,7 +146,9 @@ export default {
   mounted() {
     this.drawLine()
   },
-  created() {},
+  created() {
+    this.imageItem = this.$route.query
+  },
   methods: {
     async sign() {
       // console.log(web3.utils.fromAscii('const'))

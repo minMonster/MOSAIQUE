@@ -227,6 +227,7 @@ export default {
   },
   created() {
     this.getNftContractAddr()
+    // this.getNftContractAddrCopy()
   },
   methods: {
     // 获取平台收录NFT合约地址
@@ -247,51 +248,59 @@ export default {
           for (let j = 0; j < balanceOf; j++) {
             await contracts.methods.tokenOfOwnerByIndex(this.userAddress, j).call().then(async(res) => {
               contracts.methods.tokenURI(res).call().then(async(tokenURI) => {
-                await axios.get(tokenURI).then((result) => {
-                  const data = {
-                    contractAddr,
-                    tokenOfOwnerByIndex: res,
-                    tokenUrl: tokenURI,
-                    name: contractName,
-                    ...result.data
-                  }
-                  itemArr.push(data)
+                const catchUri = localStorage.getItem('URI_' + res)
+                let result = null
+                if (catchUri) {
+                  result = JSON.parse(catchUri)
+                } else {
+                  result = await axios.get(tokenURI).then((result) => {
+                    localStorage.setItem('URI_' + res, JSON.stringify(result))
+                    return result
+                  }).catch(() => false)
+                }
+                const data = {
+                  contractAddr,
+                  tokenOfOwnerByIndex: res,
+                  tokenUrl: tokenURI,
+                  name: contractName,
+                  ...result.data
+                }
+                itemArr.push(data)
 
-                  if (itemArr.length === 6 || j === balanceOf - 1) {
+                if (itemArr.length === 6 || j === balanceOf - 1) {
                   // 此时渲染6个
                   // if (itemArr.length > 0 && itemArrTmp.length > 0) {
-                    const newArr = this.$_.chunk(itemArr, 6)
-                    for (let index = 0; index < newArr.length; index++) {
-                      // console.log('---------------------', newArr[index])
-                      const collections = newArr[index].map(v => {
-                        // console.log(v)
-                        return {
-                          contract: v.contractAddr,
-                          token_id: v.tokenOfOwnerByIndex
-                        }
-                      })
-                      const params = {
-                        collections: collections
+                  const newArr = this.$_.chunk(itemArr, 6)
+                  for (let index = 0; index < newArr.length; index++) {
+                    // console.log('---------------------', newArr[index])
+                    const collections = newArr[index].map(v => {
+                      // console.log(v)
+                      return {
+                        contract: v.contractAddr,
+                        token_id: v.tokenOfOwnerByIndex
                       }
-                      console.log(params)
-                      api.getCollectInfo(params).then(res => {
-                        const { collections } = res && res.data
-                        if (collections && collections.length) {
-                          for (let k = 0; k < newArr[index].length; k++) {
-                            Object.assign(newArr[index][k], collections[k])
-                          }
-                          this.collectionsList.push(...newArr[index])
-                          return false
+                    })
+                    const params = {
+                      collections: collections
+                    }
+                    console.log(params)
+                    api.getCollectInfo(params).then(res => {
+                      const { collections } = res && res.data
+                      if (collections && collections.length) {
+                        for (let k = 0; k < newArr[index].length; k++) {
+                          Object.assign(newArr[index][k], collections[k])
                         }
                         this.collectionsList.push(...newArr[index])
-                      }).catch(err => {
-                        this.collectionsList.push(...newArr[index])
-                        console.log(err)
-                      })
-                    }
-                    itemArr.splice(0, itemArr.length)
+                        return false
+                      }
+                      this.collectionsList.push(...newArr[index])
+                    }).catch(err => {
+                      this.collectionsList.push(...newArr[index])
+                      console.log(err)
+                    })
                   }
-                }).catch(err => console.log(err))
+                  itemArr.splice(0, itemArr.length)
+                }
               }).catch(err => { console.log(err) })
             }).catch(err => { console.log(err) })
           }
@@ -301,6 +310,62 @@ export default {
         this.loading = false
         this.$message.error(err.message || err.msg)
       })
+    },
+    async getNftContractAddrCopy() {
+      this.loading = true
+      // 获取平台合约
+      const addr = await api.getNftContractAddr().then((res) => {
+        return res.data.contract
+      })
+      if (!addr || !addr.length) {
+        this.loading = false
+        return false
+      }
+      console.log(addr, 'addr')
+      const contractsPAll = []
+
+      addr.forEach(i => {
+        contractsPAll.push(contract.createERC721Contract(i.contract_address))
+      })
+      const balanceOfPAll = []
+
+      const contracts = await Promise.all(contractsPAll)
+      console.log('contracts', contracts)
+
+      addr.forEach((i, index) => {
+        balanceOfPAll.push(contracts[index].methods.balanceOf(this.userAddress).call())
+      })
+      const balanceOfs = await Promise.all(balanceOfPAll)
+      console.log('balanceOfs', balanceOfs)
+      const tokenOfOwnerByIndexPA = []
+      balanceOfs.forEach((i, index) => {
+        const contractsC = contracts[index]
+        for (let j = 0; j < i; j++) {
+          tokenOfOwnerByIndexPA.push(contractsC.methods.tokenOfOwnerByIndex(this.userAddress, j).call())
+        }
+      })
+      const tokenOfOwnerByIndexs = await Promise.all(tokenOfOwnerByIndexPA)
+      console.log(tokenOfOwnerByIndexs, 'tokenOfOwnerByIndexs')
+      let num = 0
+      const tokenURIPa = []
+      balanceOfs.forEach((i, index) => {
+        const contractsC = contracts[index]
+        for (let j = 0; j < i; j++) {
+          tokenURIPa.push(contractsC.methods.tokenURI(tokenOfOwnerByIndexs[num]).call())
+          num++
+        }
+      })
+      const tokenURIs = await Promise.all(tokenURIPa)
+      console.log(tokenURIs, 'tokenURIs')
+      // contracts.methods.tokenURI(res).call()
+      // // console.log(addr, 'addr')
+      // addr.forEach(async(i) => {
+      //   const contractAddr = i.contract_address
+      //   const contractName = i.name
+      //   const contracts = await contract.createERC721Contract(contractAddr)
+      //   const balanceOf = await contracts.methods.balanceOf(this.userAddress).call()
+      //   const itemArr = []
+      // })
     },
     // 查询collections信息
     getCollectInfo(data) {
@@ -329,9 +394,13 @@ export default {
       // })
     },
     // 跳转到 Blazon
-    jumpBlazon(item) {},
+    jumpBlazon(item) {
+      this.$router.push({ path: '/select-blazon', query: item })
+    },
     // 跳转到 Inscription
-    jumpInscription(item) {},
+    jumpInscription(item) {
+      this.$router.push({ path: '/edit-Inscription', query: item })
+    },
     // 跳转到 Snapshot
     jumpSnapshot(item) {},
     // 跳转到 Program
