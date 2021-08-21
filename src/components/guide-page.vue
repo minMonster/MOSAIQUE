@@ -33,15 +33,11 @@ export default {
       default: function() {
         return null
       }
-    },
-    imageIndex: {
-      type: Number,
-      default: 0
     }
   },
   methods: {
     toCopy() {
-      this.$router.push({ name: 'copy', query: { imageIndex: this.imageIndex }})
+      this.$router.push({ name: 'copy', query: this.imageItem })
     },
     close() {
       this.$parent.isShowGuidPage = false

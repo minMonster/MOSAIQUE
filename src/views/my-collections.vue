@@ -402,9 +402,13 @@ export default {
       this.$router.push({ path: '/edit-Inscription', query: item })
     },
     // 跳转到 Snapshot
-    jumpSnapshot(item) {},
+    jumpSnapshot(item) {
+      this.$router.push({ path: '/snapshot-detaile', query: item })
+    },
     // 跳转到 Program
-    jumpProgram(item) {}
+    jumpProgram(item) {
+      this.$router.push({ path: '/copy', query: item })
+    }
   }
 
 }

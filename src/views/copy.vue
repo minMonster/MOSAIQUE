@@ -93,7 +93,8 @@ export default {
     })
   },
   created() {
-    this.imageItem = this.userNfts[this.$route.query.imageIndex]
+    this.imageItem = this.$route.query
+    this.imageItem.token_id = Number(this.imageItem.token_id)
   },
   methods: {
     handleChange(e) {
@@ -121,7 +122,7 @@ export default {
       this.status = -1
       contract.makeProgrammable(
         this.contractAddress,
-        this.imageItem.tokenOfOwnerByIndex
+        this.imageItem.token_id
       ).on('transactionHash', (reject) => {
         this.loadingTransferHash(reject)
       })
