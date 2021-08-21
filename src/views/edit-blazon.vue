@@ -158,12 +158,6 @@ export default {
   },
   created() {
     const { mImage, mToken_id, mContractAddress, bImage, bToken_id, bContractAddress } = this.$route.query
-    // mImage: this.masterImageItem.image,
-    //     mToken_id: this.masterImageItem.token_id,
-    //     mContractAddress: this.masterImageItem.contractAddress,
-    //     bImage: this.blazonImageItem.image,
-    //     bToken_id: this.blazonImageItem.token_id,
-    //     bContractAddress: this.blazonImageItem.contractAddress
     this.masterImageItem = {
       image: mImage,
       token_id: Number(mToken_id),
@@ -272,7 +266,7 @@ export default {
       const transferHash = contract.erc721transfer(
         this.contractAddress, // erc721合约地址
         this.userAddress, // 操作地址
-        this.masterImageItem.contractAddress, // erc721转出方
+        this.userAddress, // erc721转出方
         this.mosaique, // erc721接收方
         // '0xcC445E7389Ca3fe659C565239cf0DF3864fa4A21', // erc721接收方
         this.masterImageItem.token_id // erc721 tokenId

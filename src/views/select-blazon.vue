@@ -17,7 +17,7 @@
                 @click="detele('M')"
               />
               <div class="dec">
-                <p class="name">{{ masterImageItem.name }}</p>
+                <p class="name">Collection name</p>
                 <p class="type">Artwork</p>
               </div>
             </template>
@@ -116,27 +116,7 @@ export default {
       enlargeData: {},
       masterImageItem: null,
       blazonImageItem: null,
-      collectionsList: [],
-      imagList: [
-        // {
-        //   img: require('../access/img/beeple-03-29-18.jpg')
-        // },
-        // {
-        //   img: require('../access/img/beeple-07-12-20.jpg')
-        // },
-        // {
-        //   img: require('../access/img/beeple-07-25-20.jpg')
-        // },
-        // {
-        //   img: require('../access/img/beeple-07-26-20.jpg')
-        // },
-        // {
-        //   img: require('../access/img/beeple-07-30-20.jpg')
-        // },
-        // {
-        //   img: require('../access/img/beeple-08-12-20.jpg')
-        // }
-      ]
+      collectionsList: []
     }
   },
   created() {
@@ -230,14 +210,6 @@ export default {
     },
     init() {
       this.getNftContractAddr()
-      // api.getImages().then(res => {
-      //   console.log(res.data.valueInfo.split(';'))
-      //   this.imagList = res.data.valueInfo.split(';').map(i => {
-      //     return {
-      //       img: i
-      //     }
-      //   })
-      // })
     },
     next() {
       if (!this.masterImageItem || !this.blazonImageItem) {
@@ -261,7 +233,7 @@ export default {
     },
     setMaster() {
       this.isShowGuidPage = false
-      this.masterIndex = this.curIndex
+      this.masterImageItem = this.curIndex
     },
     setDataStatus(item, type) {
       switch (type) {

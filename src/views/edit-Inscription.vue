@@ -32,35 +32,6 @@
           <span class="text" v-html="introduceText" />
           <span class="decorate-right">@elonmusk</span>
         </div>
-        <!-- <el-image
-          v-if="status === 0 || status === 1"
-          ref="blazon"
-          v-drag="status===0"
-          style="left: 0;top: 230px;position: absolute;width: 431px"
-          :src="blazonSrc"
-          :style="{
-            transform:
-              'scale(' + blazonZoom + ') ' + 'rotateZ(' + blazonDeg + 'deg)'
-          }"
-          @mousemove="bMousemove"
-        /> -->
-        <!-- <div ref="image-box" style="width: 431px">
-          <vue-cropper
-            ref="cropper"
-            class="ccccc"
-            :style="{ backgroundImage: 'url(' + masterSrc + ')' }"
-            style="width: 431px"
-            :src="blazonSrc"
-            rotatable
-            :background="false"
-            drag-mode="move"
-            :auto-crop="false"
-            alt="Source Image"
-            @cropmove="cropmove"
-            @zoom="zoom"
-            @ready="ready"
-          />
-        </div> -->
         <div v-if="status === 0" class="options">
           <i class="el-icon-circle-plus" @click="optionClick('plus')" />
           <i class="el-icon-remove" @click="optionClick('remove')" />
@@ -228,8 +199,7 @@ export default {
       blazonY: 230,
       masterSrc: '',
       blazonSrc: '',
-      masterIndex: 0,
-      blazonIndex: 0,
+      masterImageItem: null,
       cropperDom: null,
       masterWidth: 431,
       画板高度: 0,
@@ -244,18 +214,18 @@ export default {
       contractAddress: state => state.contract['contractAddress'],
       mosaique: state => state.contract['CollectionContract'].mosaique,
       userAddress: state => state.walletAccount['userAddress'],
-      formatEth: state => state.walletAccount.formatEth,
-      imageItems: state => state.nft.userNfts
+      formatEth: state => state.walletAccount.formatEth
     })
   },
   created() {
-    let { master } = this.$route.query
-    master = Number(master)
+    this.masterImageItem = this.$route.query
+    this.masterImageItem.token_id = Number(this.masterImageItem.token_id)
+
     const imgM = new Image()
     const that = this
-    imgM.src = this.imageItems[master].image
+    imgM.src = this.masterImageItem.image
     imgM.onload = function() {
-      that.masterSrc = that.imageItems[master].image
+      that.masterSrc = that.masterImageItem.image
       that.masterWidth = this.width
     }
   },
@@ -310,13 +280,11 @@ export default {
       }).then(e => {
         return e
       })
-      let { master } = this.$route.query
-      master = Number(master)
       const resultNewtokenUrl = await api.getInscriptionNewtokenUrl({
         drawing_board_width: Number(画板宽度 / zoom).toFixed(0) + '',
         drawing_board_height: Number(画板高度 / zoom).toFixed(0) + '',
-        master_contract: this.imageItems[master].contractAddress,
-        master_tokenid: this.imageItems[master].tokenOfOwnerByIndex,
+        master_contract: this.masterImageItem.contractAddr,
+        master_tokenid: this.masterImageItem.token_id,
         master_x: Number((mDomX - X边界值) / zoom).toFixed(0) + '',
         master_y: Number((mDomY - Y边界值) / zoom).toFixed(0) + '',
         image_txt: imageBase64.split(',')[1],
@@ -335,14 +303,13 @@ export default {
       return resultNewtokenUrl
     },
     erc721transfer() {
-      const { master } = this.$route.query
       const transferHash = contract.erc721transfer(
         this.contractAddress, // erc721合约地址
         this.userAddress, // 操作地址
         this.userAddress, // erc721转出方
         this.mosaique, // erc721接收方
         // '0xcC445E7389Ca3fe659C565239cf0DF3864fa4A21', // erc721接收方
-        this.imageItems[master].tokenOfOwnerByIndex // erc721 tokenId
+        this.masterImageItem.token_id // erc721 tokenId
       ).on('transactionHash', (reject) => {
         console.log(reject, 'reject')
         this.loadingTransferHash(reject, 1)
