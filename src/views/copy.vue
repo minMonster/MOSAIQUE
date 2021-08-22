@@ -121,7 +121,7 @@ export default {
     async copy() {
       this.status = -1
       contract.makeProgrammable(
-        this.contractAddress,
+        this.imageItem.contractAddress,
         this.imageItem.token_id
       ).on('transactionHash', (reject) => {
         this.loadingTransferHash(reject)

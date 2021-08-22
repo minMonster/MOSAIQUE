@@ -214,8 +214,8 @@ export default {
       api.createSnapshotSupply({
         owner: this.userAddress,
         signature,
-        contract: this.contractAddress,
-        token_id: 43,
+        contract: this.imageItem.contractAddress,
+        token_id: this.imageItem.token_id,
         initialPrice,
         totalSupply,
         priceCurve: priceCurve66,
@@ -227,14 +227,14 @@ export default {
       })
     },
     async mintSubmit() {
-      const contract1 = contract.createERC721Contract(this.imageItem.contract)
+      const contract1 = contract.createERC721Contract(this.imageItem.contractAddress)
       const newTokenURI = await contract1.methods.tokenURI(this.imageItem.token_id).call()
       console.log(newTokenURI)
       const signature = await this.mintSign(newTokenURI)
       api.createMintSnapshot({
         requester: this.userAddress,
         signature,
-        contract: this.imageItem.contract,
+        contract: this.imageItem.contractAddress,
         token_id: this.imageItem.token_id,
         newTokenURI
       }).then(res => {
