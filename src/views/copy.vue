@@ -120,8 +120,9 @@ export default {
     },
     async copy() {
       this.status = -1
+      console.log(this.imageItem)
       contract.makeProgrammable(
-        this.imageItem.contractAddress, // nft contract address
+        this.imageItem.contractAddr, // nft contract address
         this.imageItem.token_id // token_id
       ).on('transactionHash', (reject) => {
         this.loadingTransferHash(reject)
