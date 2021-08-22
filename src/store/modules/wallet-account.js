@@ -48,6 +48,10 @@ const mutations = {
     state.user_nickname = ''
     state.user_introduce = ''
     state.user_token = ''
+    sessionStorage.removeItem('user_avatar')
+    sessionStorage.removeItem('user_nickname')
+    sessionStorage.removeItem('user_introduce')
+    sessionStorage.removeItem('user_token')
   }
 }
 const actions = {

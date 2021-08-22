@@ -19,7 +19,8 @@
           <!-- <el-image class="user-img" /> -->
           <!-- 用户头像 -->
           <div class="user-img" @mouseover="modifyAvatar = true" @mouseout="modifyAvatar = false">
-            <el-image v-if="user_avatar" class="image" :src="'data:image/jpeg;base64,' + user_avatar" />
+            <!-- <el-image v-if="user_avatar" class="image" :src="'data:image/jpeg;base64,' + user_avatar" /> -->
+            <el-image v-if="user_avatar" class="image" :src="user_avatar" />
             <el-upload v-show="modifyAvatar" ref="uploadversion" class="mask" accept=".jpg, .png, .jepg, .bmp" :limit="1" action="" :auto-upload="false" :show-file-list="false" :on-change="getAvatarFile">
               <i class="el-icon-edit" />
               <span>Edit</span>
@@ -59,17 +60,17 @@
           <span class="more">...</span>
         </div>
         <div class="my-collections" @click="jump">My Collections</div>
-        <div class="disconnect">Disconnect</div>
+        <div class="disconnect" @click="logout">Disconnect</div>
         <p class="support" @click="toSupport">Support</p>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { status } from 'koa/lib/response'
+// import { status } from 'koa/lib/response'
 import * as api from '@/service/api'
 import { mapState } from 'vuex'
-import { eth, web3 } from '@/connector'
+// import { eth, web3 } from '@/connector'
 // import { Message } from 'element-ui'
 export default {
   name: 'TestingWallet',
@@ -164,8 +165,7 @@ export default {
         this.loading = false
         console.log(res)
         if (type === 'avatar') {
-          // this.set_user_avatar(params.images)
-          this.$store.commit('walletAccount/set_user_avatar', params.images)
+          this.$store.commit('walletAccount/set_user_avatar', 'data:image/jpeg;base64,' + params.images)
         }
         if (type === 'userInfo') {
           // this.set_user_userInfo(params)
@@ -238,32 +238,12 @@ export default {
       //     }
       //   }
       // }
+    },
+    // 退出登录
+    logout() {
+      this.$store.commit('walletAccount/remove_user_address')
+      this.$store.commit('walletAccount/clear_user_info')
     }
-    //     // 获取钱包签名的nonce
-    // const getModifySignData = () => {
-    //   const params = {
-    //     address: store.state.walletAccount.userAddress
-    //   }
-    //   return new Promise((resolve, reject) => {
-    //     api.getModifyParams(params).then(res => {
-    //       console.log('--------nonce-------', res)
-    //       if (res.data.nonce) {
-    //         return resolve(res.data.nonce)
-    //       }
-    //     }, reject)
-    //   })
-    // }
-    // // 获取Token
-    // const getModifyToken = (params) => {
-    //   return new Promise((resolve, reject) => {
-    //     api.getModifyToken(params).then(res => {
-    //       console.log('--------token-------', res)
-    //       if (res.data.token) {
-    //         return resolve(res.data.token)
-    //       }
-    //     }, reject)
-    //   })
-    // }
   }
 }
 </script>
