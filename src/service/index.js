@@ -44,7 +44,7 @@ service.interceptors.request.use(async(config) => {
           console.log('--------token------', token)
           if (token) {
             store.commit('walletAccount/set_user_token', token)
-            const token = store.state.walletAccount.user_token
+            // const token = store.state.walletAccount.user_token
             config.headers['smid'] = token
           }
         }

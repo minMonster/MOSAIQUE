@@ -26,7 +26,7 @@
                 </li>
                 <li>
                   <span class="tit">Current Price</span>
-                  <span class="val">0.9 ETH</span>
+                  <span class="val">-- ETH</span>
                 </li>
               </ul>
             </div>
@@ -61,14 +61,7 @@
                 <i>{{ item.program_supply || 0 }}</i>
               </span>
             </li>
-            <li v-show="(item.program_supply !== item.program_count) && item.program_count > 0" class="hollow">
-              <span class="sup">P</span>
-              <span class="sub fraction">
-                <i>{{ item.program_count || 0 }}</i>
-                <i>{{ item.program_supply || 0 }}</i>
-              </span>
-            </li>
-            <li v-show="(item.program_supply !== item.program_count) && item.program_count === 0" class="active" @click="jumpProgram(item)">
+            <li v-show="item.program_supply > item.program_count" class="hollow" @click="jumpProgram(item)">
               <span class="sup">P</span>
               <span class="sub fraction">
                 <i>{{ item.program_count || 0 }}</i>
