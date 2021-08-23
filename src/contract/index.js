@@ -31,6 +31,8 @@ export async function sign(signParams, encodeParameters) {
 
 // 复制
 export function makeProgrammable(nftContract, tokenId) {
+  console.log(nftContract)
+  console.log(tokenId)
   const { walletAccount, contract } = store.state
   const { userAddress } = walletAccount
   const mosaique = createMosaiqueV1Contract(contract.CollectionContract.mosaique)

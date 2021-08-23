@@ -8,14 +8,14 @@
       <div class="information">
         <p class="title">Whether to Make Program the NFT?</p>
         <p class="descriptions">Add simple text descriptions...</p>
-        <p class="song">The NFT Song</p>
+        <p class="song">{{ imageItem.name }}</p>
         <p class="token">
           <span style="margin-right: 30px"> Token ID </span>
-          <span> 34567 </span>
+          <span> {{ imageItem.token_id }} </span>
         </p>
         <p class="price">
           <span style="margin-right: 60px"> Price </span>
-          <span> 21 ETH </span>
+          <span> -- ETH </span>
         </p>
         <div class="handle-box">
           <p class="make-btn" @click="toCopy">Make Program</p>
@@ -31,6 +31,7 @@ export default {
     imageItem: {
       type: Object,
       default: function() {
+        console.log(this.imageItem)
         return null
       }
     }

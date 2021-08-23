@@ -109,21 +109,21 @@
                 <i>{{ item.snapshot_supply || 0 }}</i>
               </span>
             </li> -->
-            <li v-show="item.snapshot_supply === item.snapshot_count">
+            <li v-show="(item.snapshot_supply > 0) && (item.snapshot_supply === item.snapshot_count)">
               <span class="sup">S</span>
               <span class="sub fraction">
                 <i>{{ item.snapshot_count || 0 }}</i>
                 <i>{{ item.snapshot_supply || 0 }}</i>
               </span>
             </li>
-            <li v-show="(item.snapshot_supply !== item.snapshot_count) && item.snapshot_count > 0" class="hollow">
+            <li v-show="item.snapshot_supply === 0" class="hollow" @click="jumpSnapshot(item)">
               <span class="sup">S</span>
               <span class="sub fraction">
                 <i>{{ item.snapshot_count || 0 }}</i>
                 <i>{{ item.snapshot_supply || 0 }}</i>
               </span>
             </li>
-            <li v-show="(item.snapshot_supply !== item.snapshot_count) && item.snapshot_count === 0" class="active" @click="jumpSnapshot(item)">
+            <li v-show="item.snapshot_supply > item.snapshot_count" class="active" @click="jumpSnapshot(item)">
               <span class="sup">S</span>
               <span class="sub fraction">
                 <i>{{ item.snapshot_count || 0 }}</i>
@@ -396,6 +396,7 @@ export default {
     },
     // 跳转到 Snapshot
     jumpSnapshot(item) {
+      console.log(item)
       this.$router.push({ path: '/snapshot-detaile', query: item })
     },
     // 跳转到 Program

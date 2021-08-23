@@ -55,9 +55,9 @@
           <div class="set-message">
             <p class="title">Edit Blazon</p>
             <p class="label">Master</p>
-            <p class="introduce">The NFT Song</p>
+            <p class="introduce">{{masterImageItem.name}} / {{masterImageItem.token_id}}</p>
             <p class="label">Blazon</p>
-            <p class="introduce">Pot</p>
+            <p class="introduce">{{blazonImageItem.name}} / {{blazonImageItem.token_id}}</p>
             <p class="label">Coordinate</p>
             <div class="coordinate-mess">
               <div class="itme">
@@ -99,7 +99,8 @@
               Estimated Gas
             </p>
             <p style="font-size: 14px; font-weight: bold">
-              0.0245 ETH (about $54.53)
+              0 ETH (about $0) <br/> <br/>
+              MosaiqueV1 is free to use
             </p>
             <p class="btn" @click="submit">Print</p>
           </div>
@@ -110,7 +111,7 @@
         <div v-if="status===1" class="minted-btn" @click="mint">
           Mint
         </div>
-        <div v-if="status===2" class="minted-btn">
+        <div v-if="status===2" class="minted-btn" @click="jumpBlazon">
           Imprint another one
         </div>
       </div>
@@ -157,16 +158,18 @@ export default {
     })
   },
   created() {
-    const { mImage, mToken_id, mContractAddress, bImage, bToken_id, bContractAddress } = this.$route.query
+    const { mImage, mToken_id, mContractAddress, bImage, bToken_id, bContractAddress,mName,bName } = this.$route.query
     this.masterImageItem = {
       image: mImage,
       token_id: Number(mToken_id),
-      contractAddress: mContractAddress
+      contractAddress: mContractAddress,
+      name: mName
     }
     this.blazonImageItem = {
       image: bImage,
       token_id: Number(bToken_id),
-      contractAddress: bContractAddress
+      contractAddress: bContractAddress,
+      name: bName
     }
     const imgM = new Image()
     const that = this
@@ -237,6 +240,7 @@ export default {
       //     zoom}, bY: ${(bDomY - Y边界值) / zoom} `
       // )
       this.status = -1
+      this.mName = this.masterImageItem.name
       const resultNewtokenUrl = await api.getNewtokenUrl({
         drawing_board_width: Number(画板宽度 / zoom).toFixed(0) + '',
         drawing_board_height: Number(画板高度 / zoom).toFixed(0) + '',
@@ -264,7 +268,7 @@ export default {
 
     erc721transfer() {
       const transferHash = contract.erc721transfer(
-        this.contractAddress, // erc721合约地址
+        this.masterImageItem.contractAddress, // erc721合约地址
         this.userAddress, // 操作地址
         this.userAddress, // erc721转出方
         this.mosaique, // erc721接收方
@@ -392,6 +396,9 @@ export default {
     },
     zoom() {
       this.optionClick()
+    },
+    jumpBlazon() {
+      this.$router.push({ path: '/select-blazon'})
     }
   }
 }

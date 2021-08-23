@@ -12,7 +12,7 @@
         <div class="MateMask-box same-sty" @click="init">MetaMask</div>
         <div class="WalletCon-box same-sty">WalletConnect</div>
         <p style="text-decoration: underline;">New to Ethereum?</p>
-        <p style="text-decoration: underline;">Learn more about wallets</p>
+        <p style="text-decoration: underline;" @click="toSupport">Learn more about wallets</p>
       </div>
       <div v-else v-loading="loading" class="content linking">
         <div class="user-box">
@@ -33,8 +33,8 @@
           </div>
           <!-- 用户信息输入框 -->
           <div v-if="userInfoStatus" class="user-form">
-            <el-input v-model="userInfoForm.userName" placeholder="User Name" size="mini" />
-            <el-input v-model="userInfoForm.introduce" placeholder="Introduce" size="mini" />
+            <el-input v-model="userInfoForm.userName" placeholder="User Name"  />
+            <el-input v-model="userInfoForm.introduce" placeholder="Introduce"  />
           </div>
           <!-- 修改按钮 -->
           <div class="modify">
@@ -43,7 +43,7 @@
             <!-- 修改中 -->
             <p v-if="userInfoStatus" class="btn">
               <span @click="userInfoStatus = false">cancel</span>
-              <span class="sure" @click="modifySure">sure</span>
+              <span class="sure" @click="modifySure">save</span>
             </p>
           </div>
         </div>
@@ -115,9 +115,9 @@ export default {
         this.init()
       }
       if (this.userAddress) {
+        this.$store.dispatch('walletAccount/_getUserInfo')
         await this.$store.dispatch('walletAccount/getEth')
         await this.$store.dispatch('nft/getERC721Balance')
-        this.$store.dispatch('walletAccount/_getUserInfo')
       }
     },
     // 上传图片
@@ -332,6 +332,7 @@ export default {
         .user-img {
           min-width: 80px;
           height: 80px;
+          width: 80px;
           border-radius: 40px;
           margin-right: 25px;
           position: relative;
@@ -372,6 +373,8 @@ export default {
         }
         .user-info {
           margin-right: 35px;
+          width: 600px;
+          height: 87px;
           .name {
             font-size: 24px;
             font-family: Verdana;
@@ -387,13 +390,14 @@ export default {
           }
         }
         .user-form{
-          height: 60px;
+          height: 87px;
+          width: 650px;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
         }
         .modify{
-          margin-left: 20px;
+          margin-left: 25px;
           cursor: pointer;
           height: 55px;
           .el-icon-edit {
@@ -421,6 +425,7 @@ export default {
       }
       .eth {
         font-size: 18px;
+        margin-left: 4px;
         font-family: Verdana;
         font-weight: bold;
         text-align: left;

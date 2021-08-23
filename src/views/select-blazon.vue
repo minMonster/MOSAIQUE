@@ -17,8 +17,8 @@
                 @click="detele('M')"
               />
               <div class="dec">
-                <p class="name">Collection name</p>
-                <p class="type">Artwork</p>
+                <p class="name">{{masterImageItem.name}}</p>
+                <p class="type">{{masterImageItem.artwork}}</p>
               </div>
             </template>
           </div>
@@ -36,8 +36,8 @@
                 @click="detele('B')"
               />
               <div class="dec">
-                <p class="name">Collection name</p>
-                <p class="type">Artwork</p>
+                <p class="name">{{blazonImageItem.name}}</p>
+                <p class="type">{{blazonImageItem.artwork}}</p>
               </div>
             </template>
           </div>
@@ -61,8 +61,8 @@
               <el-image :src="item.image" fit="cover" class="img" />
               <div class="dec">
                 <div class="blur-mao" :style="{backgroundImage: 'url('+ item.img +')'}" />
-                <p class="name">Collection name</p>
-                <p class="type">Artwork</p>
+                <p class="name">{{item.name}}</p>
+                <p class="type">{{item.artwork}}</p>
               </div>
               <div class="hover-mark">
                 <img
@@ -139,6 +139,7 @@ export default {
         for (let i = 0; i < addr.length; i++) {
           const contractAddr = addr[i].contract_address
           const contractName = addr[i].name
+          const artwork = addr[i].art
           const contracts = await contract.createERC721Contract(contractAddr)
           const balanceOf = await contracts.methods.balanceOf(this.userAddress).call()
           const itemArr = []
@@ -160,6 +161,7 @@ export default {
                   tokenOfOwnerByIndex: res,
                   tokenUrl: tokenURI,
                   name: contractName,
+                  artwork:artwork,
                   ...result.data
                 }
                 itemArr.push(data)
@@ -227,7 +229,9 @@ export default {
           mContractAddress: this.masterImageItem.contractAddr,
           bImage: this.blazonImageItem.image,
           bToken_id: this.blazonImageItem.token_id,
-          bContractAddress: this.blazonImageItem.contractAddr
+          bContractAddress: this.blazonImageItem.contractAddr,
+          mName: this.masterImageItem.name,
+          bName: this.blazonImageItem.name
         }
       })
     },

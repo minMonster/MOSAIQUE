@@ -159,7 +159,7 @@
         <div v-if="status === 1" class="minted-btn" @click="mint">
           Inscription
         </div>
-        <div v-if="status === 2" class="minted-btn">
+        <div v-if="status === 2" class="minted-btn" @click="jumpInscription">
           Imprint another one
         </div>
       </div>
@@ -420,6 +420,9 @@ export default {
     },
     zoom() {
       this.optionClick()
+    },
+    jumpInscription() {
+      this.$router.push({ path: '/edit-Inscription' })
     }
   }
 }
