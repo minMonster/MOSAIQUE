@@ -2,7 +2,7 @@
   <div class="snapshot-detaile">
     <div class="edition-center">
       <div class="left">
-        <el-image class="minted-image" :src="imageItem.uri" />
+        <el-image class="minted-image" :src="imageItem.uri || imageItem.image" />
       </div>
       <div class="right">
         <section v-if="status == 0" class="edit">
@@ -139,8 +139,14 @@ export default {
     })
   },
   watch: {
-    priceCurve(e) {
-      this.drawLine(e)
+    priceCurve() {
+      this.drawLine()
+    },
+    totalSupply() {
+      this.drawLine()
+    },
+    initialPrice() {
+      this.drawLine()
     }
   },
   mounted() {
@@ -241,8 +247,8 @@ export default {
         this.loadingTransferHash(res.data.data)
       })
     },
-    drawLine(type) {
-      type = type || 'const'
+    drawLine() {
+      const type = this.priceCurve || 'const'
       this.chart = echarts.init(document.getElementById('myChart'))
       const supply = this.totalSupply
       const initialPrice = 20

@@ -317,7 +317,6 @@ export default {
       return transferHash
     },
     loadingTransferHash(transferHash, status) {
-      console.log('loadingTransferHash')
       return eth.getTransactionReceipt(transferHash).then(res => {
         console.log(res, 'res')
         if (res === null || res === 0) {
@@ -371,7 +370,7 @@ export default {
           signature
         }).then(res => {
           this.status = 2
-          console.log(res)
+          this.loadingTransferHash(res, 2)
         }).catch(err => {
           this.loadingTransferHash(err.transaction_hash, 2)
         })

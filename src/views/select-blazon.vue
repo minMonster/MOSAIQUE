@@ -222,19 +222,21 @@ export default {
         })
         return
       }
+      const query = {
+        mImage: this.masterImageItem.image,
+        mToken_id: this.masterImageItem.token_id,
+        mContractAddr: this.masterImageItem.contractAddr,
+        bImage: this.blazonImageItem.image,
+        bToken_id: this.blazonImageItem.token_id,
+        bContractAddr: this.blazonImageItem.contractAddr,
+        mName: this.masterImageItem.name,
+        bName: this.blazonImageItem.name
+      }
       this.$router.push({
         name: 'EditBlazon',
-        query: {
-          mImage: this.masterImageItem.image,
-          mToken_id: this.masterImageItem.token_id,
-          mContractAddr: this.masterImageItem.contractAddr,
-          bImage: this.blazonImageItem.image,
-          bToken_id: this.blazonImageItem.token_id,
-          bContractAddr: this.blazonImageItem.contractAddr,
-          mName: this.masterImageItem.name,
-          bName: this.blazonImageItem.name
-        }
+        query
       })
+      // console.log(query)
     },
     setMaster() {
       this.isShowGuidPage = false
