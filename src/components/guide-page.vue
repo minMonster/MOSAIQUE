@@ -18,7 +18,12 @@
           <span> -- ETH </span>
         </p>
         <div class="handle-box">
-          <p class="make-btn" @click="toCopy">Make Program</p>
+           <div v-if="imageItem.program_supply > imageItem.program_count"> 
+            <p class="make-btn" @click="toCopy">Make Program({{imageItem.program_count}}/{{imageItem.program_supply}})</p>
+           </div>
+           <div v-if="imageItem.program_supply === imageItem.program_count"> 
+            <p class="make-btn2">Make Program({{imageItem.program_count}}/{{imageItem.program_supply}})</p>
+           </div>
           <p @click="$emit('skip')">Skip</p>
         </div>
       </div>
@@ -131,6 +136,14 @@ export default {
           font-size: 20px;
           font-weight: bold;
           color: #ffffff;
+        }
+        .make-btn2 {
+          margin-right: 32px;
+          background: #E1E1E1;
+          font-size: 20px;
+          font-weight: bold;
+          color: #ffffff;
+          border: 1px solid #E1E1E1;
         }
       }
     }
