@@ -9,7 +9,7 @@
               <el-image
                 fit="cover"
                 class="data-img"
-                :src="imageItems[masterIndex].image"
+                :src="masterImageItem.image"
               />
               <el-image
                 class="close"
@@ -29,7 +29,8 @@
           <div class="title">Select an Inscription Method</div>
           <div class="image-list">
             <div
-              v-for="(item, index) in imageItems"
+              v-for="(item, index) in collectionsList"
+              v-if="item.nft_status && item.nft_status !== 4"
               :key="index"
               class="image-item"
               :class="{

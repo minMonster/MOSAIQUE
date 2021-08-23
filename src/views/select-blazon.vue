@@ -17,8 +17,8 @@
                 @click="detele('M')"
               />
               <div class="dec">
-                <p class="name">{{masterImageItem.name}}</p>
-                <p class="type">{{masterImageItem.artwork}}</p>
+                <p class="name">{{ masterImageItem.name }}</p>
+                <p class="type">{{ masterImageItem.artwork }}</p>
               </div>
             </template>
           </div>
@@ -36,8 +36,8 @@
                 @click="detele('B')"
               />
               <div class="dec">
-                <p class="name">{{blazonImageItem.name}}</p>
-                <p class="type">{{blazonImageItem.artwork}}</p>
+                <p class="name">{{ blazonImageItem.name }}</p>
+                <p class="type">{{ blazonImageItem.artwork }}</p>
               </div>
             </template>
           </div>
@@ -61,8 +61,8 @@
               <el-image :src="item.image" fit="cover" class="img" />
               <div class="dec">
                 <div class="blur-mao" :style="{backgroundImage: 'url('+ item.img +')'}" />
-                <p class="name">{{item.name}}</p>
-                <p class="type">{{item.artwork}}</p>
+                <p class="name">{{ item.name }}</p>
+                <p class="type">{{ item.artwork }}</p>
               </div>
               <div class="hover-mark">
                 <img
@@ -142,6 +142,7 @@ export default {
           const artwork = addr[i].art
           const contracts = await contract.createERC721Contract(contractAddr)
           const balanceOf = await contracts.methods.balanceOf(this.userAddress).call()
+          console.log(balanceOf, 'balanceOf')
           const itemArr = []
           for (let j = 0; j < balanceOf; j++) {
             await contracts.methods.tokenOfOwnerByIndex(this.userAddress, j).call().then(async(res) => {
@@ -161,7 +162,7 @@ export default {
                   tokenOfOwnerByIndex: res,
                   tokenUrl: tokenURI,
                   name: contractName,
-                  artwork:artwork,
+                  artwork: artwork,
                   ...result.data
                 }
                 itemArr.push(data)
