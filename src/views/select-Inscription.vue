@@ -5,7 +5,7 @@
         <div class="left-box">
           <div class="title">Ready-made NFTs</div>
           <div class="master-box" :class="{ active: true }">
-            <template v-if="masterIndex !== -1">
+            <template v-if="masterImageItem">
               <el-image
                 fit="cover"
                 class="data-img"
@@ -14,7 +14,7 @@
               <el-image
                 class="close"
                 :src="require('../access/close-icon.png')"
-                @click="detele('M')"
+                @click="detele"
               />
               <div class="dec">
                 <p class="name">Collection name</p>
@@ -35,7 +35,6 @@
               class="image-item"
               :class="{
                 selectMaster: masterIndex === index,
-                selectBlazon: blazonIndex === index
               }"
             >
               <!-- <img :src="item.img" alt="" class="img"> -->
@@ -54,7 +53,7 @@
                 >
                 <!-- <el-image class="show-image-btn" /> -->
                 <div class="select-item">
-                  <div @click="setDataStatus(index, 'M')">Master</div>
+                  <div @click="setDataStatus(item, 'M')">Master</div>
                 </div>
                 <!-- <div class="mask" /> -->
               </div>
@@ -64,17 +63,19 @@
       </div>
     </section>
     <enlarge-product v-if="isShowEnlarge" :enlarge-data="enlargeData" />
-    <guide-page v-if="isShowGuidPage" :image-index="curIndex" :image-item="imageItems[curIndex]" @skip="setMaster" />
+    <guide-page v-if="isShowGuidPage" :image-item="curIndex" @skip="setMaster" />
   </div>
 </template>
 <script>
 import enlargeProduct from '@/components/enlarge.vue'
 import GuidePage from '@/components/guide-page.vue'
-import * as api from '@/service/api'
+// import * as api from '@/service/api'
 import { mapState } from 'vuex'
-
+import * as api from '@/service/api'
+import * as contract from '@/contract'
+import axios from 'axios'
 export default {
-  name: 'Blazon',
+  name: 'Inscription',
   components: {
     enlargeProduct,
     GuidePage
@@ -83,11 +84,11 @@ export default {
     return {
       isShowEnlarge: false,
       isShowGuidPage: false,
-      curIndex: -1,
+      curIndex: null,
       enlargeData: {},
       masterIndex: -1,
-      blazonIndex: -1,
-      imagList: []
+      collectionsList: [],
+      masterImageItem: null
     }
   },
   computed: {
@@ -99,22 +100,101 @@ export default {
   },
   created() {
     this.init()
+    const { contractAddr, token_id } = this.$route.query
+    if (contractAddr && token_id) {
+      this.masterImageItem = this.$route.query
+    }
   },
   methods: {
     init() {
-      this.imagList = this.imageItems
+      this.getNftContractAddr()
+    },
+    // 获取平台收录NFT合约地址
+    getNftContractAddr() {
+      this.loading = true
+      api.getNftContractAddr().then(async(res) => {
+        const addr = res.data.contract
+        if (!addr || !addr.length) {
+          this.loading = false
+          return false
+        }
+        for (let i = 0; i < addr.length; i++) {
+          const contractAddr = addr[i].contract_address
+          const contractName = addr[i].name
+          const artwork = addr[i].art
+          const contracts = await contract.createERC721Contract(contractAddr)
+          const balanceOf = await contracts.methods.balanceOf(this.userAddress).call()
+          console.log(balanceOf, 'balanceOf')
+          const itemArr = []
+          for (let j = 0; j < balanceOf; j++) {
+            await contracts.methods.tokenOfOwnerByIndex(this.userAddress, j).call().then(async(res) => {
+              contracts.methods.tokenURI(res).call().then(async(tokenURI) => {
+                const catchUri = localStorage.getItem('URI_' + res)
+                let result = null
+                if (catchUri) {
+                  result = JSON.parse(catchUri)
+                } else {
+                  result = await axios.get(tokenURI).then((result) => {
+                    localStorage.setItem('URI_' + res, JSON.stringify(result))
+                    return result
+                  }).catch(() => false)
+                }
+                const data = {
+                  contractAddr,
+                  tokenOfOwnerByIndex: res,
+                  tokenUrl: tokenURI,
+                  name: contractName,
+                  artwork: artwork,
+                  ...result.data
+                }
+                itemArr.push(data)
 
-      // api.getImages().then(res => {
-      //   console.log(res.data.valueInfo.split(';'))
-      //   this.imagList = res.data.valueInfo.split(';').map(i => {
-      //     return {
-      //       img: i
-      //     }
-      //   })
-      // })
+                if (itemArr.length === 6 || j === balanceOf - 1) {
+                  // 此时渲染6个
+                  // if (itemArr.length > 0 && itemArrTmp.length > 0) {
+                  const newArr = this.$_.chunk(itemArr, 6)
+                  for (let index = 0; index < newArr.length; index++) {
+                    // console.log('---------------------', newArr[index])
+                    const collections = newArr[index].map(v => {
+                      // console.log(v)
+                      return {
+                        contract: v.contractAddr,
+                        token_id: v.tokenOfOwnerByIndex
+                      }
+                    })
+                    const params = {
+                      collections: collections
+                    }
+                    console.log(params)
+                    api.getCollectInfo(params).then(res => {
+                      const { collections } = res && res.data
+                      if (collections && collections.length) {
+                        for (let k = 0; k < newArr[index].length; k++) {
+                          Object.assign(newArr[index][k], collections[k])
+                        }
+                        this.collectionsList.push(...newArr[index])
+                        return false
+                      }
+                      this.collectionsList.push(...newArr[index])
+                    }).catch(err => {
+                      this.collectionsList.push(...newArr[index])
+                      console.log(err)
+                    })
+                  }
+                  itemArr.splice(0, itemArr.length)
+                }
+              }).catch(err => { console.log(err) })
+            }).catch(err => { console.log(err) })
+          }
+        }
+        this.loading = false
+      }).catch(err => {
+        this.loading = false
+        this.$message.error(err.message || err.msg)
+      })
     },
     next() {
-      if (this.masterIndex === -1) {
+      if (!this.masterImageItem) {
         this.$message({
           message: 'Please complete the form',
           type: 'warning'
@@ -123,33 +203,25 @@ export default {
       }
       this.$router.push({
         name: 'EditInscription',
-        query: {
-          master: this.curIndex
-        }
+        query: this.masterImageItem
       })
     },
     setMaster() {
+      console.log('12313123')
       this.isShowGuidPage = false
-      this.masterIndex = this.curIndex
+      this.masterImageItem = this.curIndex
     },
-    setDataStatus(index, type) {
+    setDataStatus(item, type) {
       switch (type) {
         case 'M':
-          this.curIndex = index
+          this.masterImageItem = item
+          this.curIndex = item
           this.isShowGuidPage = true
           break
-        default:
-          this.blazonIndex = index
       }
     },
-    detele(type) {
-      switch (type) {
-        case 'M':
-          this.masterIndex = -1
-          break
-        default:
-          this.blazonIndex = -1
-      }
+    detele() {
+      this.masterImageItem = null
     },
     enlargeProduct(item) {
       this.isShowEnlarge = true

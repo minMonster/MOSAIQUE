@@ -227,10 +227,10 @@ export default {
         query: {
           mImage: this.masterImageItem.image,
           mToken_id: this.masterImageItem.token_id,
-          mContractAddress: this.masterImageItem.contractAddr,
+          mContractAddr: this.masterImageItem.contractAddr,
           bImage: this.blazonImageItem.image,
           bToken_id: this.blazonImageItem.token_id,
-          bContractAddress: this.blazonImageItem.contractAddr,
+          bContractAddr: this.blazonImageItem.contractAddr,
           mName: this.masterImageItem.name,
           bName: this.blazonImageItem.name
         }

@@ -2,7 +2,12 @@
   <div class="edit-blazon">
     <div class="edition-center">
       <div class="left" style="position: relative;">
-        <el-image v-if="status === 2" class="minted-image" style="width: 431px;position: relative;" :src="mintedImage" />
+        <el-image
+          v-if="status === 2"
+          class="minted-image"
+          style="width: 431px;position: relative;"
+          :src="mintedImage"
+        />
         <el-image
           v-if="status === 0|| status === 1"
           ref="master"
@@ -55,9 +60,9 @@
           <div class="set-message">
             <p class="title">Edit Blazon</p>
             <p class="label">Master</p>
-            <p class="introduce">{{masterImageItem.name}} / {{masterImageItem.token_id}}</p>
+            <p class="introduce">{{ masterImageItem.name }} / {{ masterImageItem.token_id }}</p>
             <p class="label">Blazon</p>
-            <p class="introduce">{{blazonImageItem.name}} / {{blazonImageItem.token_id}}</p>
+            <p class="introduce">{{ blazonImageItem.name }} / {{ blazonImageItem.token_id }}</p>
             <p class="label">Coordinate</p>
             <div class="coordinate-mess">
               <div class="itme">
@@ -99,7 +104,7 @@
               Estimated Gas
             </p>
             <p style="font-size: 14px; font-weight: bold">
-              0 ETH (about $0) <br/> <br/>
+              0 ETH (about $0) <br> <br>
               MosaiqueV1 is free to use
             </p>
             <p class="btn" @click="submit">Print</p>
@@ -158,17 +163,17 @@ export default {
     })
   },
   created() {
-    const { mImage, mToken_id, mContractAddress, bImage, bToken_id, bContractAddress,mName,bName } = this.$route.query
+    const { mImage, mToken_id, mContractAddr, bImage, bToken_id, bContractAddr, mName, bName } = this.$route.query
     this.masterImageItem = {
       image: mImage,
       token_id: Number(mToken_id),
-      contractAddress: mContractAddress,
+      contractAddr: mContractAddr,
       name: mName
     }
     this.blazonImageItem = {
       image: bImage,
       token_id: Number(bToken_id),
-      contractAddress: bContractAddress,
+      contractAddr: bContractAddr,
       name: bName
     }
     const imgM = new Image()
@@ -244,11 +249,11 @@ export default {
       const resultNewtokenUrl = await api.getNewtokenUrl({
         drawing_board_width: Number(画板宽度 / zoom).toFixed(0) + '',
         drawing_board_height: Number(画板高度 / zoom).toFixed(0) + '',
-        master_contract: this.masterImageItem.contractAddress,
+        master_contract: this.masterImageItem.contractAddr,
         master_tokenid: this.masterImageItem.token_id,
         master_x: Number((mDomX - X边界值) / zoom).toFixed(0) + '',
         master_y: Number((mDomY - Y边界值) / zoom).toFixed(0) + '',
-        blazen_contract: this.blazonImageItem.contractAddress,
+        blazen_contract: this.blazonImageItem.contractAddr,
         blazen_tokenid: this.blazonImageItem.token_id,
         blazen_x: Number((bDomX - X边界值) / zoom).toFixed(0) + '',
         blazen_y: Number((bDomY - Y边界值) / zoom).toFixed(0) + '',
@@ -268,7 +273,7 @@ export default {
 
     erc721transfer() {
       const transferHash = contract.erc721transfer(
-        this.masterImageItem.contractAddress, // erc721合约地址
+        this.contractAddress, // erc721合约地址
         this.userAddress, // 操作地址
         this.userAddress, // erc721转出方
         this.mosaique, // erc721接收方
@@ -319,7 +324,9 @@ export default {
       const { master_nft_mid, token_uri } = resultNewtokenUrl
       let signature = null
       if (master_nft_mid) {
-        signature = await contract.sign([master_nft_mid, blazonItem.contractAddress, blazonItem.token_id, token_uri], ['bytes32', 'address', 'uint256', 'string'])
+        signature = await contract.sign(
+          [master_nft_mid, blazonItem.contractAddr, blazonItem.token_id, token_uri],
+          ['bytes32', 'address', 'uint256', 'string'])
       }
       console.log(signature, 'signature')
       return signature
@@ -333,7 +340,7 @@ export default {
       if (signature) {
         await api.mint({
           master_nft_mid: resultNewtokenUrl.master_nft_mid,
-          blazen_contract: blazonItem.contractAddress,
+          blazen_contract: blazonItem.contractAddr,
           blazen_tokenid: blazonItem.token_id,
           new_token_uri: resultNewtokenUrl.token_uri,
           owner: this.userAddress,
@@ -398,7 +405,7 @@ export default {
       this.optionClick()
     },
     jumpBlazon() {
-      this.$router.push({ path: '/select-blazon'})
+      this.$router.push({ path: '/select-blazon' })
     }
   }
 }

@@ -304,7 +304,7 @@ export default {
     },
     erc721transfer() {
       const transferHash = contract.erc721transfer(
-        this.contractAddress, // erc721合约地址
+        this.masterImageItem.contractAddr, // erc721合约地址
         this.userAddress, // 操作地址
         this.userAddress, // erc721转出方
         this.mosaique, // erc721接收方
