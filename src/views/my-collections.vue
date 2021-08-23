@@ -396,8 +396,13 @@ export default {
     },
     // 跳转到 Snapshot
     jumpSnapshot(item) {
-      console.log(item)
-      this.$router.push({ path: '/snapshot-detaile', query: item })
+      let type = ''
+      if (item.snapshot_supply === 0) {
+        type = 'created'
+      } else {
+        type = 'show'
+      }
+      this.$router.push({ path: '/snapshot-detaile', query: { ...item, type }})
     },
     // 跳转到 Program
     jumpProgram(item) {

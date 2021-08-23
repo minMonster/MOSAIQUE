@@ -4,16 +4,11 @@
       <div class="left">
         <el-image class="minted-image" :src="imageItem.uri || imageItem.image" />
       </div>
-      <div class="right">
+      <div v-if="imageItem.type === 'mint' || imageItem.type === 'created'" class="right">
         <section v-if="status == 0" class="edit">
           <h1>Select Price Curve</h1>
           <el-select v-model="priceCurve" size="mini">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
           <div id="myChart" :style="{ width: '300px', height: '300px' }" />
           <div class="set-message">
@@ -36,22 +31,18 @@
             </div>
             <p class="label">Initial Price</p>
             <div class="coordinate-mess size-itme">
-              <div class="itme">
-                <el-input v-model="initialPrice" size="small" /><span
-                  style="margin-left: 10px"
-                >
-                  ETH</span>
-              </div>
+              <div class="itme"><el-input v-model="initialPrice" size="small" /><span style="margin-left: 10px"> ETH</span></div>
             </div>
-            <div class="buttons">
+            <div v-if="imageItem && imageItem.type === 'created'" class="buttons">
               <p class="btn" @click="submit">Save</p>
               <p class="btn cancel">Cancel</p>
             </div>
-            <div class="buttons">
+            <div v-if="imageItem && imageItem.type === 'mint'" class="buttons">
               <p class="btn" @click="mintSubmit">Mint</p>
               <p class="btn cancel">Cancel</p>
             </div>
-          </div></section>
+          </div>
+        </section>
         <section v-if="status == -1" class="loading">
           <el-image :src="require('../access/Loading_20210708.gif')" />
         </section>
@@ -61,18 +52,37 @@
           <p class="item-info"><label>Owner</label>zhangsan</p>
           <p class="item-info"><label>Time</label>2021.04.19,08:15pm EST</p>
           <p class="item-info">
-            <label>Collection</label>Imprint Rarible<span>( {{ tx.blockHash.substring(0, 19) }}...{{
-              tx.blockHash.substring(
-                tx.blockHash.length - 4,
-                tx.blockHash.length
-              )
-            }})</span>
+            <label>Collection</label>Imprint Rarible<span>( {{ tx.blockHash.substring(0, 19) }}...{{ tx.blockHash.substring(tx.blockHash.length - 4, tx.blockHash.length) }})</span>
           </p>
           <p class="item-info"><label>Token ID</label>23456</p>
           <p class="item-info"><label># of Imprints</label>1</p>
-          <div class="minted-btn">
-            go to Imprint
+          <div class="minted-btn">go to Imprint</div>
+        </section>
+      </div>
+      <div v-if="imageItem.type === 'show'" class="right">
+        <section class="show">
+          <h2>The NFT Song <span>The {{ imageItem.minted_count }}th Snapshot</span></h2>
+          <p class="content">
+            <label>Owner</label>
+            <span class="red">elonmusk</span>
+          </p>
+          <p class="content">
+            <label>Price Curve</label>
+          </p>
+          <div class="chart-box" :style="{ width: '350px', height: '350px' }">
+            <div id="myChart" :style="{ width: '350px', height: '350px' }" />
+            <div class="curve">Price Curve at quad</div>
+            <div class="tips">Snapshot times</div>
           </div>
+          <p class="content">
+            <label>Price</label>
+            <span>82 ETH</span>
+          </p>
+          <div class="minted-btn">SNAPSHOT Now!</div>
+          <!-- <p>
+            <label>Chain of Events</label>
+          </p>
+          Chain of Events -->
         </section>
       </div>
     </div>
@@ -134,8 +144,7 @@ export default {
       contractAddress: state => state.contract['contractAddress'],
       mosaique: state => state.contract['CollectionContract'].mosaique,
       userAddress: state => state.walletAccount['userAddress'],
-      formatEth: state => state.walletAccount.formatEth,
-      imageItems: state => state.nft.userNfts
+      formatEth: state => state.walletAccount.formatEth
     })
   },
   watch: {
@@ -154,6 +163,7 @@ export default {
   },
   created() {
     this.imageItem = this.$route.query
+    this.imageItem.token_id = Number(this.imageItem.token_id)
   },
   methods: {
     async sign() {
@@ -177,7 +187,7 @@ export default {
       }
       console.log(priceCurve66, 'priceCurve66')
       const signature = await contract.sign(
-        [this.contractAddress, 43, initialPrice, totalSupply, priceCurve66, birth, deadline],
+        [this.imageItem.contractAddr, Number(this.imageItem.token_id), initialPrice, totalSupply, priceCurve66, birth, deadline],
         ['address', 'uint256', 'uint256', 'uint256', 'bytes32', 'uint256', 'uint256']
       )
       console.log(signature, 'signature')
@@ -185,7 +195,7 @@ export default {
     },
     async mintSign(newTokenURI) {
       const signature = await contract.sign(
-        [this.imageItem.contract, Number(this.imageItem.token_id), newTokenURI],
+        [this.imageItem.contractAddr, Number(this.imageItem.token_id), newTokenURI],
         ['address', 'uint256', 'string']
       )
       console.log(signature, 'signature')
@@ -220,7 +230,7 @@ export default {
       api.createSnapshotSupply({
         owner: this.userAddress,
         signature,
-        contract: this.imageItem.contractAddress,
+        contract: this.imageItem.contractAddr,
         token_id: this.imageItem.token_id,
         initialPrice,
         totalSupply,
@@ -233,14 +243,14 @@ export default {
       })
     },
     async mintSubmit() {
-      const contract1 = contract.createERC721Contract(this.imageItem.contractAddress)
+      const contract1 = contract.createERC721Contract(this.imageItem.contractAddr)
       const newTokenURI = await contract1.methods.tokenURI(this.imageItem.token_id).call()
       console.log(newTokenURI)
       const signature = await this.mintSign(newTokenURI)
       api.createMintSnapshot({
         requester: this.userAddress,
         signature,
-        contract: this.imageItem.contractAddress,
+        contract: this.imageItem.contractAddr,
         token_id: this.imageItem.token_id,
         newTokenURI
       }).then(res => {
@@ -299,9 +309,9 @@ export default {
 }
 </script>
 <style lang="scss">
- .el-select-dropdown__item.selected {
-          color: #DA6464;
-        }
+.el-select-dropdown__item.selected {
+  color: #da6464;
+}
 .snapshot-detaile {
   background-color: #f5f5f5;
   min-height: 100vh;
@@ -348,7 +358,7 @@ export default {
     }
     .right {
       flex: 1;
-        .set-message {
+      .set-message {
         font-size: 14px;
 
         .title {
@@ -403,8 +413,7 @@ export default {
       }
 
       .el-select {
-
-         .el-input .el-select__caret {
+        .el-input .el-select__caret {
           color: #fff;
         }
         input.el-input__inner {
@@ -457,6 +466,80 @@ export default {
           background-color: #ebebeb;
           border: none;
         }
+      }
+    }
+  }
+  .show {
+    h2 {
+      height: 25px;
+      font-size: 24px;
+      font-family: Verdana;
+      font-weight: bold;
+      color: #454953;
+      span {
+        margin-left: 25px;
+        width: 162px;
+        display: inline-block;
+        height: 25px;
+        border: 1px solid #da6464;
+        border-radius: 11px;
+        font-size: 12px;
+        font-family: Verdana;
+        font-weight: bold;
+        color: #da6464;
+        line-height: 23px;
+        text-align: center;
+      }
+    }
+    .chart-box {
+      position: relative;
+      margin-top: 20px;
+      .curve {
+        position: absolute;
+        right: 0;
+        top: 0;
+        font-size: 8px;
+        font-family: Verdana;
+        font-weight: bold;
+        color: #da6464;
+      }
+      .tips {
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        font-size: 8px;
+        font-family: Verdana;
+        font-weight: bold;
+        margin-left: -50px;
+        color: #808fb3;
+      }
+    }
+    .minted-btn {
+      width: 279px;
+      height: 43px;
+      background: #da6464;
+      border-radius: 22px;
+      margin-top: 122px;
+    }
+    .content {
+      margin-top: 20px;
+      font-size: 14px;
+      font-family: Verdana;
+      font-weight: bold;
+      color: #454953;
+      label {
+        font-size: 14px;
+        font-family: Verdana;
+        font-weight: bold;
+        color: #454953;
+        line-height: 21px;
+      }
+      .red {
+        font-size: 14px;
+        font-family: Verdana;
+        font-weight: bold;
+        color: #da6464;
+        line-height: 21px;
       }
     }
   }

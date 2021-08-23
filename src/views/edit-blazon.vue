@@ -272,7 +272,7 @@ export default {
     },
 
     erc721transfer() {
-      // console.log(this.masterImageItem.contractAddr)
+      console.log(this.masterImageItem.contractAddr)
       const transferHash = contract.erc721transfer(
         this.masterImageItem.contractAddr, // erc721合约地址
         this.userAddress, // 操作地址
@@ -349,6 +349,7 @@ export default {
         }).then(res => {
           this.status = 2
           console.log(res)
+          this.loadingTransferHash(res, 2)
         }).catch(err => {
           this.loadingTransferHash(err.transaction_hash, 2)
         })

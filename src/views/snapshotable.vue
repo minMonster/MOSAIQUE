@@ -34,6 +34,8 @@
 </template>
 <script>
 import * as api from '@/service/api'
+import { mapState } from 'vuex'
+
 export default {
   name: 'Snapshotable',
   data: function() {
@@ -50,20 +52,52 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      contractAddress: state => state.contract['contractAddress'],
+      mosaique: state => state.contract['CollectionContract'].mosaique,
+      userAddress: state => state.walletAccount['userAddress'],
+      formatEth: state => state.walletAccount.formatEth
+    })
   },
   created() {
     this.getList()
   },
   methods: {
     toDetaile(item) {
-      this.$router.push({ path: '/snapshot-detaile', query: item })
+      let type = ''
+      if (item.address === this.userAddress) {
+        type = 'show'
+      } else {
+        type = 'mint'
+      }
+      this.$router.push({ path: '/snapshot-detaile', query: {
+        token_id: item.token_id,
+        contractAddr: item.contract,
+        image: item.uri,
+        type,
+        ...item
+      }})
+      // blazon_count:0
+      // contract:"0x8F5D7348b71208D1025F84250722F9d6C35f27e1"
+      // contractAddr:"0x8F5D7348b71208D1025F84250722F9d6C35f27e1"
+      // inscription_count:0
+      // name:"Mosein"
+      // nft_mid:"0x1cfffb1dd81f13abdd75f42a97ab1f2081b98833e6aa88f3b5682e8b7c8da186"
+      // nft_status:1
+      // program_count:0
+      // program_supply:3
+      // snapshot_count:0
+      // snapshot_supply:0
+      // tokenOfOwnerByIndex:"3"
+      // tokenUrl:"https://img1.uapay.io/mpay/img/txt/mosaique/2c9180820000000a017b361220310005"
+      // token_id:3
     },
     async getList() {
       const snapshots = await api.getSnapshots().then(res => {
         this.imagList = res.data.snapshots
         return res.data.snapshots
       })
-      // api.getArtistInfo({ address: snapshots.map(i => i.address) })
+      api.getArtistInfo({ address: snapshots.map(i => i.address) })
     }
   }
 }
