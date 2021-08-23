@@ -11,7 +11,7 @@
             <svg-icon style="width: 27px;height: 27px" icon-class="question" />
           </h2>
           <p class="dec">
-            The NFT Song
+            {{imageItem.name}}
           </p>
           <div class="item">
             <label>Owner</label>
@@ -19,11 +19,11 @@
           </div>
           <div class="item">
             <label>Token ID</label>
-            <span>34567</span>
+            <span>{{imageItem.token_id}}</span>
           </div>
           <div class="item">
             <label>Price</label>
-            <span>21 ETH</span>
+            <span>-- ETH</span>
           </div>
           <div class="item">
             <label># of Imprints</label>
@@ -33,13 +33,18 @@
               size="small"
               controls-position="right"
               :min="1"
-              :max="10"
+              :max="1"
               @change="handleChange"
             />
-            <span class="max red">(MAX 3)</span>
+            <span class="max red">(Made {{imageItem.program_count}} MAX {{imageItem.program_supply}})</span>
           </div>
           <div class="buttons">
+            <div v-if="imageItem.program_supply > imageItem.program_count">
             <p class="btn" @click="copy">Make Programmable</p>
+            </div>
+            <div v-if="imageItem.program_supply > imageItem.program_count">
+            <!-- <p class="btn">Make Programmable</p> -->
+            </div>
             <p class="btn cancel">cancel</p>
           </div>
         </section>
