@@ -15,7 +15,8 @@
           </p>
           <div class="item">
             <label>Owner</label>
-            <span class="red">myName</span>
+            <span v-if="imageItem.userName" class="red">{{imageItem.userName}}</span>
+            <span v-if="!imageItem.userName" class="red">{{imageItem.userAddress}}</span>
           </div>
           <div class="item">
             <label>Token ID</label>
@@ -78,6 +79,7 @@ import * as contract from '@/contract'
 // import * as connector from '@/connector'
 import { mapState } from 'vuex'
 import { eth } from '@/connector'
+import store from '@/store'
 
 export default {
   data: function() {
@@ -98,8 +100,12 @@ export default {
     })
   },
   created() {
+    
     this.imageItem = this.$route.query
     this.imageItem.token_id = Number(this.imageItem.token_id)
+    this.imageItem.userName = store.state.walletAccount.user_nickname
+    this.imageItem.userAddress = store.state.walletAccount.userAddress
+
   },
   methods: {
     handleChange(e) {
