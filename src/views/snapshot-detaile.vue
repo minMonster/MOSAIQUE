@@ -56,7 +56,7 @@
           </p>
           <p class="item-info"><label>Token ID</label>23456</p>
           <p class="item-info"><label># of Imprints</label>1</p>
-          <div class="minted-btn">go to Imprint</div>
+          <div class="minted-btn" @click="$router.push('home')">go to Imprint</div>
         </section>
       </div>
       <div v-if="imageItem.type === 'show'" class="right">
@@ -78,7 +78,7 @@
             <label>Price</label>
             <span>{{ initialPrice }} ETH</span>
           </p>
-          <div class="minted-btn">SNAPSHOT Now!</div>
+          <div class="minted-btn" @click="$router.go(-1)">Back</div>
           <!-- <p>
             <label>Chain of Events</label>
           </p>
