@@ -11,15 +11,16 @@
             <svg-icon style="width: 27px;height: 27px" icon-class="question" />
           </h2>
           <p class="dec">
-            {{imageItem.name}}
+            {{ imageItem.name }}
           </p>
           <div class="item">
             <label>Owner</label>
-            <span class="red">myName</span>
+            <span v-if="userName" class="red">{{ userName }}</span>
+            <span v-if="!userName" class="red">{{ userAddress }}</span>
           </div>
           <div class="item">
             <label>Token ID</label>
-            <span>{{imageItem.token_id}}</span>
+            <span>{{ imageItem.token_id }}</span>
           </div>
           <div class="item">
             <label>Price</label>
@@ -36,11 +37,11 @@
               :max="1"
               @change="handleChange"
             />
-            <span class="max red">(Made {{imageItem.program_count}} MAX {{imageItem.program_supply}})</span>
+            <span class="max red">(Made {{ imageItem.program_count }} MAX {{ imageItem.program_supply }})</span>
           </div>
           <div class="buttons">
             <div v-if="imageItem.program_supply > imageItem.program_count">
-            <p class="btn" @click="copy">Make Programmable</p>
+              <p class="btn" @click="copy">Make Programmable</p>
             </div>
             <div v-if="imageItem.program_supply > imageItem.program_count">
             <!-- <p class="btn">Make Programmable</p> -->
@@ -78,6 +79,7 @@ import * as contract from '@/contract'
 // import * as connector from '@/connector'
 import { mapState } from 'vuex'
 import { eth } from '@/connector'
+import store from '@/store'
 
 export default {
   data: function() {
@@ -91,6 +93,7 @@ export default {
   computed: {
     ...mapState({
       userAddress: state => state.walletAccount['userAddress'],
+      userName: state => state.walletAccount['userName'],
       formatEth: state => state.walletAccount.formatEth,
       userNfts: state => state.nft.userNfts,
       mosaique: state => state.contract['CollectionContract'].mosaique,
