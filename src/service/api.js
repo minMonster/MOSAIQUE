@@ -107,7 +107,7 @@ export function getSnapshots(data) {
   return request(
     {
       url: 'pbgsl.do',
-      method: 'get',
+      method: 'post',
       data
     }
   )

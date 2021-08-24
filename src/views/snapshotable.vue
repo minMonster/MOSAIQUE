@@ -2,7 +2,7 @@
   <div class="snapshotable">
     <div class="edition-center">
       <div class="snapshotable-title">Snapshotables</div>
-      <div class="img-list">
+      <div v-infinite-scroll="load" :infinite-scroll-disabled="scrollDisabled" class="img-list" style="overflow:auto">
         <div v-for="item in imagList" :key="item.nft_mid" class="item-card" @click="toDetaile(item)">
           <div class="top">
             <el-image class="img" fit="cover" :src="item.uri" />
@@ -48,7 +48,10 @@ export default {
         // supply: 10
         // token_id: "0"
         // uri: "https://img1.uapay.io/mpay/img/txt/mosaique/2c9180820000000a017b361220310005"
-      ]
+      ],
+      scrollDisabled: false,
+      skip: 1,
+      limit: 10
     }
   },
   computed: {
@@ -63,6 +66,10 @@ export default {
     this.getList()
   },
   methods: {
+    load() {
+      this.skip++
+      this.getList()
+    },
     toDetaile(item) {
       let type = ''
       if (item.address === this.userAddress) {
@@ -93,11 +100,17 @@ export default {
       // token_id:3
     },
     async getList() {
-      const snapshots = await api.getSnapshots().then(res => {
-        this.imagList = res.data.snapshots
+      const snapshots = await api.getSnapshots({
+        'skip': this.skip,
+        'limit': this.limit
+      }).then(res => {
+        this.imagList = [...this.imagList, ...res.data.snapshots]
+        if (res.data.snapshots.length < 10) {
+          this.scrollDisabled = true
+        }
         return res.data.snapshots
       })
-      api.getArtistInfo({ address: snapshots.map(i => i.address) })
+      // api.getArtistInfo({ address: snapshots.map(i => i.address) })
     }
   }
 }

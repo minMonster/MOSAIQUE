@@ -7,11 +7,11 @@
       <div v-if="imageItem.type === 'mint' || imageItem.type === 'created'" class="right">
         <section v-if="status == 0" class="edit">
           <h1>Select Price Curve</h1>
-          <el-select v-model="priceCurve" size="mini">
+          <el-select v-model="priceCurve" :disabled="imageItem.type === 'mint'" size="mini">
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
           <div id="myChart" :style="{ width: '300px', height: '300px' }" />
-          <div class="set-message">
+          <el-form :disabled="imageItem.type === 'mint'" class="set-message">
             <p class="label">Time Limit</p>
             <div class="coordinate-mess">
               <div class="itme">
@@ -35,13 +35,13 @@
             </div>
             <div v-if="imageItem && imageItem.type === 'created'" class="buttons">
               <p class="btn" @click="submit">Save</p>
-              <p class="btn cancel">Cancel</p>
+              <p class="btn cancel" @click="$router.go(-1)">Cancel</p>
             </div>
             <div v-if="imageItem && imageItem.type === 'mint'" class="buttons">
               <p class="btn" @click="mintSubmit">Mint</p>
-              <p class="btn cancel">Cancel</p>
+              <p class="btn cancel" @click="$router.go(-1)">Cancel</p>
             </div>
-          </div>
+          </el-form>
         </section>
         <section v-if="status == -1" class="loading">
           <el-image :src="require('../access/Loading_20210708.gif')" />
@@ -61,7 +61,7 @@
       </div>
       <div v-if="imageItem.type === 'show'" class="right">
         <section class="show">
-          <h2>The NFT Song <span>The {{ imageItem.minted_count }}th Snapshot</span></h2>
+          <h2>The NFT Song <span>The {{ snapshotsMinted }}th Snapshot</span></h2>
           <p class="content">
             <label>Owner</label>
             <span class="red">elonmusk</span>
@@ -71,12 +71,12 @@
           </p>
           <div class="chart-box" :style="{ width: '350px', height: '350px' }">
             <div id="myChart" :style="{ width: '350px', height: '350px' }" />
-            <div class="curve">Price Curve at quad</div>
+            <div class="curve">Price Curve at {{ priceCurve }}</div>
             <div class="tips">Snapshot times</div>
           </div>
           <p class="content">
             <label>Price</label>
-            <span>82 ETH</span>
+            <span>{{ initialPrice }} ETH</span>
           </p>
           <div class="minted-btn">SNAPSHOT Now!</div>
           <!-- <p>
@@ -106,6 +106,7 @@ export default {
       priceCurve: 'const',
       birth: 0,
       deadline: 10,
+      tx: null,
       options: [
         {
           value: 'const',
@@ -124,6 +125,7 @@ export default {
           label: 'Price curve at quad'
         }
       ],
+      snapshotsMinted: 0,
       // imageItem: {
       //   address: '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',
       //   contract: '0x8F5D7348b71208D1025F84250722F9d6C35f27e1',
@@ -134,7 +136,6 @@ export default {
       //   uri: 'https://img1.uapay.io/mpay/img/png/mosaique/2c9180820000000a017b36121a1e0004.png'
       // },
       imageItem: null,
-      ofImprints: '',
       chart: null
 
     }
@@ -161,11 +162,37 @@ export default {
   mounted() {
     this.drawLine()
   },
-  created() {
+  async created() {
     this.imageItem = this.$route.query
     this.imageItem.token_id = Number(this.imageItem.token_id)
+    this.init()
   },
   methods: {
+    async init() {
+      const itemInfo = await contract.getSnapshotStatus(this.imageItem.token_id, this.imageItem.contractAddr)
+      // birth: "0"
+      // deadline: "10"
+      // initialPrice: "10"
+      // priceCurve: "0x636f6e7374000000000000000000000000000000000000000000000000000000"
+      // snapshotsMinted: "0"
+      // totalSupply: "100"
+      const { birth, deadline, initialPrice, priceCurve, totalSupply, snapshotsMinted } = itemInfo
+      // console.log(birth, deadline, initialPrice, priceCurve, snapshotsMinted, totalSupply)
+      const curves = {
+        '0x636f6e7374000000000000000000000000000000000000000000000000000000': 'const',
+        '0x6c696e6561720000000000000000000000000000000000000000000000000000': 'linear',
+        '0x6578700000000000000000000000000000000000000000000000000000000000': 'exp',
+        '0x7175616400000000000000000000000000000000000000000000000000000000': 'quad'
+      }
+      this.initialPrice = initialPrice
+      this.snapshotsMinted = snapshotsMinted
+      this.totalSupply = totalSupply
+      this.birth = birth
+      this.deadline = deadline
+      this.priceCurve = curves[priceCurve]
+
+      console.log('getSnapshotStatus', web3.utils.toAscii(priceCurve.substr(0, 16)))
+    },
     async sign() {
       // console.log(web3.utils.fromAscii('const'))
       // return
@@ -194,22 +221,25 @@ export default {
       return signature
     },
     async mintSign(newTokenURI) {
+      console.log([this.imageItem.contractAddr, this.imageItem.token_id, newTokenURI], '[this.imageItem.contractAddr, this.imageItem.token_id, newTokenURI]')
       const signature = await contract.sign(
-        [this.imageItem.contractAddr, Number(this.imageItem.token_id), newTokenURI],
+        [this.imageItem.contractAddr, this.imageItem.token_id, newTokenURI],
         ['address', 'uint256', 'string']
       )
       console.log(signature, 'signature')
       return signature
     },
-    loadingTransferHash(transferHash) {
+    loadingTransferHash(transferHash, status) {
       console.log('loadingTransferHash')
       return eth.getTransactionReceipt(transferHash).then(res => {
         console.log(res, 'res')
         if (res === null || res === 0) {
           setTimeout(() => {
-            return this.loadingTransferHash(transferHash)
+            return this.loadingTransferHash(transferHash, status)
           }, 1000)
         } else {
+          this.status = status
+          this.tx = res
           return true
         }
       }).catch(err => {
@@ -218,6 +248,7 @@ export default {
       })
     },
     async submit() {
+      this.status = -1
       const { initialPrice, totalSupply, priceCurve, birth, deadline } = this
       const signature = await this.sign(this.imageItem.nft_mid)
       let priceCurve66 = String(web3.utils.fromAscii(priceCurve))
@@ -239,10 +270,11 @@ export default {
         deadline
       }
       ).then(res => {
-        this.loadingTransferHash(res.data.data)
+        this.loadingTransferHash(res.data.data, 1)
       })
     },
     async mintSubmit() {
+      this.status = -1
       const contract1 = contract.createERC721Contract(this.imageItem.contractAddr)
       const newTokenURI = await contract1.methods.tokenURI(this.imageItem.token_id).call()
       console.log(newTokenURI)
@@ -254,7 +286,7 @@ export default {
         token_id: this.imageItem.token_id,
         newTokenURI
       }).then(res => {
-        this.loadingTransferHash(res.data.data)
+        this.loadingTransferHash(res.data.data, 1)
       })
     },
     drawLine() {

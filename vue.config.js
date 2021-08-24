@@ -40,6 +40,10 @@ if (VUE_APP_BASE_API_PROXY) {
       '/img1.uapay.io': {
         target: 'https://img1.uapay.io',
         changeOrigin: true
+      },
+      'img1.uapay.io/mpay/img/txt/mosaique': {
+        target: 'https://img1.uapay.io/mpay/img/txt/mosaique',
+        changeOrigin: true
       }
     }
   }
