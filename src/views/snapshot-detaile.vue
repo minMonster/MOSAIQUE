@@ -4,14 +4,14 @@
       <div class="left">
         <el-image class="minted-image" :src="imageItem.uri || imageItem.image" />
       </div>
-      <div v-if="imageItem.type === 'mint' || imageItem.type === 'created'" class="right">
-        <section v-if="status == 0" class="edit">
+      <div class="right">
+        <section v-if="status == 0 && imageItem.type === 'created'" class="edit">
           <h1>Select Price Curve</h1>
-          <el-select v-model="priceCurve" :disabled="imageItem.type === 'mint'" size="mini">
+          <el-select v-model="priceCurve" size="mini">
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
           <div id="myChart" :style="{ width: '300px', height: '300px' }" />
-          <el-form :disabled="imageItem.type === 'mint'" class="set-message">
+          <el-form class="set-message">
             <p class="label">Time Limit</p>
             <div class="coordinate-mess">
               <div class="itme">
@@ -37,30 +37,9 @@
               <p class="btn" @click="submit">Save</p>
               <p class="btn cancel" @click="$router.go(-1)">Cancel</p>
             </div>
-            <div v-if="imageItem && imageItem.type === 'mint'" class="buttons">
-              <p class="btn" @click="mintSubmit">Mint</p>
-              <p class="btn cancel" @click="$router.go(-1)">Cancel</p>
-            </div>
           </el-form>
         </section>
-        <section v-if="status == -1" class="loading">
-          <el-image :src="require('../access/Loading_20210708.gif')" />
-        </section>
-        <section v-if="status == 1" class="finished">
-          <p class="title-tip">Finished!</p>
-          <p class="title-tip black">The NFT Song</p>
-          <p class="item-info"><label>Owner</label>zhangsan</p>
-          <p class="item-info"><label>Time</label>2021.04.19,08:15pm EST</p>
-          <p class="item-info">
-            <label>Collection</label>Imprint Rarible<span>( {{ tx.blockHash.substring(0, 19) }}...{{ tx.blockHash.substring(tx.blockHash.length - 4, tx.blockHash.length) }})</span>
-          </p>
-          <p class="item-info"><label>Token ID</label>23456</p>
-          <p class="item-info"><label># of Imprints</label>1</p>
-          <div class="minted-btn" @click="$router.push('home')">go to Imprint</div>
-        </section>
-      </div>
-      <div v-if="imageItem.type === 'show'" class="right">
-        <section class="show">
+        <section v-if="status == 0 && (imageItem.type === 'show' || imageItem.type === 'mint')" class="show">
           <h2>The NFT Song <span>The {{ snapshotsMinted }}th Snapshot</span></h2>
           <p class="content">
             <label>Owner</label>
@@ -78,12 +57,29 @@
             <label>Price</label>
             <span>{{ initialPrice }} ETH</span>
           </p>
-          <div class="minted-btn" @click="$router.go(-1)">Back</div>
+          <div v-if="imageItem.type === 'mint'" class="minted-btn" @click="mintSubmit">Mint</div>
+          <div v-if="imageItem.type === 'show'" class="minted-btn" @click="$router.go(-1)">Back</div>
           <!-- <p>
             <label>Chain of Events</label>
           </p>
           Chain of Events -->
         </section>
+        <section v-if="status == -1" class="loading">
+          <el-image :src="require('../access/Loading_20210708.gif')" />
+        </section>
+        <section v-if="status == 1" class="finished">
+          <p class="title-tip">Finished!</p>
+          <p class="title-tip black">The NFT Song</p>
+          <p class="item-info"><label>Owner</label>zhangsan</p>
+          <p class="item-info"><label>Time</label>2021.04.19,08:15pm EST</p>
+          <p class="item-info">
+            <label>Collection</label>Imprint Rarible<span>( {{ tx.blockHash.substring(0, 19) }}...{{ tx.blockHash.substring(tx.blockHash.length - 4, tx.blockHash.length) }})</span>
+          </p>
+          <p class="item-info"><label>Token ID</label>23456</p>
+          <p class="item-info"><label># of Imprints</label>1</p>
+          <div class="minted-btn" @click="$router.push('Snapshotable')">go to Snapshotables</div>
+        </section>
+
       </div>
     </div>
   </div>
