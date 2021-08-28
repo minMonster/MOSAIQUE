@@ -124,18 +124,17 @@ export default {
           const artwork = addr[i].art
           const contracts = await contract.createERC721Contract(contractAddr)
           const balanceOf = await contracts.methods.balanceOf(this.userAddress).call()
-          console.log(balanceOf, 'balanceOf')
           const itemArr = []
           for (let j = 0; j < balanceOf; j++) {
             await contracts.methods.tokenOfOwnerByIndex(this.userAddress, j).call().then(async(res) => {
               contracts.methods.tokenURI(res).call().then(async(tokenURI) => {
-                const catchUri = localStorage.getItem('URI_' + res)
+                const catchUri = localStorage.getItem('URI_' + contractAddr.slice(0, 10) + '_' + res)
                 let result = null
                 if (catchUri) {
                   result = JSON.parse(catchUri)
                 } else {
                   result = await axios.get(tokenURI).then((result) => {
-                    localStorage.setItem('URI_' + res, JSON.stringify(result))
+                    localStorage.setItem('URI_' + contractAddr.slice(0, 10) + '_' + res, JSON.stringify(result))
                     return result
                   }).catch(() => false)
                 }
@@ -165,7 +164,6 @@ export default {
                     const params = {
                       collections: collections
                     }
-                    console.log(params)
                     api.getCollectInfo(params).then(res => {
                       const { collections } = res && res.data
                       if (collections && collections.length) {
