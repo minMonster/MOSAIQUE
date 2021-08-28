@@ -71,6 +71,10 @@ export default {
       this.getList()
     },
     toDetaile(item) {
+      if (!this.userAddress) {
+        this.$message('Please link Wallet')
+        return
+      }
       let type = ''
       if (item.address === this.userAddress) {
         type = 'show'
